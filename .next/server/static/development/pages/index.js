@@ -88,7 +88,7 @@ module.exports =
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 4);
+/******/ 	return __webpack_require__(__webpack_require__.s = 3);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -129,8 +129,11 @@ let toggle = () => {
 };
 
 const Index = props => {
-  return __jsx(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, __jsx("div", {
-    className: "background",
+  return __jsx(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, __jsx(react_audio_player__WEBPACK_IMPORTED_MODULE_1___default.a, {
+    src: "https://player.audiovox.pw/proxy/6768/;type=mp3",
+    autoPlay: true,
+    controls: true,
+    listenInterval: "1000",
     __self: undefined,
     __source: {
       fileName: _jsxFileName,
@@ -138,36 +141,36 @@ const Index = props => {
       columnNumber: 13
     }
   }), __jsx("div", {
+    className: "background",
+    __self: undefined,
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 26,
+      columnNumber: 13
+    }
+  }), __jsx("div", {
     className: "radial",
     __self: undefined,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 20,
+      lineNumber: 27,
       columnNumber: 13
     }
   }), __jsx("div", {
-    className: "container",
-    __self: undefined,
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 22,
-      columnNumber: 13
-    }
-  }, __jsx("div", {
     className: "player",
     __self: undefined,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 23,
-      columnNumber: 17
+      lineNumber: 29,
+      columnNumber: 13
     }
   }, __jsx("div", {
     className: "radio-status",
     __self: undefined,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 24,
-      columnNumber: 21
+      lineNumber: 30,
+      columnNumber: 17
     }
   }, __jsx("div", {
     className: "radio-status-avatar",
@@ -177,24 +180,24 @@ const Index = props => {
     __self: undefined,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 25,
-      columnNumber: 25
+      lineNumber: 31,
+      columnNumber: 21
     }
   }), __jsx("div", {
     className: "radio-status-data",
     __self: undefined,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 26,
-      columnNumber: 25
+      lineNumber: 32,
+      columnNumber: 21
     }
   }, props.radio.servertitle), __jsx("div", {
     className: "radio-status-data",
     __self: undefined,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 27,
-      columnNumber: 25
+      lineNumber: 33,
+      columnNumber: 21
     }
   }, props.radio.servergenre)), __jsx(react_slider__WEBPACK_IMPORTED_MODULE_2___default.a, {
     className: "radio-slider",
@@ -204,40 +207,40 @@ const Index = props => {
     __self: undefined,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 31,
-      columnNumber: 21
+      lineNumber: 37,
+      columnNumber: 17
     }
   }), __jsx("div", {
     className: "radio-status-data-listeners",
     __self: undefined,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 38,
-      columnNumber: 21
+      lineNumber: 44,
+      columnNumber: 17
     }
   }, props.radio.currentlisteners, __jsx("div", {
     className: "radio-status-data-listeners-text",
     __self: undefined,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 40,
-      columnNumber: 25
+      lineNumber: 46,
+      columnNumber: 21
     }
   }, "ouvintes"))), __jsx("div", {
     className: "center",
     __self: undefined,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 44,
-      columnNumber: 17
+      lineNumber: 50,
+      columnNumber: 13
     }
   }, __jsx("div", {
     className: "logo",
     __self: undefined,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 45,
-      columnNumber: 21
+      lineNumber: 51,
+      columnNumber: 17
     }
   }, __jsx("div", {
     className: "vacancies",
@@ -245,8 +248,8 @@ const Index = props => {
     __self: undefined,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 46,
-      columnNumber: 25
+      lineNumber: 52,
+      columnNumber: 21
     }
   }, "Vagas"), __jsx("div", {
     className: "control play",
@@ -254,8 +257,8 @@ const Index = props => {
     __self: undefined,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 47,
-      columnNumber: 25
+      lineNumber: 53,
+      columnNumber: 21
     }
   }), __jsx("div", {
     className: "team",
@@ -263,27 +266,15 @@ const Index = props => {
     __self: undefined,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 48,
-      columnNumber: 25
+      lineNumber: 54,
+      columnNumber: 21
     }
-  }, "Equipe")))), __jsx(react_audio_player__WEBPACK_IMPORTED_MODULE_1___default.a, {
-    src: "https://player.audiovox.pw/proxy/6768/;type=mp3",
-    autoPlay: true,
-    controls: true,
-    listenInterval: "1000",
-    __self: undefined,
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 53,
-      columnNumber: 13
-    }
-  }));
+  }, "Equipe"))));
 };
 
 Index.getInitialProps = async function () {
   const res = await isomorphic_unfetch__WEBPACK_IMPORTED_MODULE_3___default()('http://serv3.audiovox.pw:6768/stats?sid=1&json=1');
   const data = await res.json();
-  console.log(`Show data fetched. Count: ${data.length}`);
   return {
     radio: data
   };
@@ -293,7 +284,7 @@ Index.getInitialProps = async function () {
 
 /***/ }),
 
-/***/ 4:
+/***/ 3:
 /*!******************************!*\
   !*** multi ./pages/index.js ***!
   \******************************/

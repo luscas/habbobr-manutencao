@@ -6714,8 +6714,11 @@ var toggle = function toggle() {
 };
 
 var Index = function Index(props) {
-  return __jsx(react__WEBPACK_IMPORTED_MODULE_1___default.a.Fragment, null, __jsx("div", {
-    className: "background",
+  return __jsx(react__WEBPACK_IMPORTED_MODULE_1___default.a.Fragment, null, __jsx(react_audio_player__WEBPACK_IMPORTED_MODULE_2___default.a, {
+    src: "https://player.audiovox.pw/proxy/6768/;type=mp3",
+    autoPlay: true,
+    controls: true,
+    listenInterval: "1000",
     __self: _this,
     __source: {
       fileName: _jsxFileName,
@@ -6723,36 +6726,36 @@ var Index = function Index(props) {
       columnNumber: 13
     }
   }), __jsx("div", {
+    className: "background",
+    __self: _this,
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 26,
+      columnNumber: 13
+    }
+  }), __jsx("div", {
     className: "radial",
     __self: _this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 20,
+      lineNumber: 27,
       columnNumber: 13
     }
   }), __jsx("div", {
-    className: "container",
-    __self: _this,
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 22,
-      columnNumber: 13
-    }
-  }, __jsx("div", {
     className: "player",
     __self: _this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 23,
-      columnNumber: 17
+      lineNumber: 29,
+      columnNumber: 13
     }
   }, __jsx("div", {
     className: "radio-status",
     __self: _this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 24,
-      columnNumber: 21
+      lineNumber: 30,
+      columnNumber: 17
     }
   }, __jsx("div", {
     className: "radio-status-avatar",
@@ -6762,24 +6765,24 @@ var Index = function Index(props) {
     __self: _this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 25,
-      columnNumber: 25
+      lineNumber: 31,
+      columnNumber: 21
     }
   }), __jsx("div", {
     className: "radio-status-data",
     __self: _this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 26,
-      columnNumber: 25
+      lineNumber: 32,
+      columnNumber: 21
     }
   }, props.radio.servertitle), __jsx("div", {
     className: "radio-status-data",
     __self: _this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 27,
-      columnNumber: 25
+      lineNumber: 33,
+      columnNumber: 21
     }
   }, props.radio.servergenre)), __jsx(react_slider__WEBPACK_IMPORTED_MODULE_3__["default"], {
     className: "radio-slider",
@@ -6791,40 +6794,40 @@ var Index = function Index(props) {
     __self: _this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 31,
-      columnNumber: 21
+      lineNumber: 37,
+      columnNumber: 17
     }
   }), __jsx("div", {
     className: "radio-status-data-listeners",
     __self: _this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 38,
-      columnNumber: 21
+      lineNumber: 44,
+      columnNumber: 17
     }
   }, props.radio.currentlisteners, __jsx("div", {
     className: "radio-status-data-listeners-text",
     __self: _this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 40,
-      columnNumber: 25
+      lineNumber: 46,
+      columnNumber: 21
     }
   }, "ouvintes"))), __jsx("div", {
     className: "center",
     __self: _this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 44,
-      columnNumber: 17
+      lineNumber: 50,
+      columnNumber: 13
     }
   }, __jsx("div", {
     className: "logo",
     __self: _this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 45,
-      columnNumber: 21
+      lineNumber: 51,
+      columnNumber: 17
     }
   }, __jsx("div", {
     className: "vacancies",
@@ -6834,8 +6837,8 @@ var Index = function Index(props) {
     __self: _this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 46,
-      columnNumber: 25
+      lineNumber: 52,
+      columnNumber: 21
     }
   }, "Vagas"), __jsx("div", {
     className: "control play",
@@ -6845,8 +6848,8 @@ var Index = function Index(props) {
     __self: _this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 47,
-      columnNumber: 25
+      lineNumber: 53,
+      columnNumber: 21
     }
   }), __jsx("div", {
     className: "team",
@@ -6856,21 +6859,10 @@ var Index = function Index(props) {
     __self: _this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 48,
-      columnNumber: 25
+      lineNumber: 54,
+      columnNumber: 21
     }
-  }, "Equipe")))), __jsx(react_audio_player__WEBPACK_IMPORTED_MODULE_2___default.a, {
-    src: "https://player.audiovox.pw/proxy/6768/;type=mp3",
-    autoPlay: true,
-    controls: true,
-    listenInterval: "1000",
-    __self: _this,
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 53,
-      columnNumber: 13
-    }
-  }));
+  }, "Equipe"))));
 };
 
 Index.getInitialProps = function _callee() {
@@ -6889,12 +6881,11 @@ Index.getInitialProps = function _callee() {
 
         case 5:
           data = _context.sent;
-          console.log("Show data fetched. Count: ".concat(data.length));
           return _context.abrupt("return", {
             radio: data
           });
 
-        case 8:
+        case 7:
         case "end":
           return _context.stop();
       }
@@ -6906,7 +6897,7 @@ Index.getInitialProps = function _callee() {
 
 /***/ }),
 
-/***/ 2:
+/***/ 1:
 /*!*******************************************************************************************************************!*\
   !*** multi next-client-pages-loader?page=%2F&absolutePagePath=C%3A%5Cwww%5Chabbobr-manutencao%5Cpages%5Cindex.js ***!
   \*******************************************************************************************************************/
@@ -6929,5 +6920,5 @@ module.exports = dll_2adc2403d89adc16ead0;
 
 /***/ })
 
-},[[2,"static/runtime/webpack.js"]]]);
+},[[1,"static/runtime/webpack.js"]]]);
 //# sourceMappingURL=index.js.map
