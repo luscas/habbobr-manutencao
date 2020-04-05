@@ -3,17 +3,37 @@ import ReactAudioPlayer from 'react-audio-player';
 import ReactSlider from 'react-slider';
 import fetch from 'isomorphic-unfetch';
 
-let toggle = () => {
-    let audio = document.querySelector('.react-audio-player');
-    
-    if(audio.volume == 0) {
-        audio.volume = 1;
-    } else {
-        audio.volume = 0;
-    }
-}
-
 const Index = props => {
+    let [status, setStatus] = useState('stop');
+
+    function setSlider(value) {
+        if(value > 0) {
+            setStatus('stop');
+        } else {
+            setStatus('play');
+        }
+
+        if(value > 0) {
+            document.querySelector('.react-audio-player').volume = parseFloat(value);
+        }
+
+        console.log(value);
+    }
+
+    function toggle() {
+        let audio = document.querySelector('.react-audio-player');
+        
+        if(audio.volume <= 0) {
+            audio.volume = 1;
+            audio.muted = false;
+            setStatus('stop');
+        } else {
+            audio.volume = 0.0;
+            audio.muted = true;
+            setStatus('play');
+        }
+    }
+
     return (
         <>
             <ReactAudioPlayer
@@ -37,7 +57,8 @@ const Index = props => {
                 <ReactSlider
                     className="radio-slider"
                     trackClassName="radio-slider-control"
-                    onChange={(value) => document.querySelector('.react-audio-player').volume = (value / 100)}
+                    onChange={(value) => setSlider(value / 100)}
+                    min={0}
                     defaultValue={100}
                 />
 
@@ -50,7 +71,7 @@ const Index = props => {
             <div className="center">
                 <div className="logo">
                     <div className="vacancies" onClick={() => alert('Not now!')}>Vagas</div>
-                    <div className="control play" onClick={() => toggle() }></div>
+                    <div className={`control ${status}`} onClick={() => toggle() }></div>
                     <div className="team" onClick={() => alert('Not now!')}>Equipe</div>
                 </div>
             </div>

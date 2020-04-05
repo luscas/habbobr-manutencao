@@ -6703,17 +6703,39 @@ var __jsx = react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement;
 
 
 
-var toggle = function toggle() {
-  var audio = document.querySelector('.react-audio-player');
-
-  if (audio.volume == 0) {
-    audio.volume = 1;
-  } else {
-    audio.volume = 0;
-  }
-};
-
 var Index = function Index(props) {
+  var _useState = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])('stop'),
+      status = _useState[0],
+      setStatus = _useState[1];
+
+  function setSlider(value) {
+    if (value > 0) {
+      setStatus('stop');
+    } else {
+      setStatus('play');
+    }
+
+    if (value > 0) {
+      document.querySelector('.react-audio-player').volume = parseFloat(value);
+    }
+
+    console.log(value);
+  }
+
+  function toggle() {
+    var audio = document.querySelector('.react-audio-player');
+
+    if (audio.volume <= 0) {
+      audio.volume = 1;
+      audio.muted = false;
+      setStatus('stop');
+    } else {
+      audio.volume = 0.0;
+      audio.muted = true;
+      setStatus('play');
+    }
+  }
+
   return __jsx(react__WEBPACK_IMPORTED_MODULE_1___default.a.Fragment, null, __jsx(react_audio_player__WEBPACK_IMPORTED_MODULE_2___default.a, {
     src: "https://player.audiovox.pw/proxy/6768/;type=mp3",
     autoPlay: true,
@@ -6722,7 +6744,7 @@ var Index = function Index(props) {
     __self: _this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 19,
+      lineNumber: 39,
       columnNumber: 13
     }
   }), __jsx("div", {
@@ -6730,7 +6752,7 @@ var Index = function Index(props) {
     __self: _this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 26,
+      lineNumber: 46,
       columnNumber: 13
     }
   }), __jsx("div", {
@@ -6738,7 +6760,7 @@ var Index = function Index(props) {
     __self: _this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 27,
+      lineNumber: 47,
       columnNumber: 13
     }
   }), __jsx("div", {
@@ -6746,7 +6768,7 @@ var Index = function Index(props) {
     __self: _this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 29,
+      lineNumber: 49,
       columnNumber: 13
     }
   }, __jsx("div", {
@@ -6754,7 +6776,7 @@ var Index = function Index(props) {
     __self: _this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 30,
+      lineNumber: 50,
       columnNumber: 17
     }
   }, __jsx("div", {
@@ -6765,7 +6787,7 @@ var Index = function Index(props) {
     __self: _this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 31,
+      lineNumber: 51,
       columnNumber: 21
     }
   }), __jsx("div", {
@@ -6773,7 +6795,7 @@ var Index = function Index(props) {
     __self: _this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 32,
+      lineNumber: 52,
       columnNumber: 21
     }
   }, props.radio.servertitle), __jsx("div", {
@@ -6781,20 +6803,21 @@ var Index = function Index(props) {
     __self: _this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 33,
+      lineNumber: 53,
       columnNumber: 21
     }
   }, props.radio.servergenre)), __jsx(react_slider__WEBPACK_IMPORTED_MODULE_3__["default"], {
     className: "radio-slider",
     trackClassName: "radio-slider-control",
     onChange: function onChange(value) {
-      return document.querySelector('.react-audio-player').volume = value / 100;
+      return setSlider(value / 100);
     },
+    min: 0,
     defaultValue: 100,
     __self: _this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 37,
+      lineNumber: 57,
       columnNumber: 17
     }
   }), __jsx("div", {
@@ -6802,7 +6825,7 @@ var Index = function Index(props) {
     __self: _this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 44,
+      lineNumber: 65,
       columnNumber: 17
     }
   }, props.radio.currentlisteners, __jsx("div", {
@@ -6810,7 +6833,7 @@ var Index = function Index(props) {
     __self: _this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 46,
+      lineNumber: 67,
       columnNumber: 21
     }
   }, "ouvintes"))), __jsx("div", {
@@ -6818,7 +6841,7 @@ var Index = function Index(props) {
     __self: _this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 50,
+      lineNumber: 71,
       columnNumber: 13
     }
   }, __jsx("div", {
@@ -6826,7 +6849,7 @@ var Index = function Index(props) {
     __self: _this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 51,
+      lineNumber: 72,
       columnNumber: 17
     }
   }, __jsx("div", {
@@ -6837,18 +6860,18 @@ var Index = function Index(props) {
     __self: _this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 52,
+      lineNumber: 73,
       columnNumber: 21
     }
   }, "Vagas"), __jsx("div", {
-    className: "control play",
+    className: "control ".concat(status),
     onClick: function onClick() {
       return toggle();
     },
     __self: _this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 53,
+      lineNumber: 74,
       columnNumber: 21
     }
   }), __jsx("div", {
@@ -6859,7 +6882,7 @@ var Index = function Index(props) {
     __self: _this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 54,
+      lineNumber: 75,
       columnNumber: 21
     }
   }, "Equipe"))));
