@@ -16,8 +16,6 @@ const Index = props => {
         if(value > 0) {
             document.querySelector('.react-audio-player').volume = parseFloat(value);
         }
-
-        console.log(value);
     }
 
     function toggle() {
@@ -63,7 +61,7 @@ const Index = props => {
                 />
 
                 <div className="radio-status-data-listeners">
-                    {props.radio.currentlisteners}
+                    {props.radio.currentlisteners == 0 ? 1 : props.radio.currentlisteners}
                     <div className="radio-status-data-listeners-text">ouvintes</div>
                 </div>
             </div>

@@ -88,7 +88,7 @@ module.exports =
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 4);
+/******/ 	return __webpack_require__(__webpack_require__.s = 3);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -134,8 +134,6 @@ const Index = props => {
     if (value > 0) {
       document.querySelector('.react-audio-player').volume = parseFloat(value);
     }
-
-    console.log(value);
   }
 
   function toggle() {
@@ -160,7 +158,7 @@ const Index = props => {
     __self: undefined,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 39,
+      lineNumber: 37,
       columnNumber: 13
     }
   }), __jsx("div", {
@@ -168,7 +166,7 @@ const Index = props => {
     __self: undefined,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 46,
+      lineNumber: 44,
       columnNumber: 13
     }
   }), __jsx("div", {
@@ -176,7 +174,7 @@ const Index = props => {
     __self: undefined,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 47,
+      lineNumber: 45,
       columnNumber: 13
     }
   }), __jsx("div", {
@@ -184,7 +182,7 @@ const Index = props => {
     __self: undefined,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 49,
+      lineNumber: 47,
       columnNumber: 13
     }
   }, __jsx("div", {
@@ -192,7 +190,7 @@ const Index = props => {
     __self: undefined,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 50,
+      lineNumber: 48,
       columnNumber: 17
     }
   }, __jsx("div", {
@@ -203,7 +201,7 @@ const Index = props => {
     __self: undefined,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 51,
+      lineNumber: 49,
       columnNumber: 21
     }
   }), __jsx("div", {
@@ -211,7 +209,7 @@ const Index = props => {
     __self: undefined,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 52,
+      lineNumber: 50,
       columnNumber: 21
     }
   }, props.radio.servertitle), __jsx("div", {
@@ -219,7 +217,7 @@ const Index = props => {
     __self: undefined,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 53,
+      lineNumber: 51,
       columnNumber: 21
     }
   }, props.radio.servergenre)), __jsx(react_slider__WEBPACK_IMPORTED_MODULE_2___default.a, {
@@ -231,7 +229,7 @@ const Index = props => {
     __self: undefined,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 57,
+      lineNumber: 55,
       columnNumber: 17
     }
   }), __jsx("div", {
@@ -239,15 +237,15 @@ const Index = props => {
     __self: undefined,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 65,
+      lineNumber: 63,
       columnNumber: 17
     }
-  }, props.radio.currentlisteners, __jsx("div", {
+  }, props.radio.currentlisteners == 0 ? 1 : props.radio.currentlisteners, __jsx("div", {
     className: "radio-status-data-listeners-text",
     __self: undefined,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 67,
+      lineNumber: 65,
       columnNumber: 21
     }
   }, "ouvintes"))), __jsx("div", {
@@ -255,7 +253,7 @@ const Index = props => {
     __self: undefined,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 71,
+      lineNumber: 69,
       columnNumber: 13
     }
   }, __jsx("div", {
@@ -263,7 +261,7 @@ const Index = props => {
     __self: undefined,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 72,
+      lineNumber: 70,
       columnNumber: 17
     }
   }, __jsx("div", {
@@ -272,7 +270,7 @@ const Index = props => {
     __self: undefined,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 73,
+      lineNumber: 71,
       columnNumber: 21
     }
   }, "Vagas"), __jsx("div", {
@@ -281,7 +279,7 @@ const Index = props => {
     __self: undefined,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 74,
+      lineNumber: 72,
       columnNumber: 21
     }
   }), __jsx("div", {
@@ -290,7 +288,7 @@ const Index = props => {
     __self: undefined,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 75,
+      lineNumber: 73,
       columnNumber: 21
     }
   }, "Equipe"))));
@@ -308,7 +306,7 @@ Index.getInitialProps = async function () {
 
 /***/ }),
 
-/***/ 4:
+/***/ 3:
 /*!******************************!*\
   !*** multi ./pages/index.js ***!
   \******************************/
