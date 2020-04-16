@@ -93,6 +93,57 @@ module.exports =
 /************************************************************************/
 /******/ ({
 
+/***/ "./helpers/xmlToJson.js":
+/*!******************************!*\
+  !*** ./helpers/xmlToJson.js ***!
+  \******************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+function xmlToJson(xml) {
+  var obj = {};
+
+  if (xml.nodeType == 1) {
+    if (xml.attributes.length > 0) {
+      obj["@attributes"] = {};
+
+      for (var j = 0; j < xml.attributes.length; j++) {
+        var attribute = xml.attributes.item(j);
+        obj["@attributes"][attribute.nodeName] = attribute.nodeValue;
+      }
+    }
+  } else if (xml.nodeType == 3) {
+    obj = xml.nodeValue;
+  }
+
+  if (xml.hasChildNodes()) {
+    for (var i = 0; i < xml.childNodes.length; i++) {
+      var item = xml.childNodes.item(i);
+      var nodeName = item.nodeName;
+
+      if (typeof obj[nodeName] == "undefined") {
+        obj[nodeName] = xmlToJson(item);
+      } else {
+        if (typeof obj[nodeName].push == "undefined") {
+          var old = obj[nodeName];
+          obj[nodeName] = [];
+          obj[nodeName].push(old);
+        }
+
+        obj[nodeName].push(xmlToJson(item));
+      }
+    }
+  }
+
+  return obj;
+}
+
+/* harmony default export */ __webpack_exports__["default"] = (xmlToJson);
+
+/***/ }),
+
 /***/ "./pages/index.js":
 /*!************************!*\
   !*** ./pages/index.js ***!
@@ -104,13 +155,14 @@ module.exports =
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react_audio_player__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-audio-player */ "react-audio-player");
-/* harmony import */ var react_audio_player__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_audio_player__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var react_slider__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-slider */ "react-slider");
-/* harmony import */ var react_slider__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react_slider__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var isomorphic_unfetch__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! isomorphic-unfetch */ "isomorphic-unfetch");
-/* harmony import */ var isomorphic_unfetch__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(isomorphic_unfetch__WEBPACK_IMPORTED_MODULE_3__);
-var _jsxFileName = "C:\\www\\habbobr-manutencao\\pages\\index.js";
+/* harmony import */ var react_howler__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-howler */ "react-howler");
+/* harmony import */ var react_howler__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_howler__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var react_tooltip__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-tooltip */ "react-tooltip");
+/* harmony import */ var react_tooltip__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react_tooltip__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var react_slider__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-slider */ "react-slider");
+/* harmony import */ var react_slider__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(react_slider__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _helpers_xmlToJson__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../helpers/xmlToJson */ "./helpers/xmlToJson.js");
+var _jsxFileName = "/Users/lucas/Desktop/habbobr-manutencao/pages/index.js";
 
 var __jsx = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement;
 
@@ -118,189 +170,407 @@ var __jsx = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement;
 
 
 
-const Index = props => {
-  let {
-    0: status,
-    1: setStatus
-  } = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])('stop');
 
-  function setSlider(value) {
-    if (value > 0) {
-      setStatus('stop');
-    } else {
-      setStatus('play');
-    }
+class Index extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
+  constructor(props) {
+    super(props);
+    this.state = {
+      stream: "https://player.audiovox.pw/proxy/6768/;",
+      status: 'stop',
+      format: ['mp3', 'acc'],
+      volume: 100,
+      locutor: null,
+      programa: null,
+      ouvintes: 0,
+      equipe: [{
+        habbo: 'Colecction',
+        cargo: 'Web Master'
+      }, {
+        habbo: ',Abobado',
+        cargo: 'Web Master'
+      }, {
+        habbo: 'Sven',
+        cargo: 'Web Master'
+      }, {
+        habbo: 'Renato_Moura',
+        cargo: 'Administrador de Conteúdo'
+      }, {
+        habbo: '.:Root:.',
+        cargo: 'Jornalista'
+      }, {
+        habbo: 'CaioXzZ',
+        cargo: 'Locutor'
+      }, {
+        habbo: 'Frats',
+        cargo: 'Locutor'
+      }]
+    };
+  }
 
-    if (value > 0) {
-      document.querySelector('.react-audio-player').volume = parseFloat(value);
+  radioNewStatus(type, newText) {
+    switch (type) {
+      case 'locutor':
+        this.setState({
+          locutor: newText
+        });
+        break;
+
+      case 'programa':
+        this.setState({
+          programa: newText
+        });
+        break;
+
+      case 'ouvintes':
+        this.setState({
+          ouvintes: newText
+        });
+        break;
     }
   }
 
-  function toggle() {
-    let audio = document.querySelector('.react-audio-player');
+  radioUpdate(action) {
+    this.radioNewStatus(action, null);
+    fetch('https://painel.audiovox.pw/api/Njc2OCsw').then(response => response.text()).then(str => new window.DOMParser().parseFromString(str, "text/xml")).then(data => {
+      let status = Object(_helpers_xmlToJson__WEBPACK_IMPORTED_MODULE_4__["default"])(data).info;
 
-    if (audio.volume <= 0) {
-      audio.volume = 1;
-      audio.muted = false;
-      setStatus('stop');
-    } else {
-      audio.volume = 0.0;
-      audio.muted = true;
-      setStatus('play');
+      switch (action) {
+        case 'all':
+          this.radioNewStatus('locutor', status.titulo['#text']);
+          this.radioNewStatus('programa', status.genero['#text']);
+          this.radioNewStatus('ouvintes', status.ouvintes_conectados['#text']);
+          break;
+
+        case 'locutor':
+          this.radioNewStatus('locutor', status.titulo['#text']);
+          break;
+
+        case 'programa':
+          this.radioNewStatus('programa', status.genero['#text']);
+          break;
+
+        case 'ouvintes':
+          this.radioNewStatus('ouvintes', status.ouvintes_conectados['#text']);
+          break;
+      }
+    });
+  }
+
+  componentDidMount() {
+    this.radioUpdate('all');
+  }
+
+  setSlider(value) {
+    if (value > 0) {
+      this.sound.volume(parseFloat(value));
     }
   }
 
-  return __jsx(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, __jsx(react_audio_player__WEBPACK_IMPORTED_MODULE_1___default.a, {
-    src: "https://player.audiovox.pw/proxy/6768/;type=mp3",
-    autoPlay: true,
-    controls: true,
-    listenInterval: "1000",
-    __self: undefined,
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 37,
-      columnNumber: 13
+  toggle() {
+    if (window.Howler._muted == true) {
+      window.Howler.mute(false);
+      this.setState({
+        status: 'stop'
+      });
+    } else {
+      window.Howler.mute(true);
+      this.setState({
+        status: 'play'
+      });
     }
-  }), __jsx("div", {
-    className: "background",
-    __self: undefined,
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 44,
-      columnNumber: 13
-    }
-  }), __jsx("div", {
-    className: "radial",
-    __self: undefined,
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 45,
-      columnNumber: 13
-    }
-  }), __jsx("div", {
-    className: "player",
-    __self: undefined,
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 47,
-      columnNumber: 13
-    }
-  }, __jsx("div", {
-    className: "radio-status",
-    __self: undefined,
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 48,
-      columnNumber: 17
-    }
-  }, __jsx("div", {
-    className: "radio-status-avatar",
-    style: {
-      backgroundImage: `url(https://www.habbo.com.br/habbo-imaging/avatarimage?img_format=gif&user=${props.radio.servertitle}&direction=2&head_direction=2&gesture=sml&size=b)`
-    },
-    __self: undefined,
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 49,
-      columnNumber: 21
-    }
-  }), __jsx("div", {
-    className: "radio-status-data",
-    __self: undefined,
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 50,
-      columnNumber: 21
-    }
-  }, props.radio.servertitle), __jsx("div", {
-    className: "radio-status-data",
-    __self: undefined,
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 51,
-      columnNumber: 21
-    }
-  }, props.radio.servergenre)), __jsx(react_slider__WEBPACK_IMPORTED_MODULE_2___default.a, {
-    className: "radio-slider",
-    trackClassName: "radio-slider-control",
-    onChange: value => setSlider(value / 100),
-    min: 0,
-    defaultValue: 100,
-    __self: undefined,
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 55,
-      columnNumber: 17
-    }
-  }), __jsx("div", {
-    className: "radio-status-data-listeners",
-    __self: undefined,
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 63,
-      columnNumber: 17
-    }
-  }, props.radio.currentlisteners == 0 ? 1 : props.radio.currentlisteners, __jsx("div", {
-    className: "radio-status-data-listeners-text",
-    __self: undefined,
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 65,
-      columnNumber: 21
-    }
-  }, "ouvintes"))), __jsx("div", {
-    className: "center",
-    __self: undefined,
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 69,
-      columnNumber: 13
-    }
-  }, __jsx("div", {
-    className: "logo",
-    __self: undefined,
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 70,
-      columnNumber: 17
-    }
-  }, __jsx("div", {
-    className: "vacancies",
-    onClick: () => alert('Not now!'),
-    __self: undefined,
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 71,
-      columnNumber: 21
-    }
-  }, "Vagas"), __jsx("div", {
-    className: `control ${status}`,
-    onClick: () => toggle(),
-    __self: undefined,
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 72,
-      columnNumber: 21
-    }
-  }), __jsx("div", {
-    className: "team",
-    onClick: () => alert('Not now!'),
-    __self: undefined,
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 73,
-      columnNumber: 21
-    }
-  }, "Equipe"))));
-};
+  }
 
-Index.getInitialProps = async function () {
-  const res = await isomorphic_unfetch__WEBPACK_IMPORTED_MODULE_3___default()('http://serv3.audiovox.pw:6768/stats?sid=1&json=1');
-  const data = await res.json();
-  return {
-    radio: data
-  };
-};
+  render() {
+    let {
+      stream,
+      format,
+      status,
+      volume
+    } = this.state;
+    return __jsx(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, __jsx(react_tooltip__WEBPACK_IMPORTED_MODULE_2___default.a, {
+      backgroundColor: "#000",
+      __self: this,
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 115,
+        columnNumber: 17
+      }
+    }), __jsx(react_howler__WEBPACK_IMPORTED_MODULE_1___default.a, {
+      src: stream,
+      autoplay: true,
+      volume: 1.0,
+      html5: true,
+      format: format,
+      ref: ref => this.sound = ref,
+      __self: this,
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 118,
+        columnNumber: 17
+      }
+    }), __jsx("input", {
+      type: "checkbox",
+      id: "close",
+      __self: this,
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 127,
+        columnNumber: 17
+      }
+    }), __jsx("div", {
+      className: "backdrop",
+      __self: this,
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 128,
+        columnNumber: 17
+      }
+    }, __jsx("div", {
+      className: "content",
+      __self: this,
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 129,
+        columnNumber: 21
+      }
+    }, __jsx("div", {
+      className: "panel",
+      __self: this,
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 130,
+        columnNumber: 25
+      }
+    }, __jsx("div", {
+      className: "header",
+      __self: this,
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 131,
+        columnNumber: 29
+      }
+    }, __jsx("h1", {
+      __self: this,
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 132,
+        columnNumber: 33
+      }
+    }, "Equipe"), __jsx("label", {
+      htmlFor: "close",
+      __self: this,
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 134,
+        columnNumber: 33
+      }
+    }, "\u274C")), __jsx("div", {
+      className: "equipe",
+      __self: this,
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 136,
+        columnNumber: 29
+      }
+    }, this.state.equipe.map(membro => __jsx("div", {
+      className: "membro",
+      __self: this,
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 138,
+        columnNumber: 33
+      }
+    }, __jsx("img", {
+      "data-tip": `${membro.habbo} - ${membro.cargo}`,
+      width: 33,
+      height: 56,
+      src: `https://www.habbo.com.br/habbo-imaging/avatarimage?hb=image&user=${membro.habbo}&headonly=0&direction=2&head_direction=2&action=&gesture=&size=s`,
+      alt: `Habbo ${membro.habbo}`,
+      __self: this,
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 139,
+        columnNumber: 37
+      }
+    }), __jsx("div", {
+      className: "habbo",
+      __self: this,
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 146,
+        columnNumber: 37
+      }
+    }, membro.habbo))))))), __jsx("div", {
+      className: "background",
+      __self: this,
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 153,
+        columnNumber: 17
+      }
+    }), __jsx("div", {
+      className: "radial",
+      __self: this,
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 154,
+        columnNumber: 17
+      }
+    }), __jsx("div", {
+      className: "player",
+      __self: this,
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 156,
+        columnNumber: 17
+      }
+    }, __jsx("div", {
+      className: "radio-status",
+      __self: this,
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 157,
+        columnNumber: 21
+      }
+    }, __jsx("div", {
+      className: "radio-status-avatar",
+      style: {
+        backgroundImage: `url(https://www.habbo.com.br/habbo-imaging/avatarimage?img_format=gif&user=${this.state.locutor == null ? 'Colecction' : this.state.locutor}&direction=2&head_direction=2&gesture=sml&size=b)`
+      },
+      __self: this,
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 158,
+        columnNumber: 25
+      }
+    }), __jsx("div", {
+      className: "radio-status-data",
+      onClick: () => this.radioUpdate('locutor'),
+      __self: this,
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 164,
+        columnNumber: 25
+      }
+    }, this.state.locutor == null ? __jsx("img", {
+      src: "img/loading.gif",
+      alt: "",
+      __self: this,
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 165,
+        columnNumber: 60
+      }
+    }) : this.state.locutor), __jsx("div", {
+      className: "radio-status-data",
+      onClick: () => this.radioUpdate('programa'),
+      __self: this,
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 167,
+        columnNumber: 25
+      }
+    }, this.state.programa == null ? __jsx("img", {
+      src: "img/loading.gif",
+      alt: "",
+      __self: this,
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 168,
+        columnNumber: 61
+      }
+    }) : this.state.programa)), __jsx(react_slider__WEBPACK_IMPORTED_MODULE_3___default.a, {
+      className: "radio-slider",
+      trackClassName: "radio-slider-control",
+      onChange: value => this.setSlider(value / 100),
+      min: 0,
+      defaultValue: volume,
+      __self: this,
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 172,
+        columnNumber: 21
+      }
+    }), __jsx("div", {
+      className: "radio-status-data-listeners",
+      onClick: () => this.radioUpdate('ouvintes'),
+      __self: this,
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 180,
+        columnNumber: 21
+      }
+    }, !this.state.ouvintes ? __jsx("img", {
+      src: "img/loading.gif",
+      alt: "",
+      __self: this,
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 181,
+        columnNumber: 50
+      }
+    }) : this.state.ouvintes, __jsx("div", {
+      className: "radio-status-data-listeners-text",
+      __self: this,
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 182,
+        columnNumber: 25
+      }
+    }, "ouvintes"))), __jsx("div", {
+      className: "center",
+      __self: this,
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 186,
+        columnNumber: 17
+      }
+    }, __jsx("div", {
+      className: "logo",
+      __self: this,
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 187,
+        columnNumber: 21
+      }
+    }, __jsx("div", {
+      className: "vacancies",
+      onClick: () => alert('vagas@habbobr.org'),
+      __self: this,
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 188,
+        columnNumber: 25
+      }
+    }, "Vagas"), __jsx("div", {
+      className: `control ${status}`,
+      onClick: () => this.toggle(),
+      __self: this,
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 189,
+        columnNumber: 25
+      }
+    }), __jsx("label", {
+      htmlFor: "close",
+      className: "team",
+      __self: this,
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 190,
+        columnNumber: 25
+      }
+    }, "Equipe"))));
+  }
+
+} // Index.getInitialProps = async function() {
+//     const res  = await fetch('http://serv3.audiovox.pw:6768/stats?sid=1&json=1');
+//     const data = await res.json();
+//     return {
+//         radio: data
+//     };
+// };
+
 
 /* harmony default export */ __webpack_exports__["default"] = (Index);
 
@@ -313,19 +583,8 @@ Index.getInitialProps = async function () {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! C:\www\habbobr-manutencao\pages\index.js */"./pages/index.js");
+module.exports = __webpack_require__(/*! /Users/lucas/Desktop/habbobr-manutencao/pages/index.js */"./pages/index.js");
 
-
-/***/ }),
-
-/***/ "isomorphic-unfetch":
-/*!*************************************!*\
-  !*** external "isomorphic-unfetch" ***!
-  \*************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = require("isomorphic-unfetch");
 
 /***/ }),
 
@@ -340,14 +599,14 @@ module.exports = require("react");
 
 /***/ }),
 
-/***/ "react-audio-player":
-/*!*************************************!*\
-  !*** external "react-audio-player" ***!
-  \*************************************/
+/***/ "react-howler":
+/*!*******************************!*\
+  !*** external "react-howler" ***!
+  \*******************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = require("react-audio-player");
+module.exports = require("react-howler");
 
 /***/ }),
 
@@ -359,6 +618,17 @@ module.exports = require("react-audio-player");
 /***/ (function(module, exports) {
 
 module.exports = require("react-slider");
+
+/***/ }),
+
+/***/ "react-tooltip":
+/*!********************************!*\
+  !*** external "react-tooltip" ***!
+  \********************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("react-tooltip");
 
 /***/ })
 

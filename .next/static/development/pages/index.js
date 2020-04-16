@@ -1,290 +1,3409 @@
-(window["webpackJsonp"] = window["webpackJsonp"] || []).push([["static\\development\\pages\\index.js"],{
+(window["webpackJsonp"] = window["webpackJsonp"] || []).push([["static/development/pages/index.js"],{
 
-/***/ "./node_modules/@babel/runtime/regenerator/index.js":
-/*!**********************************************************!*\
-  !*** ./node_modules/@babel/runtime/regenerator/index.js ***!
-  \**********************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ "./helpers/xmlToJson.js":
+/*!******************************!*\
+  !*** ./helpers/xmlToJson.js ***!
+  \******************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! regenerator-runtime */ "./node_modules/regenerator-runtime/runtime.js");
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+function xmlToJson(xml) {
+  var obj = {};
 
+  if (xml.nodeType == 1) {
+    if (xml.attributes.length > 0) {
+      obj["@attributes"] = {};
+
+      for (var j = 0; j < xml.attributes.length; j++) {
+        var attribute = xml.attributes.item(j);
+        obj["@attributes"][attribute.nodeName] = attribute.nodeValue;
+      }
+    }
+  } else if (xml.nodeType == 3) {
+    obj = xml.nodeValue;
+  }
+
+  if (xml.hasChildNodes()) {
+    for (var i = 0; i < xml.childNodes.length; i++) {
+      var item = xml.childNodes.item(i);
+      var nodeName = item.nodeName;
+
+      if (typeof obj[nodeName] == "undefined") {
+        obj[nodeName] = xmlToJson(item);
+      } else {
+        if (typeof obj[nodeName].push == "undefined") {
+          var old = obj[nodeName];
+          obj[nodeName] = [];
+          obj[nodeName].push(old);
+        }
+
+        obj[nodeName].push(xmlToJson(item));
+      }
+    }
+  }
+
+  return obj;
+}
+
+/* harmony default export */ __webpack_exports__["default"] = (xmlToJson);
 
 /***/ }),
 
-/***/ "./node_modules/fast-levenshtein/levenshtein.js":
-/*!******************************************************!*\
-  !*** ./node_modules/fast-levenshtein/levenshtein.js ***!
-  \******************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ "./node_modules/@babel/runtime/helpers/esm/assertThisInitialized.js":
+/*!**************************************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/esm/assertThisInitialized.js ***!
+  \**************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(module) {var __WEBPACK_AMD_DEFINE_RESULT__;(function() {
-  'use strict';
-  
-  var collator;
-  try {
-    collator = (typeof Intl !== "undefined" && typeof Intl.Collator !== "undefined") ? Intl.Collator("generic", { sensitivity: "base" }) : null;
-  } catch (err){
-    console.log("Collator could not be initialized and wouldn't be used");
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return _assertThisInitialized; });
+function _assertThisInitialized(self) {
+  if (self === void 0) {
+    throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
   }
-  // arrays to re-use
-  var prevRow = [],
-    str2Char = [];
-  
-  /**
-   * Based on the algorithm at http://en.wikipedia.org/wiki/Levenshtein_distance.
-   */
-  var Levenshtein = {
-    /**
-     * Calculate levenshtein distance of the two strings.
-     *
-     * @param str1 String the first string.
-     * @param str2 String the second string.
-     * @param [options] Additional options.
-     * @param [options.useCollator] Use `Intl.Collator` for locale-sensitive string comparison.
-     * @return Integer the levenshtein distance (0 and above).
-     */
-    get: function(str1, str2, options) {
-      var useCollator = (options && collator && options.useCollator);
-      
-      var str1Len = str1.length,
-        str2Len = str2.length;
-      
-      // base cases
-      if (str1Len === 0) return str2Len;
-      if (str2Len === 0) return str1Len;
 
-      // two rows
-      var curCol, nextCol, i, j, tmp;
+  return self;
+}
 
-      // initialise previous row
-      for (i=0; i<str2Len; ++i) {
-        prevRow[i] = i;
-        str2Char[i] = str2.charCodeAt(i);
-      }
-      prevRow[str2Len] = str2Len;
+/***/ }),
 
-      var strCmp;
-      if (useCollator) {
-        // calculate current row distance from previous row using collator
-        for (i = 0; i < str1Len; ++i) {
-          nextCol = i + 1;
+/***/ "./node_modules/@babel/runtime/helpers/esm/classCallCheck.js":
+/*!*******************************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/esm/classCallCheck.js ***!
+  \*******************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-          for (j = 0; j < str2Len; ++j) {
-            curCol = nextCol;
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return _classCallCheck; });
+function _classCallCheck(instance, Constructor) {
+  if (!(instance instanceof Constructor)) {
+    throw new TypeError("Cannot call a class as a function");
+  }
+}
 
-            // substution
-            strCmp = 0 === collator.compare(str1.charAt(i), String.fromCharCode(str2Char[j]));
+/***/ }),
 
-            nextCol = prevRow[j] + (strCmp ? 0 : 1);
+/***/ "./node_modules/@babel/runtime/helpers/esm/createClass.js":
+/*!****************************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/esm/createClass.js ***!
+  \****************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-            // insertion
-            tmp = curCol + 1;
-            if (nextCol > tmp) {
-              nextCol = tmp;
-            }
-            // deletion
-            tmp = prevRow[j + 1] + 1;
-            if (nextCol > tmp) {
-              nextCol = tmp;
-            }
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return _createClass; });
+function _defineProperties(target, props) {
+  for (var i = 0; i < props.length; i++) {
+    var descriptor = props[i];
+    descriptor.enumerable = descriptor.enumerable || false;
+    descriptor.configurable = true;
+    if ("value" in descriptor) descriptor.writable = true;
+    Object.defineProperty(target, descriptor.key, descriptor);
+  }
+}
 
-            // copy current col value into previous (in preparation for next iteration)
-            prevRow[j] = curCol;
-          }
+function _createClass(Constructor, protoProps, staticProps) {
+  if (protoProps) _defineProperties(Constructor.prototype, protoProps);
+  if (staticProps) _defineProperties(Constructor, staticProps);
+  return Constructor;
+}
 
-          // copy last col value into previous (in preparation for next iteration)
-          prevRow[j] = nextCol;
-        }
-      }
-      else {
-        // calculate current row distance from previous row without collator
-        for (i = 0; i < str1Len; ++i) {
-          nextCol = i + 1;
+/***/ }),
 
-          for (j = 0; j < str2Len; ++j) {
-            curCol = nextCol;
+/***/ "./node_modules/@babel/runtime/helpers/esm/getPrototypeOf.js":
+/*!*******************************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/esm/getPrototypeOf.js ***!
+  \*******************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-            // substution
-            strCmp = str1.charCodeAt(i) === str2Char[j];
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return _getPrototypeOf; });
+function _getPrototypeOf(o) {
+  _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) {
+    return o.__proto__ || Object.getPrototypeOf(o);
+  };
+  return _getPrototypeOf(o);
+}
 
-            nextCol = prevRow[j] + (strCmp ? 0 : 1);
+/***/ }),
 
-            // insertion
-            tmp = curCol + 1;
-            if (nextCol > tmp) {
-              nextCol = tmp;
-            }
-            // deletion
-            tmp = prevRow[j + 1] + 1;
-            if (nextCol > tmp) {
-              nextCol = tmp;
-            }
+/***/ "./node_modules/@babel/runtime/helpers/esm/inherits.js":
+/*!*************************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/esm/inherits.js ***!
+  \*************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-            // copy current col value into previous (in preparation for next iteration)
-            prevRow[j] = curCol;
-          }
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return _inherits; });
+/* harmony import */ var _setPrototypeOf__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./setPrototypeOf */ "./node_modules/@babel/runtime/helpers/esm/setPrototypeOf.js");
 
-          // copy last col value into previous (in preparation for next iteration)
-          prevRow[j] = nextCol;
-        }
-      }
-      return nextCol;
+function _inherits(subClass, superClass) {
+  if (typeof superClass !== "function" && superClass !== null) {
+    throw new TypeError("Super expression must either be null or a function");
+  }
+
+  subClass.prototype = Object.create(superClass && superClass.prototype, {
+    constructor: {
+      value: subClass,
+      writable: true,
+      configurable: true
     }
+  });
+  if (superClass) Object(_setPrototypeOf__WEBPACK_IMPORTED_MODULE_0__["default"])(subClass, superClass);
+}
 
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime/helpers/esm/possibleConstructorReturn.js":
+/*!******************************************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/esm/possibleConstructorReturn.js ***!
+  \******************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return _possibleConstructorReturn; });
+/* harmony import */ var _helpers_esm_typeof__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../helpers/esm/typeof */ "./node_modules/@babel/runtime/helpers/esm/typeof.js");
+/* harmony import */ var _assertThisInitialized__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./assertThisInitialized */ "./node_modules/@babel/runtime/helpers/esm/assertThisInitialized.js");
+
+
+function _possibleConstructorReturn(self, call) {
+  if (call && (Object(_helpers_esm_typeof__WEBPACK_IMPORTED_MODULE_0__["default"])(call) === "object" || typeof call === "function")) {
+    return call;
+  }
+
+  return Object(_assertThisInitialized__WEBPACK_IMPORTED_MODULE_1__["default"])(self);
+}
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime/helpers/esm/setPrototypeOf.js":
+/*!*******************************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/esm/setPrototypeOf.js ***!
+  \*******************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return _setPrototypeOf; });
+function _setPrototypeOf(o, p) {
+  _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) {
+    o.__proto__ = p;
+    return o;
   };
 
-  // amd
-  if ( true && __webpack_require__(/*! !webpack amd define */ "./node_modules/webpack/buildin/amd-define.js") !== null && __webpack_require__(/*! !webpack amd options */ "./node_modules/webpack/buildin/amd-options.js")) {
-    !(__WEBPACK_AMD_DEFINE_RESULT__ = (function() {
-      return Levenshtein;
-    }).call(exports, __webpack_require__, exports, module),
+  return _setPrototypeOf(o, p);
+}
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime/helpers/esm/typeof.js":
+/*!***********************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/esm/typeof.js ***!
+  \***********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return _typeof; });
+function _typeof2(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof2 = function _typeof2(obj) { return typeof obj; }; } else { _typeof2 = function _typeof2(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof2(obj); }
+
+function _typeof(obj) {
+  if (typeof Symbol === "function" && _typeof2(Symbol.iterator) === "symbol") {
+    _typeof = function _typeof(obj) {
+      return _typeof2(obj);
+    };
+  } else {
+    _typeof = function _typeof(obj) {
+      return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : _typeof2(obj);
+    };
+  }
+
+  return _typeof(obj);
+}
+
+/***/ }),
+
+/***/ "./node_modules/howler/dist/howler.js":
+/*!********************************************!*\
+  !*** ./node_modules/howler/dist/howler.js ***!
+  \********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+/* WEBPACK VAR INJECTION */(function(global) {var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
+ *  howler.js v2.1.3
+ *  howlerjs.com
+ *
+ *  (c) 2013-2019, James Simpson of GoldFire Studios
+ *  goldfirestudios.com
+ *
+ *  MIT License
+ */
+
+(function() {
+
+  'use strict';
+
+  /** Global Methods **/
+  /***************************************************************************/
+
+  /**
+   * Create the global controller. All contained methods and properties apply
+   * to all sounds that are currently playing or will be in the future.
+   */
+  var HowlerGlobal = function() {
+    this.init();
+  };
+  HowlerGlobal.prototype = {
+    /**
+     * Initialize the global Howler object.
+     * @return {Howler}
+     */
+    init: function() {
+      var self = this || Howler;
+
+      // Create a global ID counter.
+      self._counter = 1000;
+
+      // Pool of unlocked HTML5 Audio objects.
+      self._html5AudioPool = [];
+      self.html5PoolSize = 10;
+
+      // Internal properties.
+      self._codecs = {};
+      self._howls = [];
+      self._muted = false;
+      self._volume = 1;
+      self._canPlayEvent = 'canplaythrough';
+      self._navigator = (typeof window !== 'undefined' && window.navigator) ? window.navigator : null;
+
+      // Public properties.
+      self.masterGain = null;
+      self.noAudio = false;
+      self.usingWebAudio = true;
+      self.autoSuspend = true;
+      self.ctx = null;
+
+      // Set to false to disable the auto audio unlocker.
+      self.autoUnlock = true;
+
+      // Setup the various state values for global tracking.
+      self._setup();
+
+      return self;
+    },
+
+    /**
+     * Get/set the global volume for all sounds.
+     * @param  {Float} vol Volume from 0.0 to 1.0.
+     * @return {Howler/Float}     Returns self or current volume.
+     */
+    volume: function(vol) {
+      var self = this || Howler;
+      vol = parseFloat(vol);
+
+      // If we don't have an AudioContext created yet, run the setup.
+      if (!self.ctx) {
+        setupAudioContext();
+      }
+
+      if (typeof vol !== 'undefined' && vol >= 0 && vol <= 1) {
+        self._volume = vol;
+
+        // Don't update any of the nodes if we are muted.
+        if (self._muted) {
+          return self;
+        }
+
+        // When using Web Audio, we just need to adjust the master gain.
+        if (self.usingWebAudio) {
+          self.masterGain.gain.setValueAtTime(vol, Howler.ctx.currentTime);
+        }
+
+        // Loop through and change volume for all HTML5 audio nodes.
+        for (var i=0; i<self._howls.length; i++) {
+          if (!self._howls[i]._webAudio) {
+            // Get all of the sounds in this Howl group.
+            var ids = self._howls[i]._getSoundIds();
+
+            // Loop through all sounds and change the volumes.
+            for (var j=0; j<ids.length; j++) {
+              var sound = self._howls[i]._soundById(ids[j]);
+
+              if (sound && sound._node) {
+                sound._node.volume = sound._volume * vol;
+              }
+            }
+          }
+        }
+
+        return self;
+      }
+
+      return self._volume;
+    },
+
+    /**
+     * Handle muting and unmuting globally.
+     * @param  {Boolean} muted Is muted or not.
+     */
+    mute: function(muted) {
+      var self = this || Howler;
+
+      // If we don't have an AudioContext created yet, run the setup.
+      if (!self.ctx) {
+        setupAudioContext();
+      }
+
+      self._muted = muted;
+
+      // With Web Audio, we just need to mute the master gain.
+      if (self.usingWebAudio) {
+        self.masterGain.gain.setValueAtTime(muted ? 0 : self._volume, Howler.ctx.currentTime);
+      }
+
+      // Loop through and mute all HTML5 Audio nodes.
+      for (var i=0; i<self._howls.length; i++) {
+        if (!self._howls[i]._webAudio) {
+          // Get all of the sounds in this Howl group.
+          var ids = self._howls[i]._getSoundIds();
+
+          // Loop through all sounds and mark the audio node as muted.
+          for (var j=0; j<ids.length; j++) {
+            var sound = self._howls[i]._soundById(ids[j]);
+
+            if (sound && sound._node) {
+              sound._node.muted = (muted) ? true : sound._muted;
+            }
+          }
+        }
+      }
+
+      return self;
+    },
+
+    /**
+     * Unload and destroy all currently loaded Howl objects.
+     * @return {Howler}
+     */
+    unload: function() {
+      var self = this || Howler;
+
+      for (var i=self._howls.length-1; i>=0; i--) {
+        self._howls[i].unload();
+      }
+
+      // Create a new AudioContext to make sure it is fully reset.
+      if (self.usingWebAudio && self.ctx && typeof self.ctx.close !== 'undefined') {
+        self.ctx.close();
+        self.ctx = null;
+        setupAudioContext();
+      }
+
+      return self;
+    },
+
+    /**
+     * Check for codec support of specific extension.
+     * @param  {String} ext Audio file extention.
+     * @return {Boolean}
+     */
+    codecs: function(ext) {
+      return (this || Howler)._codecs[ext.replace(/^x-/, '')];
+    },
+
+    /**
+     * Setup various state values for global tracking.
+     * @return {Howler}
+     */
+    _setup: function() {
+      var self = this || Howler;
+
+      // Keeps track of the suspend/resume state of the AudioContext.
+      self.state = self.ctx ? self.ctx.state || 'suspended' : 'suspended';
+
+      // Automatically begin the 30-second suspend process
+      self._autoSuspend();
+
+      // Check if audio is available.
+      if (!self.usingWebAudio) {
+        // No audio is available on this system if noAudio is set to true.
+        if (typeof Audio !== 'undefined') {
+          try {
+            var test = new Audio();
+
+            // Check if the canplaythrough event is available.
+            if (typeof test.oncanplaythrough === 'undefined') {
+              self._canPlayEvent = 'canplay';
+            }
+          } catch(e) {
+            self.noAudio = true;
+          }
+        } else {
+          self.noAudio = true;
+        }
+      }
+
+      // Test to make sure audio isn't disabled in Internet Explorer.
+      try {
+        var test = new Audio();
+        if (test.muted) {
+          self.noAudio = true;
+        }
+      } catch (e) {}
+
+      // Check for supported codecs.
+      if (!self.noAudio) {
+        self._setupCodecs();
+      }
+
+      return self;
+    },
+
+    /**
+     * Check for browser support for various codecs and cache the results.
+     * @return {Howler}
+     */
+    _setupCodecs: function() {
+      var self = this || Howler;
+      var audioTest = null;
+
+      // Must wrap in a try/catch because IE11 in server mode throws an error.
+      try {
+        audioTest = (typeof Audio !== 'undefined') ? new Audio() : null;
+      } catch (err) {
+        return self;
+      }
+
+      if (!audioTest || typeof audioTest.canPlayType !== 'function') {
+        return self;
+      }
+
+      var mpegTest = audioTest.canPlayType('audio/mpeg;').replace(/^no$/, '');
+
+      // Opera version <33 has mixed MP3 support, so we need to check for and block it.
+      var checkOpera = self._navigator && self._navigator.userAgent.match(/OPR\/([0-6].)/g);
+      var isOldOpera = (checkOpera && parseInt(checkOpera[0].split('/')[1], 10) < 33);
+
+      self._codecs = {
+        mp3: !!(!isOldOpera && (mpegTest || audioTest.canPlayType('audio/mp3;').replace(/^no$/, ''))),
+        mpeg: !!mpegTest,
+        opus: !!audioTest.canPlayType('audio/ogg; codecs="opus"').replace(/^no$/, ''),
+        ogg: !!audioTest.canPlayType('audio/ogg; codecs="vorbis"').replace(/^no$/, ''),
+        oga: !!audioTest.canPlayType('audio/ogg; codecs="vorbis"').replace(/^no$/, ''),
+        wav: !!audioTest.canPlayType('audio/wav; codecs="1"').replace(/^no$/, ''),
+        aac: !!audioTest.canPlayType('audio/aac;').replace(/^no$/, ''),
+        caf: !!audioTest.canPlayType('audio/x-caf;').replace(/^no$/, ''),
+        m4a: !!(audioTest.canPlayType('audio/x-m4a;') || audioTest.canPlayType('audio/m4a;') || audioTest.canPlayType('audio/aac;')).replace(/^no$/, ''),
+        mp4: !!(audioTest.canPlayType('audio/x-mp4;') || audioTest.canPlayType('audio/mp4;') || audioTest.canPlayType('audio/aac;')).replace(/^no$/, ''),
+        weba: !!audioTest.canPlayType('audio/webm; codecs="vorbis"').replace(/^no$/, ''),
+        webm: !!audioTest.canPlayType('audio/webm; codecs="vorbis"').replace(/^no$/, ''),
+        dolby: !!audioTest.canPlayType('audio/mp4; codecs="ec-3"').replace(/^no$/, ''),
+        flac: !!(audioTest.canPlayType('audio/x-flac;') || audioTest.canPlayType('audio/flac;')).replace(/^no$/, '')
+      };
+
+      return self;
+    },
+
+    /**
+     * Some browsers/devices will only allow audio to be played after a user interaction.
+     * Attempt to automatically unlock audio on the first user interaction.
+     * Concept from: http://paulbakaus.com/tutorials/html5/web-audio-on-ios/
+     * @return {Howler}
+     */
+    _unlockAudio: function() {
+      var self = this || Howler;
+
+      // Only run this if Web Audio is supported and it hasn't already been unlocked.
+      if (self._audioUnlocked || !self.ctx) {
+        return;
+      }
+
+      self._audioUnlocked = false;
+      self.autoUnlock = false;
+
+      // Some mobile devices/platforms have distortion issues when opening/closing tabs and/or web views.
+      // Bugs in the browser (especially Mobile Safari) can cause the sampleRate to change from 44100 to 48000.
+      // By calling Howler.unload(), we create a new AudioContext with the correct sampleRate.
+      if (!self._mobileUnloaded && self.ctx.sampleRate !== 44100) {
+        self._mobileUnloaded = true;
+        self.unload();
+      }
+
+      // Scratch buffer for enabling iOS to dispose of web audio buffers correctly, as per:
+      // http://stackoverflow.com/questions/24119684
+      self._scratchBuffer = self.ctx.createBuffer(1, 1, 22050);
+
+      // Call this method on touch start to create and play a buffer,
+      // then check if the audio actually played to determine if
+      // audio has now been unlocked on iOS, Android, etc.
+      var unlock = function(e) {
+        // Create a pool of unlocked HTML5 Audio objects that can
+        // be used for playing sounds without user interaction. HTML5
+        // Audio objects must be individually unlocked, as opposed
+        // to the WebAudio API which only needs a single activation.
+        // This must occur before WebAudio setup or the source.onended
+        // event will not fire.
+        for (var i=0; i<self.html5PoolSize; i++) {
+          try {
+            var audioNode = new Audio();
+
+            // Mark this Audio object as unlocked to ensure it can get returned
+            // to the unlocked pool when released.
+            audioNode._unlocked = true;
+
+            // Add the audio node to the pool.
+            self._releaseHtml5Audio(audioNode);
+          } catch (e) {
+            self.noAudio = true;
+          }
+        }
+
+        // Loop through any assigned audio nodes and unlock them.
+        for (var i=0; i<self._howls.length; i++) {
+          if (!self._howls[i]._webAudio) {
+            // Get all of the sounds in this Howl group.
+            var ids = self._howls[i]._getSoundIds();
+
+            // Loop through all sounds and unlock the audio nodes.
+            for (var j=0; j<ids.length; j++) {
+              var sound = self._howls[i]._soundById(ids[j]);
+
+              if (sound && sound._node && !sound._node._unlocked) {
+                sound._node._unlocked = true;
+                sound._node.load();
+              }
+            }
+          }
+        }
+
+        // Fix Android can not play in suspend state.
+        self._autoResume();
+
+        // Create an empty buffer.
+        var source = self.ctx.createBufferSource();
+        source.buffer = self._scratchBuffer;
+        source.connect(self.ctx.destination);
+
+        // Play the empty buffer.
+        if (typeof source.start === 'undefined') {
+          source.noteOn(0);
+        } else {
+          source.start(0);
+        }
+
+        // Calling resume() on a stack initiated by user gesture is what actually unlocks the audio on Android Chrome >= 55.
+        if (typeof self.ctx.resume === 'function') {
+          self.ctx.resume();
+        }
+
+        // Setup a timeout to check that we are unlocked on the next event loop.
+        source.onended = function() {
+          source.disconnect(0);
+
+          // Update the unlocked state and prevent this check from happening again.
+          self._audioUnlocked = true;
+
+          // Remove the touch start listener.
+          document.removeEventListener('touchstart', unlock, true);
+          document.removeEventListener('touchend', unlock, true);
+          document.removeEventListener('click', unlock, true);
+
+          // Let all sounds know that audio has been unlocked.
+          for (var i=0; i<self._howls.length; i++) {
+            self._howls[i]._emit('unlock');
+          }
+        };
+      };
+
+      // Setup a touch start listener to attempt an unlock in.
+      document.addEventListener('touchstart', unlock, true);
+      document.addEventListener('touchend', unlock, true);
+      document.addEventListener('click', unlock, true);
+
+      return self;
+    },
+
+    /**
+     * Get an unlocked HTML5 Audio object from the pool. If none are left,
+     * return a new Audio object and throw a warning.
+     * @return {Audio} HTML5 Audio object.
+     */
+    _obtainHtml5Audio: function() {
+      var self = this || Howler;
+
+      // Return the next object from the pool if one exists.
+      if (self._html5AudioPool.length) {
+        return self._html5AudioPool.pop();
+      }
+
+      //.Check if the audio is locked and throw a warning.
+      var testPlay = new Audio().play();
+      if (testPlay && typeof Promise !== 'undefined' && (testPlay instanceof Promise || typeof testPlay.then === 'function')) {
+        testPlay.catch(function() {
+          console.warn('HTML5 Audio pool exhausted, returning potentially locked audio object.');
+        });
+      }
+
+      return new Audio();
+    },
+
+    /**
+     * Return an activated HTML5 Audio object to the pool.
+     * @return {Howler}
+     */
+    _releaseHtml5Audio: function(audio) {
+      var self = this || Howler;
+
+      // Don't add audio to the pool if we don't know if it has been unlocked.
+      if (audio._unlocked) {
+        self._html5AudioPool.push(audio);
+      }
+
+      return self;
+    },
+
+    /**
+     * Automatically suspend the Web Audio AudioContext after no sound has played for 30 seconds.
+     * This saves processing/energy and fixes various browser-specific bugs with audio getting stuck.
+     * @return {Howler}
+     */
+    _autoSuspend: function() {
+      var self = this;
+
+      if (!self.autoSuspend || !self.ctx || typeof self.ctx.suspend === 'undefined' || !Howler.usingWebAudio) {
+        return;
+      }
+
+      // Check if any sounds are playing.
+      for (var i=0; i<self._howls.length; i++) {
+        if (self._howls[i]._webAudio) {
+          for (var j=0; j<self._howls[i]._sounds.length; j++) {
+            if (!self._howls[i]._sounds[j]._paused) {
+              return self;
+            }
+          }
+        }
+      }
+
+      if (self._suspendTimer) {
+        clearTimeout(self._suspendTimer);
+      }
+
+      // If no sound has played after 30 seconds, suspend the context.
+      self._suspendTimer = setTimeout(function() {
+        if (!self.autoSuspend) {
+          return;
+        }
+
+        self._suspendTimer = null;
+        self.state = 'suspending';
+        self.ctx.suspend().then(function() {
+          self.state = 'suspended';
+
+          if (self._resumeAfterSuspend) {
+            delete self._resumeAfterSuspend;
+            self._autoResume();
+          }
+        });
+      }, 30000);
+
+      return self;
+    },
+
+    /**
+     * Automatically resume the Web Audio AudioContext when a new sound is played.
+     * @return {Howler}
+     */
+    _autoResume: function() {
+      var self = this;
+
+      if (!self.ctx || typeof self.ctx.resume === 'undefined' || !Howler.usingWebAudio) {
+        return;
+      }
+
+      if (self.state === 'running' && self._suspendTimer) {
+        clearTimeout(self._suspendTimer);
+        self._suspendTimer = null;
+      } else if (self.state === 'suspended') {
+        self.ctx.resume().then(function() {
+          self.state = 'running';
+
+          // Emit to all Howls that the audio has resumed.
+          for (var i=0; i<self._howls.length; i++) {
+            self._howls[i]._emit('resume');
+          }
+        });
+
+        if (self._suspendTimer) {
+          clearTimeout(self._suspendTimer);
+          self._suspendTimer = null;
+        }
+      } else if (self.state === 'suspending') {
+        self._resumeAfterSuspend = true;
+      }
+
+      return self;
+    }
+  };
+
+  // Setup the global audio controller.
+  var Howler = new HowlerGlobal();
+
+  /** Group Methods **/
+  /***************************************************************************/
+
+  /**
+   * Create an audio group controller.
+   * @param {Object} o Passed in properties for this group.
+   */
+  var Howl = function(o) {
+    var self = this;
+
+    // Throw an error if no source is provided.
+    if (!o.src || o.src.length === 0) {
+      console.error('An array of source files must be passed with any new Howl.');
+      return;
+    }
+
+    self.init(o);
+  };
+  Howl.prototype = {
+    /**
+     * Initialize a new Howl group object.
+     * @param  {Object} o Passed in properties for this group.
+     * @return {Howl}
+     */
+    init: function(o) {
+      var self = this;
+
+      // If we don't have an AudioContext created yet, run the setup.
+      if (!Howler.ctx) {
+        setupAudioContext();
+      }
+
+      // Setup user-defined default properties.
+      self._autoplay = o.autoplay || false;
+      self._format = (typeof o.format !== 'string') ? o.format : [o.format];
+      self._html5 = o.html5 || false;
+      self._muted = o.mute || false;
+      self._loop = o.loop || false;
+      self._pool = o.pool || 5;
+      self._preload = (typeof o.preload === 'boolean') ? o.preload : true;
+      self._rate = o.rate || 1;
+      self._sprite = o.sprite || {};
+      self._src = (typeof o.src !== 'string') ? o.src : [o.src];
+      self._volume = o.volume !== undefined ? o.volume : 1;
+      self._xhrWithCredentials = o.xhrWithCredentials || false;
+
+      // Setup all other default properties.
+      self._duration = 0;
+      self._state = 'unloaded';
+      self._sounds = [];
+      self._endTimers = {};
+      self._queue = [];
+      self._playLock = false;
+
+      // Setup event listeners.
+      self._onend = o.onend ? [{fn: o.onend}] : [];
+      self._onfade = o.onfade ? [{fn: o.onfade}] : [];
+      self._onload = o.onload ? [{fn: o.onload}] : [];
+      self._onloaderror = o.onloaderror ? [{fn: o.onloaderror}] : [];
+      self._onplayerror = o.onplayerror ? [{fn: o.onplayerror}] : [];
+      self._onpause = o.onpause ? [{fn: o.onpause}] : [];
+      self._onplay = o.onplay ? [{fn: o.onplay}] : [];
+      self._onstop = o.onstop ? [{fn: o.onstop}] : [];
+      self._onmute = o.onmute ? [{fn: o.onmute}] : [];
+      self._onvolume = o.onvolume ? [{fn: o.onvolume}] : [];
+      self._onrate = o.onrate ? [{fn: o.onrate}] : [];
+      self._onseek = o.onseek ? [{fn: o.onseek}] : [];
+      self._onunlock = o.onunlock ? [{fn: o.onunlock}] : [];
+      self._onresume = [];
+
+      // Web Audio or HTML5 Audio?
+      self._webAudio = Howler.usingWebAudio && !self._html5;
+
+      // Automatically try to enable audio.
+      if (typeof Howler.ctx !== 'undefined' && Howler.ctx && Howler.autoUnlock) {
+        Howler._unlockAudio();
+      }
+
+      // Keep track of this Howl group in the global controller.
+      Howler._howls.push(self);
+
+      // If they selected autoplay, add a play event to the load queue.
+      if (self._autoplay) {
+        self._queue.push({
+          event: 'play',
+          action: function() {
+            self.play();
+          }
+        });
+      }
+
+      // Load the source file unless otherwise specified.
+      if (self._preload) {
+        self.load();
+      }
+
+      return self;
+    },
+
+    /**
+     * Load the audio file.
+     * @return {Howler}
+     */
+    load: function() {
+      var self = this;
+      var url = null;
+
+      // If no audio is available, quit immediately.
+      if (Howler.noAudio) {
+        self._emit('loaderror', null, 'No audio support.');
+        return;
+      }
+
+      // Make sure our source is in an array.
+      if (typeof self._src === 'string') {
+        self._src = [self._src];
+      }
+
+      // Loop through the sources and pick the first one that is compatible.
+      for (var i=0; i<self._src.length; i++) {
+        var ext, str;
+
+        if (self._format && self._format[i]) {
+          // If an extension was specified, use that instead.
+          ext = self._format[i];
+        } else {
+          // Make sure the source is a string.
+          str = self._src[i];
+          if (typeof str !== 'string') {
+            self._emit('loaderror', null, 'Non-string found in selected audio sources - ignoring.');
+            continue;
+          }
+
+          // Extract the file extension from the URL or base64 data URI.
+          ext = /^data:audio\/([^;,]+);/i.exec(str);
+          if (!ext) {
+            ext = /\.([^.]+)$/.exec(str.split('?', 1)[0]);
+          }
+
+          if (ext) {
+            ext = ext[1].toLowerCase();
+          }
+        }
+
+        // Log a warning if no extension was found.
+        if (!ext) {
+          console.warn('No file extension was found. Consider using the "format" property or specify an extension.');
+        }
+
+        // Check if this extension is available.
+        if (ext && Howler.codecs(ext)) {
+          url = self._src[i];
+          break;
+        }
+      }
+
+      if (!url) {
+        self._emit('loaderror', null, 'No codec support for selected audio sources.');
+        return;
+      }
+
+      self._src = url;
+      self._state = 'loading';
+
+      // If the hosting page is HTTPS and the source isn't,
+      // drop down to HTML5 Audio to avoid Mixed Content errors.
+      if (window.location.protocol === 'https:' && url.slice(0, 5) === 'http:') {
+        self._html5 = true;
+        self._webAudio = false;
+      }
+
+      // Create a new sound object and add it to the pool.
+      new Sound(self);
+
+      // Load and decode the audio data for playback.
+      if (self._webAudio) {
+        loadBuffer(self);
+      }
+
+      return self;
+    },
+
+    /**
+     * Play a sound or resume previous playback.
+     * @param  {String/Number} sprite   Sprite name for sprite playback or sound id to continue previous.
+     * @param  {Boolean} internal Internal Use: true prevents event firing.
+     * @return {Number}          Sound ID.
+     */
+    play: function(sprite, internal) {
+      var self = this;
+      var id = null;
+
+      // Determine if a sprite, sound id or nothing was passed
+      if (typeof sprite === 'number') {
+        id = sprite;
+        sprite = null;
+      } else if (typeof sprite === 'string' && self._state === 'loaded' && !self._sprite[sprite]) {
+        // If the passed sprite doesn't exist, do nothing.
+        return null;
+      } else if (typeof sprite === 'undefined') {
+        // Use the default sound sprite (plays the full audio length).
+        sprite = '__default';
+
+        // Check if there is a single paused sound that isn't ended. 
+        // If there is, play that sound. If not, continue as usual.  
+        if (!self._playLock) {
+          var num = 0;
+          for (var i=0; i<self._sounds.length; i++) {
+            if (self._sounds[i]._paused && !self._sounds[i]._ended) {
+              num++;
+              id = self._sounds[i]._id;
+            }
+          }
+
+          if (num === 1) {
+            sprite = null;
+          } else {
+            id = null;
+          }
+        }
+      }
+
+      // Get the selected node, or get one from the pool.
+      var sound = id ? self._soundById(id) : self._inactiveSound();
+
+      // If the sound doesn't exist, do nothing.
+      if (!sound) {
+        return null;
+      }
+
+      // Select the sprite definition.
+      if (id && !sprite) {
+        sprite = sound._sprite || '__default';
+      }
+
+      // If the sound hasn't loaded, we must wait to get the audio's duration.
+      // We also need to wait to make sure we don't run into race conditions with
+      // the order of function calls.
+      if (self._state !== 'loaded') {
+        // Set the sprite value on this sound.
+        sound._sprite = sprite;
+
+        // Mark this sound as not ended in case another sound is played before this one loads.
+        sound._ended = false;
+
+        // Add the sound to the queue to be played on load.
+        var soundId = sound._id;
+        self._queue.push({
+          event: 'play',
+          action: function() {
+            self.play(soundId);
+          }
+        });
+
+        return soundId;
+      }
+
+      // Don't play the sound if an id was passed and it is already playing.
+      if (id && !sound._paused) {
+        // Trigger the play event, in order to keep iterating through queue.
+        if (!internal) {
+          self._loadQueue('play');
+        }
+
+        return sound._id;
+      }
+
+      // Make sure the AudioContext isn't suspended, and resume it if it is.
+      if (self._webAudio) {
+        Howler._autoResume();
+      }
+
+      // Determine how long to play for and where to start playing.
+      var seek = Math.max(0, sound._seek > 0 ? sound._seek : self._sprite[sprite][0] / 1000);
+      var duration = Math.max(0, ((self._sprite[sprite][0] + self._sprite[sprite][1]) / 1000) - seek);
+      var timeout = (duration * 1000) / Math.abs(sound._rate);
+      var start = self._sprite[sprite][0] / 1000;
+      var stop = (self._sprite[sprite][0] + self._sprite[sprite][1]) / 1000;
+      sound._sprite = sprite;
+
+      // Mark the sound as ended instantly so that this async playback
+      // doesn't get grabbed by another call to play while this one waits to start.
+      sound._ended = false;
+
+      // Update the parameters of the sound.
+      var setParams = function() {
+        sound._paused = false;
+        sound._seek = seek;
+        sound._start = start;
+        sound._stop = stop;
+        sound._loop = !!(sound._loop || self._sprite[sprite][2]);
+      };
+
+      // End the sound instantly if seek is at the end.
+      if (seek >= stop) {
+        self._ended(sound);
+        return;
+      }
+
+      // Begin the actual playback.
+      var node = sound._node;
+      if (self._webAudio) {
+        // Fire this when the sound is ready to play to begin Web Audio playback.
+        var playWebAudio = function() {
+          self._playLock = false;
+          setParams();
+          self._refreshBuffer(sound);
+
+          // Setup the playback params.
+          var vol = (sound._muted || self._muted) ? 0 : sound._volume;
+          node.gain.setValueAtTime(vol, Howler.ctx.currentTime);
+          sound._playStart = Howler.ctx.currentTime;
+
+          // Play the sound using the supported method.
+          if (typeof node.bufferSource.start === 'undefined') {
+            sound._loop ? node.bufferSource.noteGrainOn(0, seek, 86400) : node.bufferSource.noteGrainOn(0, seek, duration);
+          } else {
+            sound._loop ? node.bufferSource.start(0, seek, 86400) : node.bufferSource.start(0, seek, duration);
+          }
+
+          // Start a new timer if none is present.
+          if (timeout !== Infinity) {
+            self._endTimers[sound._id] = setTimeout(self._ended.bind(self, sound), timeout);
+          }
+
+          if (!internal) {
+            setTimeout(function() {
+              self._emit('play', sound._id);
+              self._loadQueue();
+            }, 0);
+          }
+        };
+
+        if (Howler.state === 'running') {
+          playWebAudio();
+        } else {
+          self._playLock = true;
+
+          // Wait for the audio context to resume before playing.
+          self.once('resume', playWebAudio);
+
+          // Cancel the end timer.
+          self._clearTimer(sound._id);
+        }
+      } else {
+        // Fire this when the sound is ready to play to begin HTML5 Audio playback.
+        var playHtml5 = function() {
+          node.currentTime = seek;
+          node.muted = sound._muted || self._muted || Howler._muted || node.muted;
+          node.volume = sound._volume * Howler.volume();
+          node.playbackRate = sound._rate;
+
+          // Some browsers will throw an error if this is called without user interaction.
+          try {
+            var play = node.play();
+
+            // Support older browsers that don't support promises, and thus don't have this issue.
+            if (play && typeof Promise !== 'undefined' && (play instanceof Promise || typeof play.then === 'function')) {
+              // Implements a lock to prevent DOMException: The play() request was interrupted by a call to pause().
+              self._playLock = true;
+
+              // Set param values immediately.
+              setParams();
+
+              // Releases the lock and executes queued actions.
+              play
+                .then(function() {
+                  self._playLock = false;
+                  node._unlocked = true;
+                  if (!internal) {
+                    self._emit('play', sound._id);
+                    self._loadQueue();
+                  }
+                })
+                .catch(function() {
+                  self._playLock = false;
+                  self._emit('playerror', sound._id, 'Playback was unable to start. This is most commonly an issue ' +
+                    'on mobile devices and Chrome where playback was not within a user interaction.');
+
+                  // Reset the ended and paused values.
+                  sound._ended = true;
+                  sound._paused = true;
+                });
+            } else if (!internal) {
+              self._playLock = false;
+              setParams();
+              self._emit('play', sound._id);
+              self._loadQueue();
+            }
+
+            // Setting rate before playing won't work in IE, so we set it again here.
+            node.playbackRate = sound._rate;
+
+            // If the node is still paused, then we can assume there was a playback issue.
+            if (node.paused) {
+              self._emit('playerror', sound._id, 'Playback was unable to start. This is most commonly an issue ' +
+                'on mobile devices and Chrome where playback was not within a user interaction.');
+              return;
+            }
+
+            // Setup the end timer on sprites or listen for the ended event.
+            if (sprite !== '__default' || sound._loop) {
+              self._endTimers[sound._id] = setTimeout(self._ended.bind(self, sound), timeout);
+            } else {
+              self._endTimers[sound._id] = function() {
+                // Fire ended on this audio node.
+                self._ended(sound);
+
+                // Clear this listener.
+                node.removeEventListener('ended', self._endTimers[sound._id], false);
+              };
+              node.addEventListener('ended', self._endTimers[sound._id], false);
+            }
+          } catch (err) {
+            self._emit('playerror', sound._id, err);
+          }
+        };
+
+        // If this is streaming audio, make sure the src is set and load again.
+        if (node.src === 'data:audio/wav;base64,UklGRigAAABXQVZFZm10IBIAAAABAAEARKwAAIhYAQACABAAAABkYXRhAgAAAAEA') {
+          node.src = self._src;
+          node.load();
+        }
+
+        // Play immediately if ready, or wait for the 'canplaythrough'e vent.
+        var loadedNoReadyState = (window && window.ejecta) || (!node.readyState && Howler._navigator.isCocoonJS);
+        if (node.readyState >= 3 || loadedNoReadyState) {
+          playHtml5();
+        } else {
+          self._playLock = true;
+
+          var listener = function() {
+            // Begin playback.
+            playHtml5();
+
+            // Clear this listener.
+            node.removeEventListener(Howler._canPlayEvent, listener, false);
+          };
+          node.addEventListener(Howler._canPlayEvent, listener, false);
+
+          // Cancel the end timer.
+          self._clearTimer(sound._id);
+        }
+      }
+
+      return sound._id;
+    },
+
+    /**
+     * Pause playback and save current position.
+     * @param  {Number} id The sound ID (empty to pause all in group).
+     * @return {Howl}
+     */
+    pause: function(id) {
+      var self = this;
+
+      // If the sound hasn't loaded or a play() promise is pending, add it to the load queue to pause when capable.
+      if (self._state !== 'loaded' || self._playLock) {
+        self._queue.push({
+          event: 'pause',
+          action: function() {
+            self.pause(id);
+          }
+        });
+
+        return self;
+      }
+
+      // If no id is passed, get all ID's to be paused.
+      var ids = self._getSoundIds(id);
+
+      for (var i=0; i<ids.length; i++) {
+        // Clear the end timer.
+        self._clearTimer(ids[i]);
+
+        // Get the sound.
+        var sound = self._soundById(ids[i]);
+
+        if (sound && !sound._paused) {
+          // Reset the seek position.
+          sound._seek = self.seek(ids[i]);
+          sound._rateSeek = 0;
+          sound._paused = true;
+
+          // Stop currently running fades.
+          self._stopFade(ids[i]);
+
+          if (sound._node) {
+            if (self._webAudio) {
+              // Make sure the sound has been created.
+              if (!sound._node.bufferSource) {
+                continue;
+              }
+
+              if (typeof sound._node.bufferSource.stop === 'undefined') {
+                sound._node.bufferSource.noteOff(0);
+              } else {
+                sound._node.bufferSource.stop(0);
+              }
+
+              // Clean up the buffer source.
+              self._cleanBuffer(sound._node);
+            } else if (!isNaN(sound._node.duration) || sound._node.duration === Infinity) {
+              sound._node.pause();
+            }
+          }
+        }
+
+        // Fire the pause event, unless `true` is passed as the 2nd argument.
+        if (!arguments[1]) {
+          self._emit('pause', sound ? sound._id : null);
+        }
+      }
+
+      return self;
+    },
+
+    /**
+     * Stop playback and reset to start.
+     * @param  {Number} id The sound ID (empty to stop all in group).
+     * @param  {Boolean} internal Internal Use: true prevents event firing.
+     * @return {Howl}
+     */
+    stop: function(id, internal) {
+      var self = this;
+
+      // If the sound hasn't loaded, add it to the load queue to stop when capable.
+      if (self._state !== 'loaded' || self._playLock) {
+        self._queue.push({
+          event: 'stop',
+          action: function() {
+            self.stop(id);
+          }
+        });
+
+        return self;
+      }
+
+      // If no id is passed, get all ID's to be stopped.
+      var ids = self._getSoundIds(id);
+
+      for (var i=0; i<ids.length; i++) {
+        // Clear the end timer.
+        self._clearTimer(ids[i]);
+
+        // Get the sound.
+        var sound = self._soundById(ids[i]);
+
+        if (sound) {
+          // Reset the seek position.
+          sound._seek = sound._start || 0;
+          sound._rateSeek = 0;
+          sound._paused = true;
+          sound._ended = true;
+
+          // Stop currently running fades.
+          self._stopFade(ids[i]);
+
+          if (sound._node) {
+            if (self._webAudio) {
+              // Make sure the sound's AudioBufferSourceNode has been created.
+              if (sound._node.bufferSource) {
+                if (typeof sound._node.bufferSource.stop === 'undefined') {
+                  sound._node.bufferSource.noteOff(0);
+                } else {
+                  sound._node.bufferSource.stop(0);
+                }
+
+                // Clean up the buffer source.
+                self._cleanBuffer(sound._node);
+              }
+            } else if (!isNaN(sound._node.duration) || sound._node.duration === Infinity) {
+              sound._node.currentTime = sound._start || 0;
+              sound._node.pause();
+
+              // If this is a live stream, stop download once the audio is stopped.
+              if (sound._node.duration === Infinity) {
+                self._clearSound(sound._node);
+              }
+            }
+          }
+
+          if (!internal) {
+            self._emit('stop', sound._id);
+          }
+        }
+      }
+
+      return self;
+    },
+
+    /**
+     * Mute/unmute a single sound or all sounds in this Howl group.
+     * @param  {Boolean} muted Set to true to mute and false to unmute.
+     * @param  {Number} id    The sound ID to update (omit to mute/unmute all).
+     * @return {Howl}
+     */
+    mute: function(muted, id) {
+      var self = this;
+
+      // If the sound hasn't loaded, add it to the load queue to mute when capable.
+      if (self._state !== 'loaded'|| self._playLock) {
+        self._queue.push({
+          event: 'mute',
+          action: function() {
+            self.mute(muted, id);
+          }
+        });
+
+        return self;
+      }
+
+      // If applying mute/unmute to all sounds, update the group's value.
+      if (typeof id === 'undefined') {
+        if (typeof muted === 'boolean') {
+          self._muted = muted;
+        } else {
+          return self._muted;
+        }
+      }
+
+      // If no id is passed, get all ID's to be muted.
+      var ids = self._getSoundIds(id);
+
+      for (var i=0; i<ids.length; i++) {
+        // Get the sound.
+        var sound = self._soundById(ids[i]);
+
+        if (sound) {
+          sound._muted = muted;
+
+          // Cancel active fade and set the volume to the end value.
+          if (sound._interval) {
+            self._stopFade(sound._id);
+          }
+
+          if (self._webAudio && sound._node) {
+            sound._node.gain.setValueAtTime(muted ? 0 : sound._volume, Howler.ctx.currentTime);
+          } else if (sound._node) {
+            sound._node.muted = Howler._muted ? true : muted;
+          }
+
+          self._emit('mute', sound._id);
+        }
+      }
+
+      return self;
+    },
+
+    /**
+     * Get/set the volume of this sound or of the Howl group. This method can optionally take 0, 1 or 2 arguments.
+     *   volume() -> Returns the group's volume value.
+     *   volume(id) -> Returns the sound id's current volume.
+     *   volume(vol) -> Sets the volume of all sounds in this Howl group.
+     *   volume(vol, id) -> Sets the volume of passed sound id.
+     * @return {Howl/Number} Returns self or current volume.
+     */
+    volume: function() {
+      var self = this;
+      var args = arguments;
+      var vol, id;
+
+      // Determine the values based on arguments.
+      if (args.length === 0) {
+        // Return the value of the groups' volume.
+        return self._volume;
+      } else if (args.length === 1 || args.length === 2 && typeof args[1] === 'undefined') {
+        // First check if this is an ID, and if not, assume it is a new volume.
+        var ids = self._getSoundIds();
+        var index = ids.indexOf(args[0]);
+        if (index >= 0) {
+          id = parseInt(args[0], 10);
+        } else {
+          vol = parseFloat(args[0]);
+        }
+      } else if (args.length >= 2) {
+        vol = parseFloat(args[0]);
+        id = parseInt(args[1], 10);
+      }
+
+      // Update the volume or return the current volume.
+      var sound;
+      if (typeof vol !== 'undefined' && vol >= 0 && vol <= 1) {
+        // If the sound hasn't loaded, add it to the load queue to change volume when capable.
+        if (self._state !== 'loaded'|| self._playLock) {
+          self._queue.push({
+            event: 'volume',
+            action: function() {
+              self.volume.apply(self, args);
+            }
+          });
+
+          return self;
+        }
+
+        // Set the group volume.
+        if (typeof id === 'undefined') {
+          self._volume = vol;
+        }
+
+        // Update one or all volumes.
+        id = self._getSoundIds(id);
+        for (var i=0; i<id.length; i++) {
+          // Get the sound.
+          sound = self._soundById(id[i]);
+
+          if (sound) {
+            sound._volume = vol;
+
+            // Stop currently running fades.
+            if (!args[2]) {
+              self._stopFade(id[i]);
+            }
+
+            if (self._webAudio && sound._node && !sound._muted) {
+              sound._node.gain.setValueAtTime(vol, Howler.ctx.currentTime);
+            } else if (sound._node && !sound._muted) {
+              sound._node.volume = vol * Howler.volume();
+            }
+
+            self._emit('volume', sound._id);
+          }
+        }
+      } else {
+        sound = id ? self._soundById(id) : self._sounds[0];
+        return sound ? sound._volume : 0;
+      }
+
+      return self;
+    },
+
+    /**
+     * Fade a currently playing sound between two volumes (if no id is passed, all sounds will fade).
+     * @param  {Number} from The value to fade from (0.0 to 1.0).
+     * @param  {Number} to   The volume to fade to (0.0 to 1.0).
+     * @param  {Number} len  Time in milliseconds to fade.
+     * @param  {Number} id   The sound id (omit to fade all sounds).
+     * @return {Howl}
+     */
+    fade: function(from, to, len, id) {
+      var self = this;
+
+      // If the sound hasn't loaded, add it to the load queue to fade when capable.
+      if (self._state !== 'loaded' || self._playLock) {
+        self._queue.push({
+          event: 'fade',
+          action: function() {
+            self.fade(from, to, len, id);
+          }
+        });
+
+        return self;
+      }
+
+      // Make sure the to/from/len values are numbers.
+      from = parseFloat(from);
+      to = parseFloat(to);
+      len = parseFloat(len);
+
+      // Set the volume to the start position.
+      self.volume(from, id);
+
+      // Fade the volume of one or all sounds.
+      var ids = self._getSoundIds(id);
+      for (var i=0; i<ids.length; i++) {
+        // Get the sound.
+        var sound = self._soundById(ids[i]);
+
+        // Create a linear fade or fall back to timeouts with HTML5 Audio.
+        if (sound) {
+          // Stop the previous fade if no sprite is being used (otherwise, volume handles this).
+          if (!id) {
+            self._stopFade(ids[i]);
+          }
+
+          // If we are using Web Audio, let the native methods do the actual fade.
+          if (self._webAudio && !sound._muted) {
+            var currentTime = Howler.ctx.currentTime;
+            var end = currentTime + (len / 1000);
+            sound._volume = from;
+            sound._node.gain.setValueAtTime(from, currentTime);
+            sound._node.gain.linearRampToValueAtTime(to, end);
+          }
+
+          self._startFadeInterval(sound, from, to, len, ids[i], typeof id === 'undefined');
+        }
+      }
+
+      return self;
+    },
+
+    /**
+     * Starts the internal interval to fade a sound.
+     * @param  {Object} sound Reference to sound to fade.
+     * @param  {Number} from The value to fade from (0.0 to 1.0).
+     * @param  {Number} to   The volume to fade to (0.0 to 1.0).
+     * @param  {Number} len  Time in milliseconds to fade.
+     * @param  {Number} id   The sound id to fade.
+     * @param  {Boolean} isGroup   If true, set the volume on the group.
+     */
+    _startFadeInterval: function(sound, from, to, len, id, isGroup) {
+      var self = this;
+      var vol = from;
+      var diff = to - from;
+      var steps = Math.abs(diff / 0.01);
+      var stepLen = Math.max(4, (steps > 0) ? len / steps : len);
+      var lastTick = Date.now();
+
+      // Store the value being faded to.
+      sound._fadeTo = to;
+
+      // Update the volume value on each interval tick.
+      sound._interval = setInterval(function() {
+        // Update the volume based on the time since the last tick.
+        var tick = (Date.now() - lastTick) / len;
+        lastTick = Date.now();
+        vol += diff * tick;
+
+        // Make sure the volume is in the right bounds.
+        vol = Math.max(0, vol);
+        vol = Math.min(1, vol);
+
+        // Round to within 2 decimal points.
+        vol = Math.round(vol * 100) / 100;
+
+        // Change the volume.
+        if (self._webAudio) {
+          sound._volume = vol;
+        } else {
+          self.volume(vol, sound._id, true);
+        }
+
+        // Set the group's volume.
+        if (isGroup) {
+          self._volume = vol;
+        }
+
+        // When the fade is complete, stop it and fire event.
+        if ((to < from && vol <= to) || (to > from && vol >= to)) {
+          clearInterval(sound._interval);
+          sound._interval = null;
+          sound._fadeTo = null;
+          self.volume(to, sound._id);
+          self._emit('fade', sound._id);
+        }
+      }, stepLen);
+    },
+
+    /**
+     * Internal method that stops the currently playing fade when
+     * a new fade starts, volume is changed or the sound is stopped.
+     * @param  {Number} id The sound id.
+     * @return {Howl}
+     */
+    _stopFade: function(id) {
+      var self = this;
+      var sound = self._soundById(id);
+
+      if (sound && sound._interval) {
+        if (self._webAudio) {
+          sound._node.gain.cancelScheduledValues(Howler.ctx.currentTime);
+        }
+
+        clearInterval(sound._interval);
+        sound._interval = null;
+        self.volume(sound._fadeTo, id);
+        sound._fadeTo = null;
+        self._emit('fade', id);
+      }
+
+      return self;
+    },
+
+    /**
+     * Get/set the loop parameter on a sound. This method can optionally take 0, 1 or 2 arguments.
+     *   loop() -> Returns the group's loop value.
+     *   loop(id) -> Returns the sound id's loop value.
+     *   loop(loop) -> Sets the loop value for all sounds in this Howl group.
+     *   loop(loop, id) -> Sets the loop value of passed sound id.
+     * @return {Howl/Boolean} Returns self or current loop value.
+     */
+    loop: function() {
+      var self = this;
+      var args = arguments;
+      var loop, id, sound;
+
+      // Determine the values for loop and id.
+      if (args.length === 0) {
+        // Return the grou's loop value.
+        return self._loop;
+      } else if (args.length === 1) {
+        if (typeof args[0] === 'boolean') {
+          loop = args[0];
+          self._loop = loop;
+        } else {
+          // Return this sound's loop value.
+          sound = self._soundById(parseInt(args[0], 10));
+          return sound ? sound._loop : false;
+        }
+      } else if (args.length === 2) {
+        loop = args[0];
+        id = parseInt(args[1], 10);
+      }
+
+      // If no id is passed, get all ID's to be looped.
+      var ids = self._getSoundIds(id);
+      for (var i=0; i<ids.length; i++) {
+        sound = self._soundById(ids[i]);
+
+        if (sound) {
+          sound._loop = loop;
+          if (self._webAudio && sound._node && sound._node.bufferSource) {
+            sound._node.bufferSource.loop = loop;
+            if (loop) {
+              sound._node.bufferSource.loopStart = sound._start || 0;
+              sound._node.bufferSource.loopEnd = sound._stop;
+            }
+          }
+        }
+      }
+
+      return self;
+    },
+
+    /**
+     * Get/set the playback rate of a sound. This method can optionally take 0, 1 or 2 arguments.
+     *   rate() -> Returns the first sound node's current playback rate.
+     *   rate(id) -> Returns the sound id's current playback rate.
+     *   rate(rate) -> Sets the playback rate of all sounds in this Howl group.
+     *   rate(rate, id) -> Sets the playback rate of passed sound id.
+     * @return {Howl/Number} Returns self or the current playback rate.
+     */
+    rate: function() {
+      var self = this;
+      var args = arguments;
+      var rate, id;
+
+      // Determine the values based on arguments.
+      if (args.length === 0) {
+        // We will simply return the current rate of the first node.
+        id = self._sounds[0]._id;
+      } else if (args.length === 1) {
+        // First check if this is an ID, and if not, assume it is a new rate value.
+        var ids = self._getSoundIds();
+        var index = ids.indexOf(args[0]);
+        if (index >= 0) {
+          id = parseInt(args[0], 10);
+        } else {
+          rate = parseFloat(args[0]);
+        }
+      } else if (args.length === 2) {
+        rate = parseFloat(args[0]);
+        id = parseInt(args[1], 10);
+      }
+
+      // Update the playback rate or return the current value.
+      var sound;
+      if (typeof rate === 'number') {
+        // If the sound hasn't loaded, add it to the load queue to change playback rate when capable.
+        if (self._state !== 'loaded' || self._playLock) {
+          self._queue.push({
+            event: 'rate',
+            action: function() {
+              self.rate.apply(self, args);
+            }
+          });
+
+          return self;
+        }
+
+        // Set the group rate.
+        if (typeof id === 'undefined') {
+          self._rate = rate;
+        }
+
+        // Update one or all volumes.
+        id = self._getSoundIds(id);
+        for (var i=0; i<id.length; i++) {
+          // Get the sound.
+          sound = self._soundById(id[i]);
+
+          if (sound) {
+            // Keep track of our position when the rate changed and update the playback
+            // start position so we can properly adjust the seek position for time elapsed.
+            if (self.playing(id[i])) {
+              sound._rateSeek = self.seek(id[i]);
+              sound._playStart = self._webAudio ? Howler.ctx.currentTime : sound._playStart;
+            }
+            sound._rate = rate;
+
+            // Change the playback rate.
+            if (self._webAudio && sound._node && sound._node.bufferSource) {
+              sound._node.bufferSource.playbackRate.setValueAtTime(rate, Howler.ctx.currentTime);
+            } else if (sound._node) {
+              sound._node.playbackRate = rate;
+            }
+
+            // Reset the timers.
+            var seek = self.seek(id[i]);
+            var duration = ((self._sprite[sound._sprite][0] + self._sprite[sound._sprite][1]) / 1000) - seek;
+            var timeout = (duration * 1000) / Math.abs(sound._rate);
+
+            // Start a new end timer if sound is already playing.
+            if (self._endTimers[id[i]] || !sound._paused) {
+              self._clearTimer(id[i]);
+              self._endTimers[id[i]] = setTimeout(self._ended.bind(self, sound), timeout);
+            }
+
+            self._emit('rate', sound._id);
+          }
+        }
+      } else {
+        sound = self._soundById(id);
+        return sound ? sound._rate : self._rate;
+      }
+
+      return self;
+    },
+
+    /**
+     * Get/set the seek position of a sound. This method can optionally take 0, 1 or 2 arguments.
+     *   seek() -> Returns the first sound node's current seek position.
+     *   seek(id) -> Returns the sound id's current seek position.
+     *   seek(seek) -> Sets the seek position of the first sound node.
+     *   seek(seek, id) -> Sets the seek position of passed sound id.
+     * @return {Howl/Number} Returns self or the current seek position.
+     */
+    seek: function() {
+      var self = this;
+      var args = arguments;
+      var seek, id;
+
+      // Determine the values based on arguments.
+      if (args.length === 0) {
+        // We will simply return the current position of the first node.
+        id = self._sounds[0]._id;
+      } else if (args.length === 1) {
+        // First check if this is an ID, and if not, assume it is a new seek position.
+        var ids = self._getSoundIds();
+        var index = ids.indexOf(args[0]);
+        if (index >= 0) {
+          id = parseInt(args[0], 10);
+        } else if (self._sounds.length) {
+          id = self._sounds[0]._id;
+          seek = parseFloat(args[0]);
+        }
+      } else if (args.length === 2) {
+        seek = parseFloat(args[0]);
+        id = parseInt(args[1], 10);
+      }
+
+      // If there is no ID, bail out.
+      if (typeof id === 'undefined') {
+        return self;
+      }
+
+      // If the sound hasn't loaded, add it to the load queue to seek when capable.
+      if (self._state !== 'loaded' || self._playLock) {
+        self._queue.push({
+          event: 'seek',
+          action: function() {
+            self.seek.apply(self, args);
+          }
+        });
+
+        return self;
+      }
+
+      // Get the sound.
+      var sound = self._soundById(id);
+
+      if (sound) {
+        if (typeof seek === 'number' && seek >= 0) {
+          // Pause the sound and update position for restarting playback.
+          var playing = self.playing(id);
+          if (playing) {
+            self.pause(id, true);
+          }
+
+          // Move the position of the track and cancel timer.
+          sound._seek = seek;
+          sound._ended = false;
+          self._clearTimer(id);
+
+          // Update the seek position for HTML5 Audio.
+          if (!self._webAudio && sound._node && !isNaN(sound._node.duration)) {
+            sound._node.currentTime = seek;
+          }
+
+          // Seek and emit when ready.
+          var seekAndEmit = function() {
+            self._emit('seek', id);
+
+            // Restart the playback if the sound was playing.
+            if (playing) {
+              self.play(id, true);
+            }
+          };
+
+          // Wait for the play lock to be unset before emitting (HTML5 Audio).
+          if (playing && !self._webAudio) {
+            var emitSeek = function() {
+              if (!self._playLock) {
+                seekAndEmit();
+              } else {
+                setTimeout(emitSeek, 0);
+              }
+            };
+            setTimeout(emitSeek, 0);
+          } else {
+            seekAndEmit();
+          }
+        } else {
+          if (self._webAudio) {
+            var realTime = self.playing(id) ? Howler.ctx.currentTime - sound._playStart : 0;
+            var rateSeek = sound._rateSeek ? sound._rateSeek - sound._seek : 0;
+            return sound._seek + (rateSeek + realTime * Math.abs(sound._rate));
+          } else {
+            return sound._node.currentTime;
+          }
+        }
+      }
+
+      return self;
+    },
+
+    /**
+     * Check if a specific sound is currently playing or not (if id is provided), or check if at least one of the sounds in the group is playing or not.
+     * @param  {Number}  id The sound id to check. If none is passed, the whole sound group is checked.
+     * @return {Boolean} True if playing and false if not.
+     */
+    playing: function(id) {
+      var self = this;
+
+      // Check the passed sound ID (if any).
+      if (typeof id === 'number') {
+        var sound = self._soundById(id);
+        return sound ? !sound._paused : false;
+      }
+
+      // Otherwise, loop through all sounds and check if any are playing.
+      for (var i=0; i<self._sounds.length; i++) {
+        if (!self._sounds[i]._paused) {
+          return true;
+        }
+      }
+
+      return false;
+    },
+
+    /**
+     * Get the duration of this sound. Passing a sound id will return the sprite duration.
+     * @param  {Number} id The sound id to check. If none is passed, return full source duration.
+     * @return {Number} Audio duration in seconds.
+     */
+    duration: function(id) {
+      var self = this;
+      var duration = self._duration;
+
+      // If we pass an ID, get the sound and return the sprite length.
+      var sound = self._soundById(id);
+      if (sound) {
+        duration = self._sprite[sound._sprite][1] / 1000;
+      }
+
+      return duration;
+    },
+
+    /**
+     * Returns the current loaded state of this Howl.
+     * @return {String} 'unloaded', 'loading', 'loaded'
+     */
+    state: function() {
+      return this._state;
+    },
+
+    /**
+     * Unload and destroy the current Howl object.
+     * This will immediately stop all sound instances attached to this group.
+     */
+    unload: function() {
+      var self = this;
+
+      // Stop playing any active sounds.
+      var sounds = self._sounds;
+      for (var i=0; i<sounds.length; i++) {
+        // Stop the sound if it is currently playing.
+        if (!sounds[i]._paused) {
+          self.stop(sounds[i]._id);
+        }
+
+        // Remove the source or disconnect.
+        if (!self._webAudio) {
+          // Set the source to 0-second silence to stop any downloading (except in IE).
+          self._clearSound(sounds[i]._node);
+
+          // Remove any event listeners.
+          sounds[i]._node.removeEventListener('error', sounds[i]._errorFn, false);
+          sounds[i]._node.removeEventListener(Howler._canPlayEvent, sounds[i]._loadFn, false);
+
+          // Release the Audio object back to the pool.
+          Howler._releaseHtml5Audio(sounds[i]._node);
+        }
+
+        // Empty out all of the nodes.
+        delete sounds[i]._node;
+
+        // Make sure all timers are cleared out.
+        self._clearTimer(sounds[i]._id);
+      }
+
+      // Remove the references in the global Howler object.
+      var index = Howler._howls.indexOf(self);
+      if (index >= 0) {
+        Howler._howls.splice(index, 1);
+      }
+
+      // Delete this sound from the cache (if no other Howl is using it).
+      var remCache = true;
+      for (i=0; i<Howler._howls.length; i++) {
+        if (Howler._howls[i]._src === self._src || self._src.indexOf(Howler._howls[i]._src) >= 0) {
+          remCache = false;
+          break;
+        }
+      }
+
+      if (cache && remCache) {
+        delete cache[self._src];
+      }
+
+      // Clear global errors.
+      Howler.noAudio = false;
+
+      // Clear out `self`.
+      self._state = 'unloaded';
+      self._sounds = [];
+      self = null;
+
+      return null;
+    },
+
+    /**
+     * Listen to a custom event.
+     * @param  {String}   event Event name.
+     * @param  {Function} fn    Listener to call.
+     * @param  {Number}   id    (optional) Only listen to events for this sound.
+     * @param  {Number}   once  (INTERNAL) Marks event to fire only once.
+     * @return {Howl}
+     */
+    on: function(event, fn, id, once) {
+      var self = this;
+      var events = self['_on' + event];
+
+      if (typeof fn === 'function') {
+        events.push(once ? {id: id, fn: fn, once: once} : {id: id, fn: fn});
+      }
+
+      return self;
+    },
+
+    /**
+     * Remove a custom event. Call without parameters to remove all events.
+     * @param  {String}   event Event name.
+     * @param  {Function} fn    Listener to remove. Leave empty to remove all.
+     * @param  {Number}   id    (optional) Only remove events for this sound.
+     * @return {Howl}
+     */
+    off: function(event, fn, id) {
+      var self = this;
+      var events = self['_on' + event];
+      var i = 0;
+
+      // Allow passing just an event and ID.
+      if (typeof fn === 'number') {
+        id = fn;
+        fn = null;
+      }
+
+      if (fn || id) {
+        // Loop through event store and remove the passed function.
+        for (i=0; i<events.length; i++) {
+          var isId = (id === events[i].id);
+          if (fn === events[i].fn && isId || !fn && isId) {
+            events.splice(i, 1);
+            break;
+          }
+        }
+      } else if (event) {
+        // Clear out all events of this type.
+        self['_on' + event] = [];
+      } else {
+        // Clear out all events of every type.
+        var keys = Object.keys(self);
+        for (i=0; i<keys.length; i++) {
+          if ((keys[i].indexOf('_on') === 0) && Array.isArray(self[keys[i]])) {
+            self[keys[i]] = [];
+          }
+        }
+      }
+
+      return self;
+    },
+
+    /**
+     * Listen to a custom event and remove it once fired.
+     * @param  {String}   event Event name.
+     * @param  {Function} fn    Listener to call.
+     * @param  {Number}   id    (optional) Only listen to events for this sound.
+     * @return {Howl}
+     */
+    once: function(event, fn, id) {
+      var self = this;
+
+      // Setup the event listener.
+      self.on(event, fn, id, 1);
+
+      return self;
+    },
+
+    /**
+     * Emit all events of a specific type and pass the sound id.
+     * @param  {String} event Event name.
+     * @param  {Number} id    Sound ID.
+     * @param  {Number} msg   Message to go with event.
+     * @return {Howl}
+     */
+    _emit: function(event, id, msg) {
+      var self = this;
+      var events = self['_on' + event];
+
+      // Loop through event store and fire all functions.
+      for (var i=events.length-1; i>=0; i--) {
+        // Only fire the listener if the correct ID is used.
+        if (!events[i].id || events[i].id === id || event === 'load') {
+          setTimeout(function(fn) {
+            fn.call(this, id, msg);
+          }.bind(self, events[i].fn), 0);
+
+          // If this event was setup with `once`, remove it.
+          if (events[i].once) {
+            self.off(event, events[i].fn, events[i].id);
+          }
+        }
+      }
+
+      // Pass the event type into load queue so that it can continue stepping.
+      self._loadQueue(event);
+
+      return self;
+    },
+
+    /**
+     * Queue of actions initiated before the sound has loaded.
+     * These will be called in sequence, with the next only firing
+     * after the previous has finished executing (even if async like play).
+     * @return {Howl}
+     */
+    _loadQueue: function(event) {
+      var self = this;
+
+      if (self._queue.length > 0) {
+        var task = self._queue[0];
+
+        // Remove this task if a matching event was passed.
+        if (task.event === event) {
+          self._queue.shift();
+          self._loadQueue();
+        }
+
+        // Run the task if no event type is passed.
+        if (!event) {
+          task.action();
+        }
+      }
+
+      return self;
+    },
+
+    /**
+     * Fired when playback ends at the end of the duration.
+     * @param  {Sound} sound The sound object to work with.
+     * @return {Howl}
+     */
+    _ended: function(sound) {
+      var self = this;
+      var sprite = sound._sprite;
+
+      // If we are using IE and there was network latency we may be clipping
+      // audio before it completes playing. Lets check the node to make sure it
+      // believes it has completed, before ending the playback.
+      if (!self._webAudio && sound._node && !sound._node.paused && !sound._node.ended && sound._node.currentTime < sound._stop) {
+        setTimeout(self._ended.bind(self, sound), 100);
+        return self;
+      }
+
+      // Should this sound loop?
+      var loop = !!(sound._loop || self._sprite[sprite][2]);
+
+      // Fire the ended event.
+      self._emit('end', sound._id);
+
+      // Restart the playback for HTML5 Audio loop.
+      if (!self._webAudio && loop) {
+        self.stop(sound._id, true).play(sound._id);
+      }
+
+      // Restart this timer if on a Web Audio loop.
+      if (self._webAudio && loop) {
+        self._emit('play', sound._id);
+        sound._seek = sound._start || 0;
+        sound._rateSeek = 0;
+        sound._playStart = Howler.ctx.currentTime;
+
+        var timeout = ((sound._stop - sound._start) * 1000) / Math.abs(sound._rate);
+        self._endTimers[sound._id] = setTimeout(self._ended.bind(self, sound), timeout);
+      }
+
+      // Mark the node as paused.
+      if (self._webAudio && !loop) {
+        sound._paused = true;
+        sound._ended = true;
+        sound._seek = sound._start || 0;
+        sound._rateSeek = 0;
+        self._clearTimer(sound._id);
+
+        // Clean up the buffer source.
+        self._cleanBuffer(sound._node);
+
+        // Attempt to auto-suspend AudioContext if no sounds are still playing.
+        Howler._autoSuspend();
+      }
+
+      // When using a sprite, end the track.
+      if (!self._webAudio && !loop) {
+        self.stop(sound._id, true);
+      }
+
+      return self;
+    },
+
+    /**
+     * Clear the end timer for a sound playback.
+     * @param  {Number} id The sound ID.
+     * @return {Howl}
+     */
+    _clearTimer: function(id) {
+      var self = this;
+
+      if (self._endTimers[id]) {
+        // Clear the timeout or remove the ended listener.
+        if (typeof self._endTimers[id] !== 'function') {
+          clearTimeout(self._endTimers[id]);
+        } else {
+          var sound = self._soundById(id);
+          if (sound && sound._node) {
+            sound._node.removeEventListener('ended', self._endTimers[id], false);
+          }
+        }
+
+        delete self._endTimers[id];
+      }
+
+      return self;
+    },
+
+    /**
+     * Return the sound identified by this ID, or return null.
+     * @param  {Number} id Sound ID
+     * @return {Object}    Sound object or null.
+     */
+    _soundById: function(id) {
+      var self = this;
+
+      // Loop through all sounds and find the one with this ID.
+      for (var i=0; i<self._sounds.length; i++) {
+        if (id === self._sounds[i]._id) {
+          return self._sounds[i];
+        }
+      }
+
+      return null;
+    },
+
+    /**
+     * Return an inactive sound from the pool or create a new one.
+     * @return {Sound} Sound playback object.
+     */
+    _inactiveSound: function() {
+      var self = this;
+
+      self._drain();
+
+      // Find the first inactive node to recycle.
+      for (var i=0; i<self._sounds.length; i++) {
+        if (self._sounds[i]._ended) {
+          return self._sounds[i].reset();
+        }
+      }
+
+      // If no inactive node was found, create a new one.
+      return new Sound(self);
+    },
+
+    /**
+     * Drain excess inactive sounds from the pool.
+     */
+    _drain: function() {
+      var self = this;
+      var limit = self._pool;
+      var cnt = 0;
+      var i = 0;
+
+      // If there are less sounds than the max pool size, we are done.
+      if (self._sounds.length < limit) {
+        return;
+      }
+
+      // Count the number of inactive sounds.
+      for (i=0; i<self._sounds.length; i++) {
+        if (self._sounds[i]._ended) {
+          cnt++;
+        }
+      }
+
+      // Remove excess inactive sounds, going in reverse order.
+      for (i=self._sounds.length - 1; i>=0; i--) {
+        if (cnt <= limit) {
+          return;
+        }
+
+        if (self._sounds[i]._ended) {
+          // Disconnect the audio source when using Web Audio.
+          if (self._webAudio && self._sounds[i]._node) {
+            self._sounds[i]._node.disconnect(0);
+          }
+
+          // Remove sounds until we have the pool size.
+          self._sounds.splice(i, 1);
+          cnt--;
+        }
+      }
+    },
+
+    /**
+     * Get all ID's from the sounds pool.
+     * @param  {Number} id Only return one ID if one is passed.
+     * @return {Array}    Array of IDs.
+     */
+    _getSoundIds: function(id) {
+      var self = this;
+
+      if (typeof id === 'undefined') {
+        var ids = [];
+        for (var i=0; i<self._sounds.length; i++) {
+          ids.push(self._sounds[i]._id);
+        }
+
+        return ids;
+      } else {
+        return [id];
+      }
+    },
+
+    /**
+     * Load the sound back into the buffer source.
+     * @param  {Sound} sound The sound object to work with.
+     * @return {Howl}
+     */
+    _refreshBuffer: function(sound) {
+      var self = this;
+
+      // Setup the buffer source for playback.
+      sound._node.bufferSource = Howler.ctx.createBufferSource();
+      sound._node.bufferSource.buffer = cache[self._src];
+
+      // Connect to the correct node.
+      if (sound._panner) {
+        sound._node.bufferSource.connect(sound._panner);
+      } else {
+        sound._node.bufferSource.connect(sound._node);
+      }
+
+      // Setup looping and playback rate.
+      sound._node.bufferSource.loop = sound._loop;
+      if (sound._loop) {
+        sound._node.bufferSource.loopStart = sound._start || 0;
+        sound._node.bufferSource.loopEnd = sound._stop || 0;
+      }
+      sound._node.bufferSource.playbackRate.setValueAtTime(sound._rate, Howler.ctx.currentTime);
+
+      return self;
+    },
+
+    /**
+     * Prevent memory leaks by cleaning up the buffer source after playback.
+     * @param  {Object} node Sound's audio node containing the buffer source.
+     * @return {Howl}
+     */
+    _cleanBuffer: function(node) {
+      var self = this;
+      var isIOS = Howler._navigator && Howler._navigator.vendor.indexOf('Apple') >= 0;
+
+      if (Howler._scratchBuffer && node.bufferSource) {
+        node.bufferSource.onended = null;
+        node.bufferSource.disconnect(0);
+        if (isIOS) {
+          try { node.bufferSource.buffer = Howler._scratchBuffer; } catch(e) {}
+        }
+      }
+      node.bufferSource = null;
+
+      return self;
+    },
+
+    /**
+     * Set the source to a 0-second silence to stop any downloading (except in IE).
+     * @param  {Object} node Audio node to clear.
+     */
+    _clearSound: function(node) {
+      var checkIE = /MSIE |Trident\//.test(Howler._navigator && Howler._navigator.userAgent);
+      if (!checkIE) {
+        node.src = 'data:audio/wav;base64,UklGRigAAABXQVZFZm10IBIAAAABAAEARKwAAIhYAQACABAAAABkYXRhAgAAAAEA';
+      }
+    }
+  };
+
+  /** Single Sound Methods **/
+  /***************************************************************************/
+
+  /**
+   * Setup the sound object, which each node attached to a Howl group is contained in.
+   * @param {Object} howl The Howl parent group.
+   */
+  var Sound = function(howl) {
+    this._parent = howl;
+    this.init();
+  };
+  Sound.prototype = {
+    /**
+     * Initialize a new Sound object.
+     * @return {Sound}
+     */
+    init: function() {
+      var self = this;
+      var parent = self._parent;
+
+      // Setup the default parameters.
+      self._muted = parent._muted;
+      self._loop = parent._loop;
+      self._volume = parent._volume;
+      self._rate = parent._rate;
+      self._seek = 0;
+      self._paused = true;
+      self._ended = true;
+      self._sprite = '__default';
+
+      // Generate a unique ID for this sound.
+      self._id = ++Howler._counter;
+
+      // Add itself to the parent's pool.
+      parent._sounds.push(self);
+
+      // Create the new node.
+      self.create();
+
+      return self;
+    },
+
+    /**
+     * Create and setup a new sound object, whether HTML5 Audio or Web Audio.
+     * @return {Sound}
+     */
+    create: function() {
+      var self = this;
+      var parent = self._parent;
+      var volume = (Howler._muted || self._muted || self._parent._muted) ? 0 : self._volume;
+
+      if (parent._webAudio) {
+        // Create the gain node for controlling volume (the source will connect to this).
+        self._node = (typeof Howler.ctx.createGain === 'undefined') ? Howler.ctx.createGainNode() : Howler.ctx.createGain();
+        self._node.gain.setValueAtTime(volume, Howler.ctx.currentTime);
+        self._node.paused = true;
+        self._node.connect(Howler.masterGain);
+      } else if (!Howler.noAudio) {
+        // Get an unlocked Audio object from the pool.
+        self._node = Howler._obtainHtml5Audio();
+
+        // Listen for errors (http://dev.w3.org/html5/spec-author-view/spec.html#mediaerror).
+        self._errorFn = self._errorListener.bind(self);
+        self._node.addEventListener('error', self._errorFn, false);
+
+        // Listen for 'canplaythrough' event to let us know the sound is ready.
+        self._loadFn = self._loadListener.bind(self);
+        self._node.addEventListener(Howler._canPlayEvent, self._loadFn, false);
+
+        // Setup the new audio node.
+        self._node.src = parent._src;
+        self._node.preload = 'auto';
+        self._node.volume = volume * Howler.volume();
+
+        // Begin loading the source.
+        self._node.load();
+      }
+
+      return self;
+    },
+
+    /**
+     * Reset the parameters of this sound to the original state (for recycle).
+     * @return {Sound}
+     */
+    reset: function() {
+      var self = this;
+      var parent = self._parent;
+
+      // Reset all of the parameters of this sound.
+      self._muted = parent._muted;
+      self._loop = parent._loop;
+      self._volume = parent._volume;
+      self._rate = parent._rate;
+      self._seek = 0;
+      self._rateSeek = 0;
+      self._paused = true;
+      self._ended = true;
+      self._sprite = '__default';
+
+      // Generate a new ID so that it isn't confused with the previous sound.
+      self._id = ++Howler._counter;
+
+      return self;
+    },
+
+    /**
+     * HTML5 Audio error listener callback.
+     */
+    _errorListener: function() {
+      var self = this;
+
+      // Fire an error event and pass back the code.
+      self._parent._emit('loaderror', self._id, self._node.error ? self._node.error.code : 0);
+
+      // Clear the event listener.
+      self._node.removeEventListener('error', self._errorFn, false);
+    },
+
+    /**
+     * HTML5 Audio canplaythrough listener callback.
+     */
+    _loadListener: function() {
+      var self = this;
+      var parent = self._parent;
+
+      // Round up the duration to account for the lower precision in HTML5 Audio.
+      parent._duration = Math.ceil(self._node.duration * 10) / 10;
+
+      // Setup a sprite if none is defined.
+      if (Object.keys(parent._sprite).length === 0) {
+        parent._sprite = {__default: [0, parent._duration * 1000]};
+      }
+
+      if (parent._state !== 'loaded') {
+        parent._state = 'loaded';
+        parent._emit('load');
+        parent._loadQueue();
+      }
+
+      // Clear the event listener.
+      self._node.removeEventListener(Howler._canPlayEvent, self._loadFn, false);
+    }
+  };
+
+  /** Helper Methods **/
+  /***************************************************************************/
+
+  var cache = {};
+
+  /**
+   * Buffer a sound from URL, Data URI or cache and decode to audio source (Web Audio API).
+   * @param  {Howl} self
+   */
+  var loadBuffer = function(self) {
+    var url = self._src;
+
+    // Check if the buffer has already been cached and use it instead.
+    if (cache[url]) {
+      // Set the duration from the cache.
+      self._duration = cache[url].duration;
+
+      // Load the sound into this Howl.
+      loadSound(self);
+
+      return;
+    }
+
+    if (/^data:[^;]+;base64,/.test(url)) {
+      // Decode the base64 data URI without XHR, since some browsers don't support it.
+      var data = atob(url.split(',')[1]);
+      var dataView = new Uint8Array(data.length);
+      for (var i=0; i<data.length; ++i) {
+        dataView[i] = data.charCodeAt(i);
+      }
+
+      decodeAudioData(dataView.buffer, self);
+    } else {
+      // Load the buffer from the URL.
+      var xhr = new XMLHttpRequest();
+      xhr.open('GET', url, true);
+      xhr.withCredentials = self._xhrWithCredentials;
+      xhr.responseType = 'arraybuffer';
+      xhr.onload = function() {
+        // Make sure we get a successful response back.
+        var code = (xhr.status + '')[0];
+        if (code !== '0' && code !== '2' && code !== '3') {
+          self._emit('loaderror', null, 'Failed loading audio file with status: ' + xhr.status + '.');
+          return;
+        }
+
+        decodeAudioData(xhr.response, self);
+      };
+      xhr.onerror = function() {
+        // If there is an error, switch to HTML5 Audio.
+        if (self._webAudio) {
+          self._html5 = true;
+          self._webAudio = false;
+          self._sounds = [];
+          delete cache[url];
+          self.load();
+        }
+      };
+      safeXhrSend(xhr);
+    }
+  };
+
+  /**
+   * Send the XHR request wrapped in a try/catch.
+   * @param  {Object} xhr XHR to send.
+   */
+  var safeXhrSend = function(xhr) {
+    try {
+      xhr.send();
+    } catch (e) {
+      xhr.onerror();
+    }
+  };
+
+  /**
+   * Decode audio data from an array buffer.
+   * @param  {ArrayBuffer} arraybuffer The audio data.
+   * @param  {Howl}        self
+   */
+  var decodeAudioData = function(arraybuffer, self) {
+    // Fire a load error if something broke.
+    var error = function() {
+      self._emit('loaderror', null, 'Decoding audio data failed.');
+    };
+
+    // Load the sound on success.
+    var success = function(buffer) {
+      if (buffer && self._sounds.length > 0) {
+        cache[self._src] = buffer;
+        loadSound(self, buffer);
+      } else {
+        error();
+      }
+    };
+
+    // Decode the buffer into an audio source.
+    if (typeof Promise !== 'undefined' && Howler.ctx.decodeAudioData.length === 1) {
+      Howler.ctx.decodeAudioData(arraybuffer).then(success).catch(error);
+    } else {
+      Howler.ctx.decodeAudioData(arraybuffer, success, error);
+    }
+  }
+
+  /**
+   * Sound is now loaded, so finish setting everything up and fire the loaded event.
+   * @param  {Howl} self
+   * @param  {Object} buffer The decoded buffer sound source.
+   */
+  var loadSound = function(self, buffer) {
+    // Set the duration.
+    if (buffer && !self._duration) {
+      self._duration = buffer.duration;
+    }
+
+    // Setup a sprite if none is defined.
+    if (Object.keys(self._sprite).length === 0) {
+      self._sprite = {__default: [0, self._duration * 1000]};
+    }
+
+    // Fire the loaded event.
+    if (self._state !== 'loaded') {
+      self._state = 'loaded';
+      self._emit('load');
+      self._loadQueue();
+    }
+  };
+
+  /**
+   * Setup the audio context when available, or switch to HTML5 Audio mode.
+   */
+  var setupAudioContext = function() {
+    // If we have already detected that Web Audio isn't supported, don't run this step again.
+    if (!Howler.usingWebAudio) {
+      return;
+    }
+
+    // Check if we are using Web Audio and setup the AudioContext if we are.
+    try {
+      if (typeof AudioContext !== 'undefined') {
+        Howler.ctx = new AudioContext();
+      } else if (typeof webkitAudioContext !== 'undefined') {
+        Howler.ctx = new webkitAudioContext();
+      } else {
+        Howler.usingWebAudio = false;
+      }
+    } catch(e) {
+      Howler.usingWebAudio = false;
+    }
+
+    // If the audio context creation still failed, set using web audio to false.
+    if (!Howler.ctx) {
+      Howler.usingWebAudio = false;
+    }
+
+    // Check if a webview is being used on iOS8 or earlier (rather than the browser).
+    // If it is, disable Web Audio as it causes crashing.
+    var iOS = (/iP(hone|od|ad)/.test(Howler._navigator && Howler._navigator.platform));
+    var appVersion = Howler._navigator && Howler._navigator.appVersion.match(/OS (\d+)_(\d+)_?(\d+)?/);
+    var version = appVersion ? parseInt(appVersion[1], 10) : null;
+    if (iOS && version && version < 9) {
+      var safari = /safari/.test(Howler._navigator && Howler._navigator.userAgent.toLowerCase());
+      if (Howler._navigator && Howler._navigator.standalone && !safari || Howler._navigator && !Howler._navigator.standalone && !safari) {
+        Howler.usingWebAudio = false;
+      }
+    }
+
+    // Create and expose the master GainNode when using Web Audio (useful for plugins or advanced usage).
+    if (Howler.usingWebAudio) {
+      Howler.masterGain = (typeof Howler.ctx.createGain === 'undefined') ? Howler.ctx.createGainNode() : Howler.ctx.createGain();
+      Howler.masterGain.gain.setValueAtTime(Howler._muted ? 0 : Howler._volume, Howler.ctx.currentTime);
+      Howler.masterGain.connect(Howler.ctx.destination);
+    }
+
+    // Re-run the setup on Howler.
+    Howler._setup();
+  };
+
+  // Add support for AMD (Asynchronous Module Definition) libraries such as require.js.
+  if (true) {
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_RESULT__ = (function() {
+      return {
+        Howler: Howler,
+        Howl: Howl
+      };
+    }).apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
   }
-  // commonjs
-  else if ( true && module !== null && typeof exports !== "undefined" && module.exports === exports) {
-    module.exports = Levenshtein;
+
+  // Add support for CommonJS libraries such as browserify.
+  if (true) {
+    exports.Howler = Howler;
+    exports.Howl = Howl;
   }
-  // web worker
-  else if (typeof self !== "undefined" && typeof self.postMessage === 'function' && typeof self.importScripts === 'function') {
-    self.Levenshtein = Levenshtein;
+
+  // Define globally in case AMD is not available or unused.
+  if (typeof window !== 'undefined') {
+    window.HowlerGlobal = HowlerGlobal;
+    window.Howler = Howler;
+    window.Howl = Howl;
+    window.Sound = Sound;
+  } else if (typeof global !== 'undefined') { // Add to global in Node.js (for testing, etc).
+    global.HowlerGlobal = HowlerGlobal;
+    global.Howler = Howler;
+    global.Howl = Howl;
+    global.Sound = Sound;
   }
-  // browser main thread
-  else if (typeof window !== "undefined" && window !== null) {
-    window.Levenshtein = Levenshtein;
-  }
-}());
+})();
 
 
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../webpack/buildin/module.js */ "./node_modules/webpack/buildin/module.js")(module)))
-
-/***/ }),
-
-/***/ "./node_modules/hoist-non-react-statics/dist/hoist-non-react-statics.cjs.js":
-/*!**********************************************************************************!*\
-  !*** ./node_modules/hoist-non-react-statics/dist/hoist-non-react-statics.cjs.js ***!
-  \**********************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var reactIs = __webpack_require__(/*! react-is */ "./node_modules/react-is/index.js");
-
-/**
- * Copyright 2015, Yahoo! Inc.
- * Copyrights licensed under the New BSD License. See the accompanying LICENSE file for terms.
+/*!
+ *  Spatial Plugin - Adds support for stereo and 3D audio where Web Audio is supported.
+ *  
+ *  howler.js v2.1.3
+ *  howlerjs.com
+ *
+ *  (c) 2013-2019, James Simpson of GoldFire Studios
+ *  goldfirestudios.com
+ *
+ *  MIT License
  */
-var REACT_STATICS = {
-  childContextTypes: true,
-  contextType: true,
-  contextTypes: true,
-  defaultProps: true,
-  displayName: true,
-  getDefaultProps: true,
-  getDerivedStateFromError: true,
-  getDerivedStateFromProps: true,
-  mixins: true,
-  propTypes: true,
-  type: true
-};
-var KNOWN_STATICS = {
-  name: true,
-  length: true,
-  prototype: true,
-  caller: true,
-  callee: true,
-  arguments: true,
-  arity: true
-};
-var FORWARD_REF_STATICS = {
-  '$$typeof': true,
-  render: true,
-  defaultProps: true,
-  displayName: true,
-  propTypes: true
-};
-var MEMO_STATICS = {
-  '$$typeof': true,
-  compare: true,
-  defaultProps: true,
-  displayName: true,
-  propTypes: true,
-  type: true
-};
-var TYPE_STATICS = {};
-TYPE_STATICS[reactIs.ForwardRef] = FORWARD_REF_STATICS;
-TYPE_STATICS[reactIs.Memo] = MEMO_STATICS;
 
-function getStatics(component) {
-  // React v16.11 and below
-  if (reactIs.isMemo(component)) {
-    return MEMO_STATICS;
-  } // React v16.12 and above
+(function() {
 
+  'use strict';
 
-  return TYPE_STATICS[component['$$typeof']] || REACT_STATICS;
-}
+  // Setup default properties.
+  HowlerGlobal.prototype._pos = [0, 0, 0];
+  HowlerGlobal.prototype._orientation = [0, 0, -1, 0, 1, 0];
 
-var defineProperty = Object.defineProperty;
-var getOwnPropertyNames = Object.getOwnPropertyNames;
-var getOwnPropertySymbols = Object.getOwnPropertySymbols;
-var getOwnPropertyDescriptor = Object.getOwnPropertyDescriptor;
-var getPrototypeOf = Object.getPrototypeOf;
-var objectPrototype = Object.prototype;
-function hoistNonReactStatics(targetComponent, sourceComponent, blacklist) {
-  if (typeof sourceComponent !== 'string') {
-    // don't hoist over string (html) components
-    if (objectPrototype) {
-      var inheritedComponent = getPrototypeOf(sourceComponent);
+  /** Global Methods **/
+  /***************************************************************************/
 
-      if (inheritedComponent && inheritedComponent !== objectPrototype) {
-        hoistNonReactStatics(targetComponent, inheritedComponent, blacklist);
+  /**
+   * Helper method to update the stereo panning position of all current Howls.
+   * Future Howls will not use this value unless explicitly set.
+   * @param  {Number} pan A value of -1.0 is all the way left and 1.0 is all the way right.
+   * @return {Howler/Number}     Self or current stereo panning value.
+   */
+  HowlerGlobal.prototype.stereo = function(pan) {
+    var self = this;
+
+    // Stop right here if not using Web Audio.
+    if (!self.ctx || !self.ctx.listener) {
+      return self;
+    }
+
+    // Loop through all Howls and update their stereo panning.
+    for (var i=self._howls.length-1; i>=0; i--) {
+      self._howls[i].stereo(pan);
+    }
+
+    return self;
+  };
+
+  /**
+   * Get/set the position of the listener in 3D cartesian space. Sounds using
+   * 3D position will be relative to the listener's position.
+   * @param  {Number} x The x-position of the listener.
+   * @param  {Number} y The y-position of the listener.
+   * @param  {Number} z The z-position of the listener.
+   * @return {Howler/Array}   Self or current listener position.
+   */
+  HowlerGlobal.prototype.pos = function(x, y, z) {
+    var self = this;
+
+    // Stop right here if not using Web Audio.
+    if (!self.ctx || !self.ctx.listener) {
+      return self;
+    }
+
+    // Set the defaults for optional 'y' & 'z'.
+    y = (typeof y !== 'number') ? self._pos[1] : y;
+    z = (typeof z !== 'number') ? self._pos[2] : z;
+
+    if (typeof x === 'number') {
+      self._pos = [x, y, z];
+
+      if (typeof self.ctx.listener.positionX !== 'undefined') {
+        self.ctx.listener.positionX.setTargetAtTime(self._pos[0], Howler.ctx.currentTime, 0.1);
+        self.ctx.listener.positionY.setTargetAtTime(self._pos[1], Howler.ctx.currentTime, 0.1);
+        self.ctx.listener.positionZ.setTargetAtTime(self._pos[2], Howler.ctx.currentTime, 0.1);
+      } else {
+        self.ctx.listener.setPosition(self._pos[0], self._pos[1], self._pos[2]);
+      }
+    } else {
+      return self._pos;
+    }
+
+    return self;
+  };
+
+  /**
+   * Get/set the direction the listener is pointing in the 3D cartesian space.
+   * A front and up vector must be provided. The front is the direction the
+   * face of the listener is pointing, and up is the direction the top of the
+   * listener is pointing. Thus, these values are expected to be at right angles
+   * from each other.
+   * @param  {Number} x   The x-orientation of the listener.
+   * @param  {Number} y   The y-orientation of the listener.
+   * @param  {Number} z   The z-orientation of the listener.
+   * @param  {Number} xUp The x-orientation of the top of the listener.
+   * @param  {Number} yUp The y-orientation of the top of the listener.
+   * @param  {Number} zUp The z-orientation of the top of the listener.
+   * @return {Howler/Array}     Returns self or the current orientation vectors.
+   */
+  HowlerGlobal.prototype.orientation = function(x, y, z, xUp, yUp, zUp) {
+    var self = this;
+
+    // Stop right here if not using Web Audio.
+    if (!self.ctx || !self.ctx.listener) {
+      return self;
+    }
+
+    // Set the defaults for optional 'y' & 'z'.
+    var or = self._orientation;
+    y = (typeof y !== 'number') ? or[1] : y;
+    z = (typeof z !== 'number') ? or[2] : z;
+    xUp = (typeof xUp !== 'number') ? or[3] : xUp;
+    yUp = (typeof yUp !== 'number') ? or[4] : yUp;
+    zUp = (typeof zUp !== 'number') ? or[5] : zUp;
+
+    if (typeof x === 'number') {
+      self._orientation = [x, y, z, xUp, yUp, zUp];
+
+      if (typeof self.ctx.listener.forwardX !== 'undefined') {
+        self.ctx.listener.forwardX.setTargetAtTime(x, Howler.ctx.currentTime, 0.1);
+        self.ctx.listener.forwardY.setTargetAtTime(y, Howler.ctx.currentTime, 0.1);
+        self.ctx.listener.forwardZ.setTargetAtTime(z, Howler.ctx.currentTime, 0.1);
+        self.ctx.listener.upX.setTargetAtTime(xUp, Howler.ctx.currentTime, 0.1);
+        self.ctx.listener.upY.setTargetAtTime(yUp, Howler.ctx.currentTime, 0.1);
+        self.ctx.listener.upZ.setTargetAtTime(zUp, Howler.ctx.currentTime, 0.1);
+      } else {
+        self.ctx.listener.setOrientation(x, y, z, xUp, yUp, zUp);
+      }
+    } else {
+      return or;
+    }
+
+    return self;
+  };
+
+  /** Group Methods **/
+  /***************************************************************************/
+
+  /**
+   * Add new properties to the core init.
+   * @param  {Function} _super Core init method.
+   * @return {Howl}
+   */
+  Howl.prototype.init = (function(_super) {
+    return function(o) {
+      var self = this;
+
+      // Setup user-defined default properties.
+      self._orientation = o.orientation || [1, 0, 0];
+      self._stereo = o.stereo || null;
+      self._pos = o.pos || null;
+      self._pannerAttr = {
+        coneInnerAngle: typeof o.coneInnerAngle !== 'undefined' ? o.coneInnerAngle : 360,
+        coneOuterAngle: typeof o.coneOuterAngle !== 'undefined' ? o.coneOuterAngle : 360,
+        coneOuterGain: typeof o.coneOuterGain !== 'undefined' ? o.coneOuterGain : 0,
+        distanceModel: typeof o.distanceModel !== 'undefined' ? o.distanceModel : 'inverse',
+        maxDistance: typeof o.maxDistance !== 'undefined' ? o.maxDistance : 10000,
+        panningModel: typeof o.panningModel !== 'undefined' ? o.panningModel : 'HRTF',
+        refDistance: typeof o.refDistance !== 'undefined' ? o.refDistance : 1,
+        rolloffFactor: typeof o.rolloffFactor !== 'undefined' ? o.rolloffFactor : 1
+      };
+
+      // Setup event listeners.
+      self._onstereo = o.onstereo ? [{fn: o.onstereo}] : [];
+      self._onpos = o.onpos ? [{fn: o.onpos}] : [];
+      self._onorientation = o.onorientation ? [{fn: o.onorientation}] : [];
+
+      // Complete initilization with howler.js core's init function.
+      return _super.call(this, o);
+    };
+  })(Howl.prototype.init);
+
+  /**
+   * Get/set the stereo panning of the audio source for this sound or all in the group.
+   * @param  {Number} pan  A value of -1.0 is all the way left and 1.0 is all the way right.
+   * @param  {Number} id (optional) The sound ID. If none is passed, all in group will be updated.
+   * @return {Howl/Number}    Returns self or the current stereo panning value.
+   */
+  Howl.prototype.stereo = function(pan, id) {
+    var self = this;
+
+    // Stop right here if not using Web Audio.
+    if (!self._webAudio) {
+      return self;
+    }
+
+    // If the sound hasn't loaded, add it to the load queue to change stereo pan when capable.
+    if (self._state !== 'loaded') {
+      self._queue.push({
+        event: 'stereo',
+        action: function() {
+          self.stereo(pan, id);
+        }
+      });
+
+      return self;
+    }
+
+    // Check for PannerStereoNode support and fallback to PannerNode if it doesn't exist.
+    var pannerType = (typeof Howler.ctx.createStereoPanner === 'undefined') ? 'spatial' : 'stereo';
+
+    // Setup the group's stereo panning if no ID is passed.
+    if (typeof id === 'undefined') {
+      // Return the group's stereo panning if no parameters are passed.
+      if (typeof pan === 'number') {
+        self._stereo = pan;
+        self._pos = [pan, 0, 0];
+      } else {
+        return self._stereo;
       }
     }
 
-    var keys = getOwnPropertyNames(sourceComponent);
+    // Change the streo panning of one or all sounds in group.
+    var ids = self._getSoundIds(id);
+    for (var i=0; i<ids.length; i++) {
+      // Get the sound.
+      var sound = self._soundById(ids[i]);
 
-    if (getOwnPropertySymbols) {
-      keys = keys.concat(getOwnPropertySymbols(sourceComponent));
-    }
+      if (sound) {
+        if (typeof pan === 'number') {
+          sound._stereo = pan;
+          sound._pos = [pan, 0, 0];
 
-    var targetStatics = getStatics(targetComponent);
-    var sourceStatics = getStatics(sourceComponent);
+          if (sound._node) {
+            // If we are falling back, make sure the panningModel is equalpower.
+            sound._pannerAttr.panningModel = 'equalpower';
 
-    for (var i = 0; i < keys.length; ++i) {
-      var key = keys[i];
+            // Check if there is a panner setup and create a new one if not.
+            if (!sound._panner || !sound._panner.pan) {
+              setupPanner(sound, pannerType);
+            }
 
-      if (!KNOWN_STATICS[key] && !(blacklist && blacklist[key]) && !(sourceStatics && sourceStatics[key]) && !(targetStatics && targetStatics[key])) {
-        var descriptor = getOwnPropertyDescriptor(sourceComponent, key);
+            if (pannerType === 'spatial') {
+              if (typeof sound._panner.positionX !== 'undefined') {
+                sound._panner.positionX.setValueAtTime(pan, Howler.ctx.currentTime);
+                sound._panner.positionY.setValueAtTime(0, Howler.ctx.currentTime);
+                sound._panner.positionZ.setValueAtTime(0, Howler.ctx.currentTime);
+              } else {
+                sound._panner.setPosition(pan, 0, 0);
+              }
+            } else {
+              sound._panner.pan.setValueAtTime(pan, Howler.ctx.currentTime);
+            }
+          }
 
-        try {
-          // Avoid failures from read-only properties
-          defineProperty(targetComponent, key, descriptor);
-        } catch (e) {}
+          self._emit('stereo', sound._id);
+        } else {
+          return sound._stereo;
+        }
       }
     }
-  }
 
-  return targetComponent;
-}
+    return self;
+  };
 
-module.exports = hoistNonReactStatics;
+  /**
+   * Get/set the 3D spatial position of the audio source for this sound or group relative to the global listener.
+   * @param  {Number} x  The x-position of the audio source.
+   * @param  {Number} y  The y-position of the audio source.
+   * @param  {Number} z  The z-position of the audio source.
+   * @param  {Number} id (optional) The sound ID. If none is passed, all in group will be updated.
+   * @return {Howl/Array}    Returns self or the current 3D spatial position: [x, y, z].
+   */
+  Howl.prototype.pos = function(x, y, z, id) {
+    var self = this;
 
+    // Stop right here if not using Web Audio.
+    if (!self._webAudio) {
+      return self;
+    }
 
-/***/ }),
+    // If the sound hasn't loaded, add it to the load queue to change position when capable.
+    if (self._state !== 'loaded') {
+      self._queue.push({
+        event: 'pos',
+        action: function() {
+          self.pos(x, y, z, id);
+        }
+      });
 
-/***/ "./node_modules/next/dist/build/polyfills/fetch/index.js":
-/*!***************************************************************!*\
-  !*** ./node_modules/next/dist/build/polyfills/fetch/index.js ***!
-  \***************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+      return self;
+    }
 
-"use strict";
-/* globals self */var fetch=self.fetch.bind(self);module.exports=fetch;module.exports.default=module.exports;
+    // Set the defaults for optional 'y' & 'z'.
+    y = (typeof y !== 'number') ? 0 : y;
+    z = (typeof z !== 'number') ? -0.5 : z;
+
+    // Setup the group's spatial position if no ID is passed.
+    if (typeof id === 'undefined') {
+      // Return the group's spatial position if no parameters are passed.
+      if (typeof x === 'number') {
+        self._pos = [x, y, z];
+      } else {
+        return self._pos;
+      }
+    }
+
+    // Change the spatial position of one or all sounds in group.
+    var ids = self._getSoundIds(id);
+    for (var i=0; i<ids.length; i++) {
+      // Get the sound.
+      var sound = self._soundById(ids[i]);
+
+      if (sound) {
+        if (typeof x === 'number') {
+          sound._pos = [x, y, z];
+
+          if (sound._node) {
+            // Check if there is a panner setup and create a new one if not.
+            if (!sound._panner || sound._panner.pan) {
+              setupPanner(sound, 'spatial');
+            }
+
+            if (typeof sound._panner.positionX !== 'undefined') {
+              sound._panner.positionX.setValueAtTime(x, Howler.ctx.currentTime);
+              sound._panner.positionY.setValueAtTime(y, Howler.ctx.currentTime);
+              sound._panner.positionZ.setValueAtTime(z, Howler.ctx.currentTime);
+            } else {
+              sound._panner.setPosition(x, y, z);
+            }
+          }
+
+          self._emit('pos', sound._id);
+        } else {
+          return sound._pos;
+        }
+      }
+    }
+
+    return self;
+  };
+
+  /**
+   * Get/set the direction the audio source is pointing in the 3D cartesian coordinate
+   * space. Depending on how direction the sound is, based on the `cone` attributes,
+   * a sound pointing away from the listener can be quiet or silent.
+   * @param  {Number} x  The x-orientation of the source.
+   * @param  {Number} y  The y-orientation of the source.
+   * @param  {Number} z  The z-orientation of the source.
+   * @param  {Number} id (optional) The sound ID. If none is passed, all in group will be updated.
+   * @return {Howl/Array}    Returns self or the current 3D spatial orientation: [x, y, z].
+   */
+  Howl.prototype.orientation = function(x, y, z, id) {
+    var self = this;
+
+    // Stop right here if not using Web Audio.
+    if (!self._webAudio) {
+      return self;
+    }
+
+    // If the sound hasn't loaded, add it to the load queue to change orientation when capable.
+    if (self._state !== 'loaded') {
+      self._queue.push({
+        event: 'orientation',
+        action: function() {
+          self.orientation(x, y, z, id);
+        }
+      });
+
+      return self;
+    }
+
+    // Set the defaults for optional 'y' & 'z'.
+    y = (typeof y !== 'number') ? self._orientation[1] : y;
+    z = (typeof z !== 'number') ? self._orientation[2] : z;
+
+    // Setup the group's spatial orientation if no ID is passed.
+    if (typeof id === 'undefined') {
+      // Return the group's spatial orientation if no parameters are passed.
+      if (typeof x === 'number') {
+        self._orientation = [x, y, z];
+      } else {
+        return self._orientation;
+      }
+    }
+
+    // Change the spatial orientation of one or all sounds in group.
+    var ids = self._getSoundIds(id);
+    for (var i=0; i<ids.length; i++) {
+      // Get the sound.
+      var sound = self._soundById(ids[i]);
+
+      if (sound) {
+        if (typeof x === 'number') {
+          sound._orientation = [x, y, z];
+
+          if (sound._node) {
+            // Check if there is a panner setup and create a new one if not.
+            if (!sound._panner) {
+              // Make sure we have a position to setup the node with.
+              if (!sound._pos) {
+                sound._pos = self._pos || [0, 0, -0.5];
+              }
+
+              setupPanner(sound, 'spatial');
+            }
+
+            if (typeof sound._panner.orientationX !== 'undefined') {
+              sound._panner.orientationX.setValueAtTime(x, Howler.ctx.currentTime);
+              sound._panner.orientationY.setValueAtTime(y, Howler.ctx.currentTime);
+              sound._panner.orientationZ.setValueAtTime(z, Howler.ctx.currentTime);
+            } else {
+              sound._panner.setOrientation(x, y, z);
+            }
+          }
+
+          self._emit('orientation', sound._id);
+        } else {
+          return sound._orientation;
+        }
+      }
+    }
+
+    return self;
+  };
+
+  /**
+   * Get/set the panner node's attributes for a sound or group of sounds.
+   * This method can optionall take 0, 1 or 2 arguments.
+   *   pannerAttr() -> Returns the group's values.
+   *   pannerAttr(id) -> Returns the sound id's values.
+   *   pannerAttr(o) -> Set's the values of all sounds in this Howl group.
+   *   pannerAttr(o, id) -> Set's the values of passed sound id.
+   *
+   *   Attributes:
+   *     coneInnerAngle - (360 by default) A parameter for directional audio sources, this is an angle, in degrees,
+   *                      inside of which there will be no volume reduction.
+   *     coneOuterAngle - (360 by default) A parameter for directional audio sources, this is an angle, in degrees,
+   *                      outside of which the volume will be reduced to a constant value of `coneOuterGain`.
+   *     coneOuterGain - (0 by default) A parameter for directional audio sources, this is the gain outside of the
+   *                     `coneOuterAngle`. It is a linear value in the range `[0, 1]`.
+   *     distanceModel - ('inverse' by default) Determines algorithm used to reduce volume as audio moves away from
+   *                     listener. Can be `linear`, `inverse` or `exponential.
+   *     maxDistance - (10000 by default) The maximum distance between source and listener, after which the volume
+   *                   will not be reduced any further.
+   *     refDistance - (1 by default) A reference distance for reducing volume as source moves further from the listener.
+   *                   This is simply a variable of the distance model and has a different effect depending on which model
+   *                   is used and the scale of your coordinates. Generally, volume will be equal to 1 at this distance.
+   *     rolloffFactor - (1 by default) How quickly the volume reduces as source moves from listener. This is simply a
+   *                     variable of the distance model and can be in the range of `[0, 1]` with `linear` and `[0, ∞]`
+   *                     with `inverse` and `exponential`.
+   *     panningModel - ('HRTF' by default) Determines which spatialization algorithm is used to position audio.
+   *                     Can be `HRTF` or `equalpower`.
+   *
+   * @return {Howl/Object} Returns self or current panner attributes.
+   */
+  Howl.prototype.pannerAttr = function() {
+    var self = this;
+    var args = arguments;
+    var o, id, sound;
+
+    // Stop right here if not using Web Audio.
+    if (!self._webAudio) {
+      return self;
+    }
+
+    // Determine the values based on arguments.
+    if (args.length === 0) {
+      // Return the group's panner attribute values.
+      return self._pannerAttr;
+    } else if (args.length === 1) {
+      if (typeof args[0] === 'object') {
+        o = args[0];
+
+        // Set the grou's panner attribute values.
+        if (typeof id === 'undefined') {
+          if (!o.pannerAttr) {
+            o.pannerAttr = {
+              coneInnerAngle: o.coneInnerAngle,
+              coneOuterAngle: o.coneOuterAngle,
+              coneOuterGain: o.coneOuterGain,
+              distanceModel: o.distanceModel,
+              maxDistance: o.maxDistance,
+              refDistance: o.refDistance,
+              rolloffFactor: o.rolloffFactor,
+              panningModel: o.panningModel
+            };
+          }
+
+          self._pannerAttr = {
+            coneInnerAngle: typeof o.pannerAttr.coneInnerAngle !== 'undefined' ? o.pannerAttr.coneInnerAngle : self._coneInnerAngle,
+            coneOuterAngle: typeof o.pannerAttr.coneOuterAngle !== 'undefined' ? o.pannerAttr.coneOuterAngle : self._coneOuterAngle,
+            coneOuterGain: typeof o.pannerAttr.coneOuterGain !== 'undefined' ? o.pannerAttr.coneOuterGain : self._coneOuterGain,
+            distanceModel: typeof o.pannerAttr.distanceModel !== 'undefined' ? o.pannerAttr.distanceModel : self._distanceModel,
+            maxDistance: typeof o.pannerAttr.maxDistance !== 'undefined' ? o.pannerAttr.maxDistance : self._maxDistance,
+            refDistance: typeof o.pannerAttr.refDistance !== 'undefined' ? o.pannerAttr.refDistance : self._refDistance,
+            rolloffFactor: typeof o.pannerAttr.rolloffFactor !== 'undefined' ? o.pannerAttr.rolloffFactor : self._rolloffFactor,
+            panningModel: typeof o.pannerAttr.panningModel !== 'undefined' ? o.pannerAttr.panningModel : self._panningModel
+          };
+        }
+      } else {
+        // Return this sound's panner attribute values.
+        sound = self._soundById(parseInt(args[0], 10));
+        return sound ? sound._pannerAttr : self._pannerAttr;
+      }
+    } else if (args.length === 2) {
+      o = args[0];
+      id = parseInt(args[1], 10);
+    }
+
+    // Update the values of the specified sounds.
+    var ids = self._getSoundIds(id);
+    for (var i=0; i<ids.length; i++) {
+      sound = self._soundById(ids[i]);
+
+      if (sound) {
+        // Merge the new values into the sound.
+        var pa = sound._pannerAttr;
+        pa = {
+          coneInnerAngle: typeof o.coneInnerAngle !== 'undefined' ? o.coneInnerAngle : pa.coneInnerAngle,
+          coneOuterAngle: typeof o.coneOuterAngle !== 'undefined' ? o.coneOuterAngle : pa.coneOuterAngle,
+          coneOuterGain: typeof o.coneOuterGain !== 'undefined' ? o.coneOuterGain : pa.coneOuterGain,
+          distanceModel: typeof o.distanceModel !== 'undefined' ? o.distanceModel : pa.distanceModel,
+          maxDistance: typeof o.maxDistance !== 'undefined' ? o.maxDistance : pa.maxDistance,
+          refDistance: typeof o.refDistance !== 'undefined' ? o.refDistance : pa.refDistance,
+          rolloffFactor: typeof o.rolloffFactor !== 'undefined' ? o.rolloffFactor : pa.rolloffFactor,
+          panningModel: typeof o.panningModel !== 'undefined' ? o.panningModel : pa.panningModel
+        };
+
+        // Update the panner values or create a new panner if none exists.
+        var panner = sound._panner;
+        if (panner) {
+          panner.coneInnerAngle = pa.coneInnerAngle;
+          panner.coneOuterAngle = pa.coneOuterAngle;
+          panner.coneOuterGain = pa.coneOuterGain;
+          panner.distanceModel = pa.distanceModel;
+          panner.maxDistance = pa.maxDistance;
+          panner.refDistance = pa.refDistance;
+          panner.rolloffFactor = pa.rolloffFactor;
+          panner.panningModel = pa.panningModel;
+        } else {
+          // Make sure we have a position to setup the node with.
+          if (!sound._pos) {
+            sound._pos = self._pos || [0, 0, -0.5];
+          }
+
+          // Create a new panner node.
+          setupPanner(sound, 'spatial');
+        }
+      }
+    }
+
+    return self;
+  };
+
+  /** Single Sound Methods **/
+  /***************************************************************************/
+
+  /**
+   * Add new properties to the core Sound init.
+   * @param  {Function} _super Core Sound init method.
+   * @return {Sound}
+   */
+  Sound.prototype.init = (function(_super) {
+    return function() {
+      var self = this;
+      var parent = self._parent;
+
+      // Setup user-defined default properties.
+      self._orientation = parent._orientation;
+      self._stereo = parent._stereo;
+      self._pos = parent._pos;
+      self._pannerAttr = parent._pannerAttr;
+
+      // Complete initilization with howler.js core Sound's init function.
+      _super.call(this);
+
+      // If a stereo or position was specified, set it up.
+      if (self._stereo) {
+        parent.stereo(self._stereo);
+      } else if (self._pos) {
+        parent.pos(self._pos[0], self._pos[1], self._pos[2], self._id);
+      }
+    };
+  })(Sound.prototype.init);
+
+  /**
+   * Override the Sound.reset method to clean up properties from the spatial plugin.
+   * @param  {Function} _super Sound reset method.
+   * @return {Sound}
+   */
+  Sound.prototype.reset = (function(_super) {
+    return function() {
+      var self = this;
+      var parent = self._parent;
+
+      // Reset all spatial plugin properties on this sound.
+      self._orientation = parent._orientation;
+      self._stereo = parent._stereo;
+      self._pos = parent._pos;
+      self._pannerAttr = parent._pannerAttr;
+
+      // If a stereo or position was specified, set it up.
+      if (self._stereo) {
+        parent.stereo(self._stereo);
+      } else if (self._pos) {
+        parent.pos(self._pos[0], self._pos[1], self._pos[2], self._id);
+      } else if (self._panner) {
+        // Disconnect the panner.
+        self._panner.disconnect(0);
+        self._panner = undefined;
+        parent._refreshBuffer(self);
+      }
+
+      // Complete resetting of the sound.
+      return _super.call(this);
+    };
+  })(Sound.prototype.reset);
+
+  /** Helper Methods **/
+  /***************************************************************************/
+
+  /**
+   * Create a new panner node and save it on the sound.
+   * @param  {Sound} sound Specific sound to setup panning on.
+   * @param {String} type Type of panner to create: 'stereo' or 'spatial'.
+   */
+  var setupPanner = function(sound, type) {
+    type = type || 'spatial';
+
+    // Create the new panner node.
+    if (type === 'spatial') {
+      sound._panner = Howler.ctx.createPanner();
+      sound._panner.coneInnerAngle = sound._pannerAttr.coneInnerAngle;
+      sound._panner.coneOuterAngle = sound._pannerAttr.coneOuterAngle;
+      sound._panner.coneOuterGain = sound._pannerAttr.coneOuterGain;
+      sound._panner.distanceModel = sound._pannerAttr.distanceModel;
+      sound._panner.maxDistance = sound._pannerAttr.maxDistance;
+      sound._panner.refDistance = sound._pannerAttr.refDistance;
+      sound._panner.rolloffFactor = sound._pannerAttr.rolloffFactor;
+      sound._panner.panningModel = sound._pannerAttr.panningModel;
+
+      if (typeof sound._panner.positionX !== 'undefined') {
+        sound._panner.positionX.setValueAtTime(sound._pos[0], Howler.ctx.currentTime);
+        sound._panner.positionY.setValueAtTime(sound._pos[1], Howler.ctx.currentTime);
+        sound._panner.positionZ.setValueAtTime(sound._pos[2], Howler.ctx.currentTime);
+      } else {
+        sound._panner.setPosition(sound._pos[0], sound._pos[1], sound._pos[2]);
+      }
+
+      if (typeof sound._panner.orientationX !== 'undefined') {
+        sound._panner.orientationX.setValueAtTime(sound._orientation[0], Howler.ctx.currentTime);
+        sound._panner.orientationY.setValueAtTime(sound._orientation[1], Howler.ctx.currentTime);
+        sound._panner.orientationZ.setValueAtTime(sound._orientation[2], Howler.ctx.currentTime);
+      } else {
+        sound._panner.setOrientation(sound._orientation[0], sound._orientation[1], sound._orientation[2]);
+      }
+    } else {
+      sound._panner = Howler.ctx.createStereoPanner();
+      sound._panner.pan.setValueAtTime(sound._stereo, Howler.ctx.currentTime);
+    }
+
+    sound._panner.connect(sound._node);
+
+    // Update the connections.
+    if (!sound._paused) {
+      sound._parent.pause(sound._id, true).play(sound._id, true);
+    }
+  };
+})();
+
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../webpack/buildin/global.js */ "./node_modules/webpack/buildin/global.js")))
 
 /***/ }),
 
@@ -299,10 +3418,10 @@ module.exports = (__webpack_require__(/*! dll-reference dll_2adc2403d89adc16ead0
 
 /***/ }),
 
-/***/ "./node_modules/next/dist/build/webpack/loaders/next-client-pages-loader.js?page=%2F&absolutePagePath=C%3A%5Cwww%5Chabbobr-manutencao%5Cpages%5Cindex.js!./":
-/*!***************************************************************************************************************************************************************!*\
-  !*** ./node_modules/next/dist/build/webpack/loaders/next-client-pages-loader.js?page=%2F&absolutePagePath=C%3A%5Cwww%5Chabbobr-manutencao%5Cpages%5Cindex.js ***!
-  \***************************************************************************************************************************************************************/
+/***/ "./node_modules/next/dist/build/webpack/loaders/next-client-pages-loader.js?page=%2F&absolutePagePath=%2FUsers%2Flucas%2FDesktop%2Fhabbobr-manutencao%2Fpages%2Findex.js!./":
+/*!*******************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/next/dist/build/webpack/loaders/next-client-pages-loader.js?page=%2F&absolutePagePath=%2FUsers%2Flucas%2FDesktop%2Fhabbobr-manutencao%2Fpages%2Findex.js ***!
+  \*******************************************************************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -973,3281 +4092,388 @@ module.exports = (__webpack_require__(/*! dll-reference dll_2adc2403d89adc16ead0
 
 /***/ }),
 
-/***/ "./node_modules/react-audio-player/dist/bundle.js":
-/*!********************************************************!*\
-  !*** ./node_modules/react-audio-player/dist/bundle.js ***!
-  \********************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports=function(e){var t={};function o(r){if(t[r])return t[r].exports;var _=t[r]={i:r,l:!1,exports:{}};return e[r].call(_.exports,_,_.exports,o),_.l=!0,_.exports}return o.m=e,o.c=t,o.d=function(e,t,r){o.o(e,t)||Object.defineProperty(e,t,{enumerable:!0,get:r})},o.r=function(e){"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(e,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(e,"__esModule",{value:!0})},o.t=function(e,t){if(1&t&&(e=o(e)),8&t)return e;if(4&t&&"object"==typeof e&&e&&e.__esModule)return e;var r=Object.create(null);if(o.r(r),Object.defineProperty(r,"default",{enumerable:!0,value:e}),2&t&&"string"!=typeof e)for(var _ in e)o.d(r,_,function(t){return e[t]}.bind(null,_));return r},o.n=function(e){var t=e&&e.__esModule?function(){return e.default}:function(){return e};return o.d(t,"a",t),t},o.o=function(e,t){return Object.prototype.hasOwnProperty.call(e,t)},o.p="",o(o.s=3)}([function(e,t){e.exports=__webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js")},function(e,t){e.exports=__webpack_require__(/*! react */ "./node_modules/react/index.js")},function(e,t){e.exports=__webpack_require__(/*! react-hot-loader */ "./node_modules/react-hot-loader/index.js")},function(module,__webpack_exports__,__webpack_require__){"use strict";__webpack_require__.r(__webpack_exports__),function(module){var react__WEBPACK_IMPORTED_MODULE_0__=__webpack_require__(1),react__WEBPACK_IMPORTED_MODULE_0___default=__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__),prop_types__WEBPACK_IMPORTED_MODULE_1__=__webpack_require__(0),prop_types__WEBPACK_IMPORTED_MODULE_1___default=__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_1__),enterModule;function _typeof(e){return(_typeof="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e})(e)}function _extends(){return(_extends=Object.assign||function(e){for(var t=1;t<arguments.length;t++){var o=arguments[t];for(var r in o)Object.prototype.hasOwnProperty.call(o,r)&&(e[r]=o[r])}return e}).apply(this,arguments)}function _classCallCheck(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}function _defineProperties(e,t){for(var o=0;o<t.length;o++){var r=t[o];r.enumerable=r.enumerable||!1,r.configurable=!0,"value"in r&&(r.writable=!0),Object.defineProperty(e,r.key,r)}}function _createClass(e,t,o){return t&&_defineProperties(e.prototype,t),o&&_defineProperties(e,o),e}function _possibleConstructorReturn(e,t){return!t||"object"!==_typeof(t)&&"function"!=typeof t?_assertThisInitialized(e):t}function _assertThisInitialized(e){if(void 0===e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return e}function _getPrototypeOf(e){return(_getPrototypeOf=Object.setPrototypeOf?Object.getPrototypeOf:function(e){return e.__proto__||Object.getPrototypeOf(e)})(e)}function _inherits(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function");e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,writable:!0,configurable:!0}}),t&&_setPrototypeOf(e,t)}function _setPrototypeOf(e,t){return(_setPrototypeOf=Object.setPrototypeOf||function(e,t){return e.__proto__=t,e})(e,t)}enterModule=("undefined"!=typeof reactHotLoaderGlobal?reactHotLoaderGlobal:__webpack_require__(2)).enterModule,enterModule&&enterModule(module);var ReactAudioPlayer=function(_Component){function ReactAudioPlayer(){return _classCallCheck(this,ReactAudioPlayer),_possibleConstructorReturn(this,_getPrototypeOf(ReactAudioPlayer).apply(this,arguments))}return _inherits(ReactAudioPlayer,_Component),_createClass(ReactAudioPlayer,[{key:"componentDidMount",value:function(){var e=this,t=this.audioEl;this.updateVolume(this.props.volume),t.addEventListener("error",function(t){e.props.onError(t)}),t.addEventListener("canplay",function(t){e.props.onCanPlay(t)}),t.addEventListener("canplaythrough",function(t){e.props.onCanPlayThrough(t)}),t.addEventListener("play",function(t){e.setListenTrack(),e.props.onPlay(t)}),t.addEventListener("abort",function(t){e.clearListenTrack(),e.props.onAbort(t)}),t.addEventListener("ended",function(t){e.clearListenTrack(),e.props.onEnded(t)}),t.addEventListener("pause",function(t){e.clearListenTrack(),e.props.onPause(t)}),t.addEventListener("seeked",function(t){e.props.onSeeked(t)}),t.addEventListener("loadedmetadata",function(t){e.props.onLoadedMetadata(t)}),t.addEventListener("volumechange",function(t){e.props.onVolumeChanged(t)})}},{key:"componentWillReceiveProps",value:function(e){this.updateVolume(e.volume)}},{key:"setListenTrack",value:function(){var e=this;if(!this.listenTracker){var t=this.props.listenInterval;this.listenTracker=setInterval(function(){e.props.onListen(e.audioEl.currentTime)},t)}}},{key:"updateVolume",value:function(e){"number"==typeof e&&e!==this.audioEl.volume&&(this.audioEl.volume=e)}},{key:"clearListenTrack",value:function(){this.listenTracker&&(clearInterval(this.listenTracker),this.listenTracker=null)}},{key:"render",value:function(){var e=this,t=this.props.children||react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p",null,"Your browser does not support the ",react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("code",null,"audio")," element."),o=!(!1===this.props.controls),r=this.props.title?this.props.title:this.props.src,_={};return this.props.controlsList&&(_.controlsList=this.props.controlsList),react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("audio",_extends({autoPlay:this.props.autoPlay,className:"react-audio-player ".concat(this.props.className),controls:o,crossOrigin:this.props.crossOrigin,id:this.props.id,loop:this.props.loop,muted:this.props.muted,onPlay:this.onPlay,preload:this.props.preload,ref:function(t){e.audioEl=t},src:this.props.src,style:this.props.style,title:r},_),t)}},{key:"__reactstandin__regenerateByEval",value:function __reactstandin__regenerateByEval(key,code){this[key]=eval(code)}}]),ReactAudioPlayer}(react__WEBPACK_IMPORTED_MODULE_0__.Component);ReactAudioPlayer.defaultProps={autoPlay:!1,children:null,className:"",controls:!1,controlsList:"",crossOrigin:null,id:"",listenInterval:1e4,loop:!1,muted:!1,onAbort:function(){},onCanPlay:function(){},onCanPlayThrough:function(){},onEnded:function(){},onError:function(){},onListen:function(){},onPause:function(){},onPlay:function(){},onSeeked:function(){},onVolumeChanged:function(){},onLoadedMetadata:function(){},preload:"metadata",src:null,style:{},title:"",volume:1},ReactAudioPlayer.propTypes={autoPlay:prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.bool,children:prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.element,className:prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string,controls:prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.bool,controlsList:prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string,crossOrigin:prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string,id:prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string,listenInterval:prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.number,loop:prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.bool,muted:prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.bool,onAbort:prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.func,onCanPlay:prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.func,onCanPlayThrough:prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.func,onEnded:prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.func,onError:prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.func,onListen:prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.func,onLoadedMetadata:prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.func,onPause:prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.func,onPlay:prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.func,onSeeked:prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.func,onVolumeChanged:prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.func,preload:prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.oneOf(["","none","metadata","auto"]),src:prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string,style:prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.objectOf(prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string),title:prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string,volume:prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.number};var _default=ReactAudioPlayer,reactHotLoader,leaveModule;__webpack_exports__.default=_default,reactHotLoader=("undefined"!=typeof reactHotLoaderGlobal?reactHotLoaderGlobal:__webpack_require__(2)).default,reactHotLoader&&(reactHotLoader.register(ReactAudioPlayer,"ReactAudioPlayer","/home/justin/Projects/react-audio-player/src/index.jsx"),reactHotLoader.register(_default,"default","/home/justin/Projects/react-audio-player/src/index.jsx")),leaveModule=("undefined"!=typeof reactHotLoaderGlobal?reactHotLoaderGlobal:__webpack_require__(2)).leaveModule,leaveModule&&leaveModule(module)}.call(this,__webpack_require__(4)(module))},function(e,t){e.exports=function(e){if(!e.webpackPolyfill){var t=Object.create(e);t.children||(t.children=[]),Object.defineProperty(t,"loaded",{enumerable:!0,get:function(){return t.l}}),Object.defineProperty(t,"id",{enumerable:!0,get:function(){return t.i}}),Object.defineProperty(t,"exports",{enumerable:!0}),t.webpackPolyfill=1}return t}}]);
-
-/***/ }),
-
-/***/ "./node_modules/react-dom/index.js":
-/*!***********************************************************************************************!*\
-  !*** delegated ./node_modules/react-dom/index.js from dll-reference dll_2adc2403d89adc16ead0 ***!
-  \***********************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = (__webpack_require__(/*! dll-reference dll_2adc2403d89adc16ead0 */ "dll-reference dll_2adc2403d89adc16ead0"))("./node_modules/react-dom/index.js");
-
-/***/ }),
-
-/***/ "./node_modules/react-hot-loader/dist/react-hot-loader.development.js":
-/*!****************************************************************************!*\
-  !*** ./node_modules/react-hot-loader/dist/react-hot-loader.development.js ***!
-  \****************************************************************************/
+/***/ "./node_modules/react-howler/lib/ReactHowler.js":
+/*!******************************************************!*\
+  !*** ./node_modules/react-howler/lib/ReactHowler.js ***!
+  \******************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-Object.defineProperty(exports, '__esModule', { value: true });
-
-function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
-
-var React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-var React__default = _interopDefault(React);
-var shallowEqual = _interopDefault(__webpack_require__(/*! shallowequal */ "./node_modules/shallowequal/index.js"));
-var levenshtein = _interopDefault(__webpack_require__(/*! fast-levenshtein */ "./node_modules/fast-levenshtein/levenshtein.js"));
-var ReactDOM = _interopDefault(__webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js"));
-var PropTypes = _interopDefault(__webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js"));
-var defaultPolyfill = __webpack_require__(/*! react-lifecycles-compat */ "./node_modules/react-lifecycles-compat/react-lifecycles-compat.es.js");
-var defaultPolyfill__default = _interopDefault(defaultPolyfill);
-var hoistNonReactStatic = _interopDefault(__webpack_require__(/*! hoist-non-react-statics */ "./node_modules/hoist-non-react-statics/dist/hoist-non-react-statics.cjs.js"));
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
-  return typeof obj;
-} : function (obj) {
-  return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-};
-
-var classCallCheck = function (instance, Constructor) {
-  if (!(instance instanceof Constructor)) {
-    throw new TypeError("Cannot call a class as a function");
-  }
-};
-
-var _extends = Object.assign || function (target) {
-  for (var i = 1; i < arguments.length; i++) {
-    var source = arguments[i];
-
-    for (var key in source) {
-      if (Object.prototype.hasOwnProperty.call(source, key)) {
-        target[key] = source[key];
-      }
-    }
-  }
-
-  return target;
-};
-
-var inherits = function (subClass, superClass) {
-  if (typeof superClass !== "function" && superClass !== null) {
-    throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);
-  }
-
-  subClass.prototype = Object.create(superClass && superClass.prototype, {
-    constructor: {
-      value: subClass,
-      enumerable: false,
-      writable: true,
-      configurable: true
-    }
-  });
-  if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
-};
-
-var possibleConstructorReturn = function (self, call) {
-  if (!self) {
-    throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-  }
-
-  return call && (typeof call === "object" || typeof call === "function") ? call : self;
-};
-
-/* eslint-disable no-underscore-dangle */
-
-var isCompositeComponent = function isCompositeComponent(type) {
-  return typeof type === 'function';
-};
-var isReloadableComponent = function isReloadableComponent(type) {
-  return typeof type === 'function' || (typeof type === 'undefined' ? 'undefined' : _typeof(type)) === 'object';
-};
-
-var getComponentDisplayName = function getComponentDisplayName(type) {
-  var displayName = type.displayName || type.name;
-  return displayName && displayName !== 'ReactComponent' ? displayName : 'Component';
-};
-
-var reactLifeCycleMountMethods = ['componentWillMount', 'componentDidMount'];
-
-function isReactClass(Component) {
-  return !!(Component.prototype && (React__default.Component.prototype.isPrototypeOf(Component.prototype) ||
-  // react 14 support
-  Component.prototype.isReactComponent || Component.prototype.componentWillMount || Component.prototype.componentWillUnmount || Component.prototype.componentDidMount || Component.prototype.componentDidUnmount || Component.prototype.render));
-}
-
-function isReactClassInstance(Component) {
-  return Component && isReactClass({ prototype: Object.getPrototypeOf(Component) });
-}
-
-var getInternalInstance = function getInternalInstance(instance) {
-  return instance._reactInternalFiber || // React 16
-  instance._reactInternalInstance || // React 15
-  null;
-};
-
-var updateInstance = function updateInstance(instance) {
-  var updater = instance.updater,
-      forceUpdate = instance.forceUpdate;
-
-  if (typeof forceUpdate === 'function') {
-    instance.forceUpdate();
-  } else if (updater && typeof updater.enqueueForceUpdate === 'function') {
-    updater.enqueueForceUpdate(instance);
-  }
-};
-
-var isFragmentNode = function isFragmentNode(_ref) {
-  var type = _ref.type;
-  return React__default.Fragment && type === React__default.Fragment;
-};
-
-var ContextType = React__default.createContext ? React__default.createContext() : null;
-var ConsumerType = ContextType && ContextType.Consumer.$$typeof;
-var ProviderType = ContextType && ContextType.Provider.$$typeof;
-var MemoType = React__default.memo && React__default.memo(function () {
-  return null;
-}).$$typeof;
-var LazyType = React__default.lazy && React__default.lazy(function () {
-  return null;
-}).$$typeof;
-var ForwardType = React__default.forwardRef && React__default.forwardRef(function () {
-  return null;
-}).$$typeof;
-
-var CONTEXT_CURRENT_VALUE = '_currentValue';
-
-var isContextConsumer = function isContextConsumer(_ref2) {
-  var type = _ref2.type;
-  return type && (typeof type === 'undefined' ? 'undefined' : _typeof(type)) === 'object' && '$$typeof' in type && type.$$typeof === ConsumerType && ConsumerType;
-};
-var isContextProvider = function isContextProvider(_ref3) {
-  var type = _ref3.type;
-  return type && (typeof type === 'undefined' ? 'undefined' : _typeof(type)) === 'object' && '$$typeof' in type && type.$$typeof === ProviderType && ProviderType;
-};
-var isMemoType = function isMemoType(_ref4) {
-  var type = _ref4.type;
-  return type && (typeof type === 'undefined' ? 'undefined' : _typeof(type)) === 'object' && '$$typeof' in type && type.$$typeof === MemoType && MemoType;
-};
-var isLazyType = function isLazyType(_ref5) {
-  var type = _ref5.type;
-  return type && (typeof type === 'undefined' ? 'undefined' : _typeof(type)) === 'object' && '$$typeof' in type && type.$$typeof === LazyType && LazyType;
-};
-var isForwardType = function isForwardType(_ref6) {
-  var type = _ref6.type;
-  return type && (typeof type === 'undefined' ? 'undefined' : _typeof(type)) === 'object' && '$$typeof' in type && type.$$typeof === ForwardType && ForwardType;
-};
-var isContextType = function isContextType(type) {
-  return isContextConsumer(type) || isContextProvider(type);
-};
-
-var getElementType = function getElementType(type) {
-  var element = { type: type };
-
-  if (isContextConsumer(element)) {
-    return 'Consumer';
-  }
-  if (isContextProvider(element)) {
-    return 'Provider';
-  }
-  if (isLazyType(element)) {
-    return 'Lazy';
-  }
-  if (isMemoType(element)) {
-    return 'Memo';
-  }
-  if (isForwardType(element)) {
-    return 'Forward';
-  }
-
-  if (isReactClass(type)) {
-    return 'Class';
-  }
-
-  if (typeof element === 'function') {
-    return 'FC';
-  }
-
-  return 'unknown';
-};
-
-var getContextProvider = function getContextProvider(type) {
-  return type && type._context;
-};
-
-var configuration = {
-  // Log level
-  logLevel: 'error',
-
-  // Allows using SFC without changes
-  pureSFC: true,
-
-  // keep render method unpatched, moving sideEffect to componentDidUpdate
-  pureRender: true,
-
-  // Allows SFC to be used, enables "intermediate" components used by Relay, should be disabled for Preact
-  allowSFC: true,
-
-  // Allow reload of effect hooks with non zero dependency list
-  reloadHooks: true,
-
-  // Allow reload of mount effect hooks - zero deps
-  reloadLifeCycleHooks: false,
-
-  // Enables hook reload on hook body change
-  reloadHooksOnBodyChange: true,
-
-  // Disable "hot-replacement-render"
-  disableHotRenderer: false,
-
-  // @private
-  integratedComparator: false,
-  // @private
-  integratedResolver: false,
-
-  // Disable "hot-replacement-render" when injection into react-dom is made
-  disableHotRendererWhenInjected: true,
-
-  // Controls `react-🔥-dom patch` notification
-  showReactDomPatchNotification: true,
-
-  // Hook on babel component register.
-  onComponentRegister: false,
-
-  // Hook on React renders for a first time component
-  onComponentCreate: false,
-
-  // flag to completely disable RHL for SFC. Probably don't use it without dom patch made.
-  ignoreSFC: false,
-
-  // ignoreSFC when injection into react-dom is made
-  ignoreSFCWhenInjected: true,
-
-  // flag to completely disable RHL for Components
-  ignoreComponents: false,
-
-  // default value for AppContainer errorOverlay
-  errorReporter: undefined,
-
-  // Global error overlay
-  ErrorOverlay: undefined,
-
-  // Actively track lazy loaded components
-  trackTailUpdates: true,
-
-  // react hot dom features enabled
-  IS_REACT_MERGE_ENABLED: false
-};
-
-var internalConfiguration = {
-  // control proxy creation
-  disableProxyCreation: false
-};
-
-var setConfiguration = function setConfiguration(config) {
-  // not using Object.assing for IE11 compliance
-  for (var i in config) {
-    if (config.hasOwnProperty(i)) {
-      configuration[i] = config[i];
-    }
-  }
-};
-
-/* eslint-disable no-console */
-
-var logger = {
-  debug: function debug() {
-    if (['debug'].indexOf(configuration.logLevel) !== -1) {
-      var _console;
-
-      (_console = console).debug.apply(_console, arguments);
-    }
-  },
-  log: function log() {
-    if (['debug', 'log'].indexOf(configuration.logLevel) !== -1) {
-      var _console2;
-
-      (_console2 = console).log.apply(_console2, arguments);
-    }
-  },
-  warn: function warn() {
-    if (['debug', 'log', 'warn'].indexOf(configuration.logLevel) !== -1) {
-      var _console3;
-
-      (_console3 = console).warn.apply(_console3, arguments);
-    }
-  },
-  error: function error() {
-    if (['debug', 'log', 'warn', 'error'].indexOf(configuration.logLevel) !== -1) {
-      var _console4;
-
-      (_console4 = console).error.apply(_console4, arguments);
-    }
-  }
-};
-
-/* eslint-disable no-eval, func-names */
-
-function safeReactConstructor(Component, lastInstance) {
-  try {
-    if (lastInstance) {
-      return new Component(lastInstance.props, lastInstance.context);
-    }
-    return new Component({}, {});
-  } catch (e) {
-    // some components, like Redux connect could not be created without proper context
-  }
-  return null;
-}
-
-function isNativeFunction(fn) {
-  return typeof fn === 'function' ? fn.toString().indexOf('[native code]') > 0 : false;
-}
-
-var identity = function identity(a) {
-  return a;
-};
-var indirectEval = eval;
-
-var doesSupportClasses = function () {
-  try {
-    indirectEval('class Test {}');
-    return true;
-  } catch (e) {
-    return false;
-  }
-}();
-
-var ES6ProxyComponentFactory = function ES6ProxyComponentFactory(InitialParent, postConstructionAction) {
-  return indirectEval('\n(function(InitialParent, postConstructionAction) {\n  return class ' + (InitialParent.name || 'HotComponent') + ' extends InitialParent {\n    /*\n     ! THIS IS NOT YOUR COMPONENT !\n     !  THIS IS REACT-HOT-LOADER  !\n  \n     this is a "' + InitialParent.name + '" component, patched by React-Hot-Loader\n     Sorry, but the real class code was hidden behind this facade\n     Please refer to https://github.com/gaearon/react-hot-loader for details...\n    */    \n    \n    constructor(props, context) {\n      super(props, context)\n      postConstructionAction.call(this)\n    }\n  }\n})\n')(InitialParent, postConstructionAction);
-};
-
-var ES5ProxyComponentFactory = function ES5ProxyComponentFactory(InitialParent, postConstructionAction) {
-  function ProxyComponent(props, context) {
-    InitialParent.call(this, props, context);
-    postConstructionAction.call(this);
-  }
-  ProxyComponent.prototype = Object.create(InitialParent.prototype);
-  Object.setPrototypeOf(ProxyComponent, InitialParent);
-  return ProxyComponent;
-};
-
-var proxyClassCreator = doesSupportClasses ? ES6ProxyComponentFactory : ES5ProxyComponentFactory;
-
-function getOwnKeys(target) {
-  return [].concat(Object.getOwnPropertyNames(target), Object.getOwnPropertySymbols(target));
-}
-
-function shallowStringsEqual(a, b) {
-  for (var key in a) {
-    if (String(a[key]) !== String(b[key])) {
-      return false;
-    }
-  }
-  return true;
-}
-
-function deepPrototypeUpdate(dest, source) {
-  var deepDest = Object.getPrototypeOf(dest);
-  var deepSrc = Object.getPrototypeOf(source);
-  if (deepDest && deepSrc && deepSrc !== deepDest) {
-    deepPrototypeUpdate(deepDest, deepSrc);
-  }
-  if (source.prototype && source.prototype !== dest.prototype) {
-    dest.prototype = source.prototype;
-  }
-}
-
-function safeDefineProperty(target, key, props) {
-  try {
-    Object.defineProperty(target, key, props);
-  } catch (e) {
-    logger.warn('Error while wrapping', key, ' -> ', e);
-  }
-}
-
-var PREFIX = '__reactstandin__';
-var PROXY_KEY = PREFIX + 'key';
-var GENERATION = PREFIX + 'proxyGeneration';
-var REGENERATE_METHOD = PREFIX + 'regenerateByEval';
-var UNWRAP_PROXY = PREFIX + 'getCurrent';
-var CACHED_RESULT = PREFIX + 'cachedResult';
-var PROXY_IS_MOUNTED = PREFIX + 'isMounted';
-
-var RENDERED_GENERATION = 'REACT_HOT_LOADER_RENDERED_GENERATION';
-
-var RESERVED_STATICS = ['length', 'displayName', 'name', 'arguments', 'caller', 'prototype', 'toString', 'valueOf', 'isStatelessFunctionalProxy', PROXY_KEY, UNWRAP_PROXY];
-
-function transferStaticProps(ProxyComponent, savedDescriptors, PreviousComponent, NextComponent) {
-  Object.getOwnPropertyNames(ProxyComponent).forEach(function (key) {
-    if (RESERVED_STATICS.indexOf(key) !== -1) {
-      return;
-    }
-
-    var prevDescriptor = Object.getOwnPropertyDescriptor(ProxyComponent, key);
-    var savedDescriptor = savedDescriptors[key];
-
-    if (!shallowEqual(prevDescriptor, savedDescriptor)) {
-      safeDefineProperty(NextComponent, key, prevDescriptor);
-    }
-  });
-
-  // Copy newly defined static methods and properties
-  Object.getOwnPropertyNames(NextComponent).forEach(function (key) {
-    if (RESERVED_STATICS.indexOf(key) !== -1) {
-      return;
-    }
-
-    var prevDescriptor = PreviousComponent && Object.getOwnPropertyDescriptor(ProxyComponent, key);
-    var savedDescriptor = savedDescriptors[key];
-
-    // Skip redefined descriptors
-    if (prevDescriptor && savedDescriptor && !shallowEqual(savedDescriptor, prevDescriptor)) {
-      safeDefineProperty(NextComponent, key, prevDescriptor);
-      return;
-    }
-
-    if (prevDescriptor && !savedDescriptor) {
-      safeDefineProperty(ProxyComponent, key, prevDescriptor);
-      return;
-    }
-
-    var nextDescriptor = _extends({}, Object.getOwnPropertyDescriptor(NextComponent, key), {
-      configurable: true
-    });
-
-    savedDescriptors[key] = nextDescriptor;
-    safeDefineProperty(ProxyComponent, key, nextDescriptor);
-  });
-
-  // Remove static methods and properties that are no longer defined
-  Object.getOwnPropertyNames(ProxyComponent).forEach(function (key) {
-    if (RESERVED_STATICS.indexOf(key) !== -1) {
-      return;
-    }
-    // Skip statics that exist on the next class
-    if (NextComponent.hasOwnProperty(key)) {
-      return;
-    }
-    // Skip non-configurable statics
-    var proxyDescriptor = Object.getOwnPropertyDescriptor(ProxyComponent, key);
-    if (proxyDescriptor && !proxyDescriptor.configurable) {
-      return;
-    }
-
-    var prevDescriptor = PreviousComponent && Object.getOwnPropertyDescriptor(PreviousComponent, key);
-    var savedDescriptor = savedDescriptors[key];
-
-    // Skip redefined descriptors
-    if (prevDescriptor && savedDescriptor && !shallowEqual(savedDescriptor, prevDescriptor)) {
-      return;
-    }
-
-    safeDefineProperty(ProxyComponent, key, {
-      value: undefined
-    });
-  });
-
-  return savedDescriptors;
-}
-
-function mergeComponents(ProxyComponent, NextComponent, InitialComponent, lastInstance, injectedMembers) {
-  var injectedCode = {};
-  try {
-    var nextInstance = safeReactConstructor(NextComponent, lastInstance);
-
-    try {
-      // Bypass babel class inheritance checking
-      deepPrototypeUpdate(InitialComponent, NextComponent);
-    } catch (e) {
-      // It was ES6 class
-    }
-
-    var proxyInstance = safeReactConstructor(ProxyComponent, lastInstance);
-
-    if (!nextInstance || !proxyInstance) {
-      return injectedCode;
-    }
-
-    var mergedAttrs = _extends({}, proxyInstance, nextInstance);
-    var hasRegenerate = proxyInstance[REGENERATE_METHOD];
-    var ownKeys = getOwnKeys(Object.getPrototypeOf(ProxyComponent.prototype));
-    Object.keys(mergedAttrs).forEach(function (key) {
-      if (key.indexOf(PREFIX) === 0) return;
-      var nextAttr = nextInstance[key];
-      var prevAttr = proxyInstance[key];
-      if (nextAttr) {
-        if (isNativeFunction(nextAttr) || isNativeFunction(prevAttr)) {
-          // this is bound method
-          var isSameArity = nextAttr.length === prevAttr.length;
-          var existsInPrototype = ownKeys.indexOf(key) >= 0 || ProxyComponent.prototype[key];
-          if ((isSameArity || !prevAttr) && existsInPrototype) {
-            if (hasRegenerate) {
-              injectedCode[key] = 'Object.getPrototypeOf(this)[\'' + key + '\'].bind(this)';
-            } else {
-              logger.warn('React Hot Loader:,', 'Non-controlled class', ProxyComponent.name, 'contains a new native or bound function ', key, nextAttr, '. Unable to reproduce');
-            }
-          } else {
-            logger.warn('React Hot Loader:', 'Updated class ', ProxyComponent.name, 'contains native or bound function ', key, nextAttr, '. Unable to reproduce, use arrow functions instead.', '(arity: ' + nextAttr.length + '/' + prevAttr.length + ', proto: ' + (existsInPrototype ? 'yes' : 'no'));
-          }
-          return;
-        }
-
-        var nextString = String(nextAttr);
-        var injectedBefore = injectedMembers[key];
-        var isArrow = nextString.indexOf('=>') >= 0;
-        var isFunction = nextString.indexOf('function') >= 0 || isArrow;
-        var referToThis = nextString.indexOf('this') >= 0;
-        if (nextString !== String(prevAttr) || injectedBefore && nextString !== String(injectedBefore) || isArrow && referToThis) {
-          if (!hasRegenerate) {
-            if (!isFunction) {
-              // just copy prop over
-              injectedCode[key] = nextAttr;
-            } else {
-              logger.warn('React Hot Loader:', ' Updated class ', ProxyComponent.name, 'had different code for', key, nextAttr, '. Unable to reproduce. Regeneration support needed.');
-            }
-          } else {
-            injectedCode[key] = nextAttr;
-          }
-        }
-      }
-    });
-  } catch (e) {
-    logger.warn('React Hot Loader:', e);
-  }
-  return injectedCode;
-}
-
-function checkLifeCycleMethods(ProxyComponent, NextComponent) {
-  try {
-    var p1 = Object.getPrototypeOf(ProxyComponent.prototype);
-    var p2 = NextComponent.prototype;
-    reactLifeCycleMountMethods.forEach(function (key) {
-      var d1 = Object.getOwnPropertyDescriptor(p1, key) || { value: p1[key] };
-      var d2 = Object.getOwnPropertyDescriptor(p2, key) || { value: p2[key] };
-      if (!shallowStringsEqual(d1, d2)) {
-        logger.warn('React Hot Loader:', 'You did update', ProxyComponent.name, 's lifecycle method', key, '. Unable to repeat');
-      }
-    });
-  } catch (e) {
-    // Ignore errors
-  }
-}
-
-function inject(target, currentGeneration, injectedMembers) {
-  if (target[GENERATION] !== currentGeneration) {
-    var hasRegenerate = !!target[REGENERATE_METHOD];
-    Object.keys(injectedMembers).forEach(function (key) {
-      try {
-        if (hasRegenerate) {
-          var usedThis = String(injectedMembers[key]).match(/_this([\d]+)/gi) || [];
-          target[REGENERATE_METHOD](key, '(function REACT_HOT_LOADER_SANDBOX () {\n          var _this  = this; // common babel transpile\n          ' + usedThis.map(function (name) {
-            return 'var ' + name + ' = this;';
-          }) + '\n\n          return ' + injectedMembers[key] + ';\n          }).call(this)');
-        } else {
-          target[key] = injectedMembers[key];
-        }
-      } catch (e) {
-        logger.warn('React Hot Loader: Failed to regenerate method ', key, ' of class ', target);
-        logger.warn('got error', e);
-      }
-    });
-
-    target[GENERATION] = currentGeneration;
-  }
-}
-
-var has = Object.prototype.hasOwnProperty;
-
-var proxies = new WeakMap();
-
-var resetClassProxies = function resetClassProxies() {
-  proxies = new WeakMap();
-};
-
-var blackListedClassMembers = ['constructor', 'render', 'componentWillMount', 'componentDidMount', 'componentDidCatch', 'componentWillReceiveProps', 'componentWillUnmount', 'hotComponentRender', 'getInitialState', 'getDefaultProps'];
-
-var defaultRenderOptions = {
-  componentWillRender: identity,
-  componentDidUpdate: function componentDidUpdate(result) {
-    return result;
-  },
-  componentDidRender: function componentDidRender(result) {
-    return result;
-  }
-};
-
-var filteredPrototypeMethods = function filteredPrototypeMethods(Proto) {
-  return Object.getOwnPropertyNames(Proto).filter(function (prop) {
-    var descriptor = Object.getOwnPropertyDescriptor(Proto, prop);
-    return descriptor && prop.indexOf(PREFIX) !== 0 && blackListedClassMembers.indexOf(prop) < 0 && typeof descriptor.value === 'function';
-  });
-};
-
-var defineClassMember = function defineClassMember(Class, methodName, methodBody) {
-  return safeDefineProperty(Class.prototype, methodName, {
-    configurable: true,
-    writable: true,
-    enumerable: false,
-    value: methodBody
-  });
-};
-
-var defineClassMembers = function defineClassMembers(Class, methods) {
-  return Object.keys(methods).forEach(function (methodName) {
-    return defineClassMember(Class, methodName, methods[methodName]);
-  });
-};
-
-var setSFPFlag = function setSFPFlag(component, flag) {
-  return safeDefineProperty(component, 'isStatelessFunctionalProxy', {
-    configurable: false,
-    writable: false,
-    enumerable: false,
-    value: flag
-  });
-};
-
-var copyMethodDescriptors = function copyMethodDescriptors(target, source) {
-  if (source) {
-    // it is possible to use `function-double` to construct an ideal clone, but does not make a sence
-    var keys = Object.getOwnPropertyNames(source);
-
-    keys.forEach(function (key) {
-      return safeDefineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
-    });
-
-    safeDefineProperty(target, 'toString', {
-      configurable: true,
-      writable: false,
-      enumerable: false,
-      value: function toString() {
-        return String(source);
-      }
-    });
-  }
-
-  return target;
-};
-
-var knownClassComponents = [];
-
-var forEachKnownClass = function forEachKnownClass(cb) {
-  return knownClassComponents.forEach(cb);
-};
-
-function createClassProxy(InitialComponent, proxyKey) {
-  var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-
-  var renderOptions = _extends({}, defaultRenderOptions, options);
-  var proxyConfig = _extends({}, configuration, options.proxy);
-  // Prevent double wrapping.
-  // Given a proxy class, return the existing proxy managing it.
-  var existingProxy = proxies.get(InitialComponent);
-
-  if (existingProxy) {
-    return existingProxy;
-  }
-
-  var CurrentComponent = void 0;
-  var savedDescriptors = {};
-  var injectedMembers = {};
-  var proxyGeneration = 0;
-  var classUpdatePostponed = null;
-  var instancesCount = 0;
-  var isFunctionalComponent = !isReactClass(InitialComponent);
-
-  var lastInstance = null;
-
-  function postConstructionAction() {
-    this[GENERATION] = 0;
-
-    lastInstance = this;
-    // is there is an update pending
-    if (classUpdatePostponed) {
-      var callUpdate = classUpdatePostponed;
-      classUpdatePostponed = null;
-      callUpdate();
-    }
-    // As long we can't override constructor
-    // every class shall evolve from a base class
-    inject(this, proxyGeneration, injectedMembers);
-  }
-
-  function proxiedUpdate() {
-    if (this) {
-      inject(this, proxyGeneration, injectedMembers);
-    }
-  }
-
-  function lifeCycleWrapperFactory(wrapperName) {
-    var sideEffect = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : identity;
-
-    return copyMethodDescriptors(function wrappedMethod() {
-      proxiedUpdate.call(this);
-      sideEffect(this);
-
-      for (var _len = arguments.length, rest = Array(_len), _key = 0; _key < _len; _key++) {
-        rest[_key] = arguments[_key];
-      }
-
-      return !isFunctionalComponent && CurrentComponent.prototype[wrapperName] && CurrentComponent.prototype[wrapperName].apply(this, rest);
-    }, InitialComponent.prototype && InitialComponent.prototype[wrapperName]);
-  }
-
-  function methodWrapperFactory(wrapperName, realMethod) {
-    return copyMethodDescriptors(function wrappedMethod() {
-      for (var _len2 = arguments.length, rest = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
-        rest[_key2] = arguments[_key2];
-      }
-
-      return realMethod.apply(this, rest);
-    }, realMethod);
-  }
-
-  var fakeBasePrototype = function fakeBasePrototype(Proto) {
-    return filteredPrototypeMethods(Proto).reduce(function (acc, key) {
-      acc[key] = methodWrapperFactory(key, Proto[key]);
-      return acc;
-    }, {});
-  };
-
-  var componentDidMount = lifeCycleWrapperFactory('componentDidMount', function (target) {
-    target[PROXY_IS_MOUNTED] = true;
-    target[RENDERED_GENERATION] = get$1();
-    instancesCount++;
-  });
-  var componentDidUpdate = lifeCycleWrapperFactory('componentDidUpdate', renderOptions.componentDidUpdate);
-  var componentWillUnmount = lifeCycleWrapperFactory('componentWillUnmount', function (target) {
-    target[PROXY_IS_MOUNTED] = false;
-    instancesCount--;
-  });
-
-  function hotComponentRender() {
-    // repeating subrender call to keep RENDERED_GENERATION up to date
-    renderOptions.componentWillRender(this);
-    proxiedUpdate.call(this);
-    var result = void 0;
-
-    // We need to use hasOwnProperty here, as the cached result is a React node
-    // and can be null or some other falsy value.
-    if (has.call(this, CACHED_RESULT)) {
-      result = this[CACHED_RESULT];
-      delete this[CACHED_RESULT];
-    } else if (isFunctionalComponent) {
-      result = CurrentComponent(this.props, this.context);
-    } else {
-      var renderMethod = CurrentComponent.prototype.render || this.render;
-      /* eslint-disable no-use-before-define */
-      if (renderMethod === proxiedRender) {
-        throw new Error('React-Hot-Loader: you are trying to render Component without .render method');
-      }
-      /* eslint-enable */
-      result = renderMethod.apply(this,
-      // eslint-disable-next-line prefer-rest-params
-      arguments);
-    }
-
-    return renderOptions.componentDidRender.call(this, result);
-  }
-
-  function hotComponentUpdate() {
-    renderOptions.componentWillRender(this);
-    proxiedUpdate.call(this);
-  }
-
-  function proxiedRender() {
-    renderOptions.componentWillRender(this);
-
-    for (var _len3 = arguments.length, args = Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
-      args[_key3] = arguments[_key3];
-    }
-
-    return hotComponentRender.call.apply(hotComponentRender, [this].concat(args));
-  }
-
-  var defineProxyMethods = function defineProxyMethods(Proxy) {
-    var Base = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-
-    defineClassMembers(Proxy, _extends({}, fakeBasePrototype(Base), proxyConfig.pureRender ? {} : { render: proxiedRender }, {
-      hotComponentRender: hotComponentRender,
-      hotComponentUpdate: hotComponentUpdate,
-      componentDidMount: componentDidMount,
-      componentDidUpdate: componentDidUpdate,
-      componentWillUnmount: componentWillUnmount
-    }));
-  };
-
-  var _ProxyFacade = void 0;
-  var ProxyComponent = null;
-  var proxy = void 0;
-
-  if (!isFunctionalComponent) {
-    // Component
-    ProxyComponent = proxyClassCreator(InitialComponent, postConstructionAction);
-
-    defineProxyMethods(ProxyComponent, InitialComponent.prototype);
-
-    knownClassComponents.push(ProxyComponent);
-
-    _ProxyFacade = ProxyComponent;
-  } else if (!proxyConfig.allowSFC) {
-    proxyConfig.pureRender = false;
-    // SFC Converted to component. Does not support returning precreated instances from render.
-    ProxyComponent = proxyClassCreator(React.Component, postConstructionAction);
-
-    defineProxyMethods(ProxyComponent);
-    _ProxyFacade = ProxyComponent;
-  } else {
-    // SFC
-
-    // This function only gets called for the initial mount. The actual
-    // rendered component instance will be the return value.
-
-    // eslint-disable-next-line func-names
-    _ProxyFacade = function ProxyFacade(props, context) {
-      /*
-         ! THIS IS NOT YOUR COMPONENT !
-        !  THIS IS REACT-HOT-LOADER  !
-         And you are probably looking for a function component of yours
-        It's hidden, but there is a way to fix this - just reconfigure your application a bit
-        see https://github.com/gaearon/react-hot-loader/issues/1311
-        */
-
-      var result = CurrentComponent(props, context);
-
-      // This is a Relay-style container constructor. We can't do the prototype-
-      // style wrapping for this as we do elsewhere, so just we just pass it
-      // through as-is.
-      if (isReactClassInstance(result)) {
-        ProxyComponent = null;
-
-        // Relay lazily sets statics like getDerivedStateFromProps on initial
-        // render in lazy construction, so we need to do the same here.
-        transferStaticProps(_ProxyFacade, savedDescriptors, null, CurrentComponent);
-
-        return result;
-      }
-
-      // simple SFC, could continue to be SFC
-      if (proxyConfig.pureSFC) {
-        if (!CurrentComponent.contextTypes) {
-          if (!_ProxyFacade.isStatelessFunctionalProxy) {
-            setSFPFlag(_ProxyFacade, true);
-          }
-
-          return renderOptions.componentDidRender(result);
-        }
-      }
-      setSFPFlag(_ProxyFacade, false);
-      proxyConfig.pureRender = false;
-
-      // Otherwise, it's a normal functional component. Build the real proxy
-      // and use it going forward.
-      ProxyComponent = proxyClassCreator(React.Component, postConstructionAction);
-
-      defineProxyMethods(ProxyComponent);
-
-      var determinateResult = new ProxyComponent(props, context);
-
-      // Cache the initial render result so we don't call the component function
-      // a second time for the initial render.
-      determinateResult[CACHED_RESULT] = result;
-      return determinateResult;
-    };
-  }
-
-  function get$$1() {
-    return _ProxyFacade;
-  }
-
-  function getCurrent() {
-    return CurrentComponent;
-  }
-
-  safeDefineProperty(_ProxyFacade, UNWRAP_PROXY, {
-    configurable: false,
-    writable: false,
-    enumerable: false,
-    value: getCurrent
-  });
-
-  safeDefineProperty(_ProxyFacade, PROXY_KEY, {
-    configurable: false,
-    writable: false,
-    enumerable: false,
-    value: proxyKey
-  });
-
-  safeDefineProperty(_ProxyFacade, 'toString', {
-    configurable: true,
-    writable: false,
-    enumerable: false,
-    value: function toString() {
-      return String(CurrentComponent);
-    }
-  });
-
-  function update(NextComponent) {
-    if (typeof NextComponent !== 'function') {
-      throw new Error('Expected a constructor.');
-    }
-
-    if (NextComponent === CurrentComponent) {
-      return false;
-    }
-
-    // Prevent proxy cycles
-    var existingProxy = proxies.get(NextComponent);
-    if (existingProxy) {
-      return false;
-    }
-
-    isFunctionalComponent = !isReactClass(NextComponent);
-
-    proxies.set(NextComponent, proxy);
-
-    proxyGeneration++;
-
-    // Save the next constructor so we call it
-    var PreviousComponent = CurrentComponent;
-    CurrentComponent = NextComponent;
-
-    // Try to infer displayName
-    var displayName = getComponentDisplayName(CurrentComponent);
-
-    safeDefineProperty(_ProxyFacade, 'displayName', {
-      configurable: true,
-      writable: false,
-      enumerable: true,
-      value: displayName
-    });
-
-    if (ProxyComponent) {
-      safeDefineProperty(ProxyComponent, 'name', {
-        value: displayName
-      });
-    }
-
-    savedDescriptors = transferStaticProps(_ProxyFacade, savedDescriptors, PreviousComponent, NextComponent);
-
-    if (isFunctionalComponent || !ProxyComponent) ; else {
-      var classHotReplacement = function classHotReplacement() {
-        checkLifeCycleMethods(ProxyComponent, NextComponent);
-        if (proxyGeneration > 1) {
-          getElementCloseHook(ProxyComponent);
-          filteredPrototypeMethods(ProxyComponent.prototype).forEach(function (methodName) {
-            if (!has.call(NextComponent.prototype, methodName)) {
-              delete ProxyComponent.prototype[methodName];
-            }
-          });
-        }
-        Object.setPrototypeOf(ProxyComponent.prototype, NextComponent.prototype);
-        defineProxyMethods(ProxyComponent, NextComponent.prototype);
-        if (proxyGeneration > 1) {
-          injectedMembers = mergeComponents(ProxyComponent, NextComponent, InitialComponent, lastInstance, injectedMembers);
-          getElementComparisonHook(ProxyComponent);
-        }
-      };
-
-      // Was constructed once
-      if (instancesCount > 0) {
-        classHotReplacement();
-      } else {
-        classUpdatePostponed = classHotReplacement;
-      }
-    }
-
-    return true;
-  }
-
-  update(InitialComponent);
-
-  var dereference = function dereference() {
-    proxies.delete(InitialComponent);
-    proxies.delete(_ProxyFacade);
-    proxies.delete(CurrentComponent);
-  };
-
-  proxy = { get: get$$1, update: update, dereference: dereference, getCurrent: function getCurrent() {
-      return CurrentComponent;
-    } };
-
-  proxies.set(InitialComponent, proxy);
-  proxies.set(_ProxyFacade, proxy);
-
-  safeDefineProperty(proxy, UNWRAP_PROXY, {
-    configurable: false,
-    writable: false,
-    enumerable: false,
-    value: getCurrent
-  });
-
-  return proxy;
-}
-
-// this counter tracks `register` invocations.
-// works good, but code splitting is breaking it
-var generation = 1;
-
-// these counters are aimed to mitigate the "first render"
-var hotComparisonCounter = 0;
-var hotComparisonRuns = 0;
-var hotReplacementGeneration = 0;
-
-var nullFunction = function nullFunction() {
-  return {};
-};
-
-// these callbacks would be called on component update
-var onHotComparisonOpen = nullFunction;
-var onHotComparisonElement = nullFunction;
-var onHotComparisonClose = nullFunction;
-
-// inversion of control
-var setComparisonHooks = function setComparisonHooks(open, element, close) {
-  onHotComparisonOpen = open;
-  onHotComparisonElement = element;
-  onHotComparisonClose = close;
-};
-
-var getElementComparisonHook = function getElementComparisonHook(component) {
-  return onHotComparisonElement(component);
-};
-var getElementCloseHook = function getElementCloseHook(component) {
-  return onHotComparisonClose(component);
-};
-
-var hotComparisonOpen = function hotComparisonOpen() {
-  return hotComparisonCounter > 0 && hotComparisonRuns > 0 && hotReplacementGeneration > 0;
-};
-
-var openGeneration = function openGeneration() {
-  return forEachKnownClass(onHotComparisonElement);
-};
-
-var closeGeneration = function closeGeneration() {
-  return forEachKnownClass(onHotComparisonClose);
-};
-
-var incrementHot = function incrementHot() {
-  if (!hotComparisonCounter) {
-    openGeneration();
-    onHotComparisonOpen();
-  }
-  hotComparisonCounter++;
-};
-var decrementHot = function decrementHot() {
-  hotComparisonCounter--;
-  if (!hotComparisonCounter) {
-    closeGeneration();
-    hotComparisonRuns++;
-  }
-};
-
-// TODO: shall it be called from incrementHotGeneration?
-var enterHotUpdate = function enterHotUpdate() {
-  Promise.resolve(incrementHot()).then(function () {
-    return setTimeout(decrementHot, 0);
-  });
-};
-
-// TODO: deprecate?
-var increment = function increment() {
-  enterHotUpdate();
-  return generation++;
-};
-var get$1 = function get() {
-  return generation;
-};
-
-// These counters tracks HMR generations, and probably should be used instead of the old one
-var incrementHotGeneration = function incrementHotGeneration() {
-  return hotReplacementGeneration++;
-};
-var getHotGeneration = function getHotGeneration() {
-  return hotReplacementGeneration;
-};
-
-// some `empty` names, React can autoset display name to...
-var UNDEFINED_NAMES = {
-  Unknown: true,
-  Component: true
-};
-
-var areNamesEqual = function areNamesEqual(a, b) {
-  return a === b || UNDEFINED_NAMES[a] && UNDEFINED_NAMES[b];
-};
-
-var isFunctional = function isFunctional(fn) {
-  return typeof fn === 'function';
-};
-var getTypeOf = function getTypeOf(type) {
-  if (isReactClass(type)) return 'ReactComponent';
-  if (isFunctional(type)) return 'StatelessFunctional';
-  return 'Fragment'; // ?
-};
-
-function clearStringFast(str) {
-  return str.length < 12 ? str : (' ' + str).slice(1);
-}
-
-var haveTextSimilarity = function haveTextSimilarity(a, b) {
-  return (
-    // equal or slight changed
-    a === b || levenshtein.get(clearStringFast(a), clearStringFast(b)) < a.length * 0.2
-  );
-};
-
-var getBaseProto = function getBaseProto(source) {
-  return source.prototype.hotComponentRender ? Object.getPrototypeOf(source.prototype) : source.prototype;
-};
-
-var equalClasses = function equalClasses(a, b) {
-  var prototypeA = getBaseProto(a);
-  var prototypeB = getBaseProto(b);
-
-  var hits = 0;
-  var misses = 0;
-  var comparisons = 0;
-  Object.getOwnPropertyNames(prototypeA).forEach(function (key) {
-    var descriptorA = Object.getOwnPropertyDescriptor(prototypeA, key);
-    var valueA = descriptorA && (descriptorA.value || descriptorA.get || descriptorA.set);
-    var descriptorB = Object.getOwnPropertyDescriptor(prototypeB, key);
-    var valueB = descriptorB && (descriptorB.value || descriptorB.get || descriptorB.set);
-
-    if (typeof valueA === 'function' && key !== 'constructor') {
-      comparisons++;
-      if (haveTextSimilarity(String(valueA), String(valueB))) {
-        hits++;
-      } else {
-        misses++;
-        if (key === 'render') {
-          misses++;
-        }
-      }
-    }
-  });
-  // allow to add or remove one function
-  return hits > 0 && misses <= 1 || comparisons === 0;
-};
-
-var areSwappable = function areSwappable(a, b) {
-  // both are registered components and have the same name
-  if (getIdByType(b) && getIdByType(a) === getIdByType(b)) {
-    return true;
-  }
-  if (getTypeOf(a) !== getTypeOf(b)) {
-    return false;
-  }
-  if (isReactClass(a)) {
-    return areNamesEqual(getComponentDisplayName(a), getComponentDisplayName(b)) && equalClasses(a, b);
-  }
-
-  if (isFunctional(a)) {
-    var nameA = getComponentDisplayName(a);
-    if (!areNamesEqual(nameA, getComponentDisplayName(b))) {
-      return false;
-    }
-    return nameA !== 'Component' || haveTextSimilarity(String(a), String(b));
-  }
-  return false;
-};
-
-function merge() {
-  var acc = {};
-
-  for (var _len = arguments.length, sources = Array(_len), _key = 0; _key < _len; _key++) {
-    sources[_key] = arguments[_key];
-  }
-
-  for (var _iterator = sources, _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator]();;) {
-    var _ref;
-
-    if (_isArray) {
-      if (_i >= _iterator.length) break;
-      _ref = _iterator[_i++];
-    } else {
-      _i = _iterator.next();
-      if (_i.done) break;
-      _ref = _i.value;
-    }
-
-    var source = _ref;
-
-    if (source instanceof Array) {
-      if (!(acc instanceof Array)) {
-        acc = [];
-      }
-      acc = [].concat(acc, source);
-    } else if (source instanceof Object) {
-      for (var _iterator2 = Object.keys(source), _isArray2 = Array.isArray(_iterator2), _i2 = 0, _iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator]();;) {
-        var _babelHelpers$extends;
-
-        var _ref2;
-
-        if (_isArray2) {
-          if (_i2 >= _iterator2.length) break;
-          _ref2 = _iterator2[_i2++];
-        } else {
-          _i2 = _iterator2.next();
-          if (_i2.done) break;
-          _ref2 = _i2.value;
-        }
-
-        var key = _ref2;
-
-        var value = source[key];
-        if (value instanceof Object && key in acc) {
-          value = merge(acc[key], value);
-        }
-        acc = _extends({}, acc, (_babelHelpers$extends = {}, _babelHelpers$extends[key] = value, _babelHelpers$extends));
-      }
-    }
-  }
-  return acc;
-}
-
-var signatures = void 0;
-var proxiesByID = void 0;
-var blackListedProxies = void 0;
-var registeredComponents = void 0;
-var idsByType = void 0;
-
-var elementCount = 0;
-var renderOptions = {};
-
-var componentOptions = void 0;
-
-var generateTypeId = function generateTypeId() {
-  return 'auto-' + elementCount++;
-};
-
-var getIdByType = function getIdByType(type) {
-  return idsByType.get(type);
-};
-var isProxyType = function isProxyType(type) {
-  return type[PROXY_KEY];
-};
-
-var getProxyById = function getProxyById(id) {
-  return proxiesByID[id];
-};
-var getProxyByType = function getProxyByType(type) {
-  return getProxyById(getIdByType(type));
-};
-
-var registerComponent = function registerComponent(type) {
-  return registeredComponents.set(type, 1);
-};
-var isRegisteredComponent = function isRegisteredComponent(type) {
-  return registeredComponents.has(type);
-};
-
-var setStandInOptions = function setStandInOptions(options) {
-  renderOptions = options;
-};
-
-var updateFunctionProxyById = function updateFunctionProxyById(id, type, updater) {
-  // Remember the ID.
-  idsByType.set(type, id);
-  var proxy = proxiesByID[id];
-  if (!proxy) {
-    proxiesByID[id] = type;
-  }
-  updater(proxiesByID[id], type);
-  // proxiesByID[id] = type; // keep the first ref
-
-  return proxiesByID[id];
-};
-
-var updateProxyById = function updateProxyById(id, type) {
-  var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-
-  if (!id) {
-    return null;
-  }
-  // Remember the ID.
-  idsByType.set(type, id);
-
-  if (!proxiesByID[id]) {
-    proxiesByID[id] = createClassProxy(type, id, merge({}, renderOptions, { proxy: componentOptions.get(type) || {} }, options));
-  } else if (proxiesByID[id].update(type)) {
-    // proxy could be registered again only in case of HMR
-    incrementHotGeneration();
-  }
-  return proxiesByID[id];
-};
-
-var createProxyForType = function createProxyForType(type, options) {
-  return getProxyByType(type) || updateProxyById(generateTypeId(), type, options);
-};
-
-var isColdType = function isColdType(type) {
-  return blackListedProxies.has(type);
-};
-
-var isTypeBlacklisted = function isTypeBlacklisted(type) {
-  return isColdType(type) || isCompositeComponent(type) && (configuration.ignoreSFC && !isReactClass(type) || configuration.ignoreComponents && isReactClass(type));
-};
-var blacklistByType = function blacklistByType(type) {
-  return blackListedProxies.set(type, true);
-};
-
-var setComponentOptions = function setComponentOptions(component, options) {
-  return componentOptions.set(component, options);
-};
-
-var addSignature = function addSignature(type, signature) {
-  return signatures.set(type, signature);
-};
-var getSignature = function getSignature(type) {
-  return signatures.get(type);
-};
-
-var resetProxies = function resetProxies() {
-  proxiesByID = {};
-  idsByType = new WeakMap();
-  blackListedProxies = new WeakMap();
-  registeredComponents = new WeakMap();
-  componentOptions = new WeakMap();
-  signatures = new WeakMap();
-  resetClassProxies();
-};
-
-resetProxies();
-
-var tune = {
-  allowSFC: false
-};
-
-var preactAdapter = function preactAdapter(instance, resolveType) {
-  var oldHandler = instance.options.vnode;
-
-  setConfiguration(tune);
-
-  instance.options.vnode = function (vnode) {
-    if (vnode.type) {
-      vnode.type = resolveType(vnode.type);
-    } else if (vnode.nodeName) {
-      vnode.nodeName = resolveType(vnode.nodeName);
-    }
-    if (oldHandler) {
-      oldHandler(vnode);
-    }
-  };
-};
-
-/* global document */
-
-var lastError = [];
-
-var overlayStyle = {
-  position: 'fixed',
-  left: 0,
-  top: 0,
-  right: 0,
-
-  backgroundColor: 'rgba(255,200,200,0.9)',
-
-  color: '#000',
-  fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif',
-  fontSize: '12px',
-  margin: 0,
-  padding: '16px',
-  maxHeight: '50%',
-  overflow: 'auto',
-  zIndex: 10000
-};
-
-var inlineErrorStyle = {
-  backgroundColor: '#FEE'
-};
-
-var liCounter = {
-  position: 'absolute',
-  left: '10px'
-};
-
-var listStyle = {};
-
-var EmptyErrorPlaceholder = function EmptyErrorPlaceholder(_ref) {
-  var component = _ref.component;
-  return React__default.createElement(
-    'span',
-    { style: inlineErrorStyle, role: 'img', 'aria-label': 'Rect-Hot-Loader Error' },
-    '\u269B\uFE0F\uD83D\uDD25\uD83E\uDD15 (',
-    component ? getComponentDisplayName(component.constructor || component) : 'Unknown location',
-    ')',
-    component && component.retryHotLoaderError && React__default.createElement(
-      'button',
-      { onClick: function onClick() {
-          return component.retryHotLoaderError();
-        }, title: 'Retry' },
-      '\u27F3'
-    )
-  );
-};
-
-var errorHeader = function errorHeader(component, componentStack) {
-  if (component || componentStack) {
-    return React__default.createElement(
-      'span',
-      null,
-      '(',
-      component ? getComponentDisplayName(component.constructor || component) : 'Unknown location',
-      component && ', ',
-      componentStack && componentStack.split('\n').filter(Boolean)[0],
-      ')'
-    );
-  }
-  return null;
-};
-
-var mapError = function mapError(_ref2) {
-  var error = _ref2.error,
-      errorInfo = _ref2.errorInfo,
-      component = _ref2.component;
-
-  if (!error) {
-    error = { message: 'undefined error' };
-  }
-
-  return React__default.createElement(
-    React__default.Fragment,
-    null,
-    React__default.createElement(
-      'p',
-      { style: { color: 'red' } },
-      errorHeader(component, errorInfo && errorInfo.componentStack),
-      ' ',
-      error.toString ? error.toString() : error && error.message || 'undefined error'
-    ),
-    errorInfo && errorInfo.componentStack ? React__default.createElement(
-      'div',
-      null,
-      React__default.createElement(
-        'div',
-        null,
-        'Stack trace:'
-      ),
-      React__default.createElement(
-        'ul',
-        { style: { color: 'red', marginTop: '10px' } },
-        error.stack.split('\n').slice(1, 2).map(function (line, i) {
-          return React__default.createElement(
-            'li',
-            { key: String(i) },
-            line
-          );
-        }),
-        React__default.createElement('hr', null),
-        errorInfo.componentStack.split('\n').filter(Boolean).map(function (line, i) {
-          return React__default.createElement(
-            'li',
-            { key: String(i) },
-            line
-          );
-        })
-      )
-    ) : error.stack && React__default.createElement(
-      'div',
-      null,
-      React__default.createElement(
-        'div',
-        null,
-        'Stack trace:'
-      ),
-      React__default.createElement(
-        'ul',
-        { style: { color: 'red', marginTop: '10px' } },
-        error.stack.split('\n').map(function (line, i) {
-          return React__default.createElement(
-            'li',
-            { key: String(i) },
-            line
-          );
-        })
-      )
-    )
-  );
-};
-
-var ErrorOverlay = function (_React$Component) {
-  inherits(ErrorOverlay, _React$Component);
-
-  function ErrorOverlay() {
-    var _temp, _this, _ret;
-
-    classCallCheck(this, ErrorOverlay);
-
-    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
-
-    return _ret = (_temp = (_this = possibleConstructorReturn(this, _React$Component.call.apply(_React$Component, [this].concat(args))), _this), _this.state = {
-      visible: true
-    }, _this.toggle = function () {
-      return _this.setState({ visible: !_this.state.visible });
-    }, _this.retry = function () {
-      return _this.setState(function () {
-        var errors = _this.props.errors;
-
-        enterHotUpdate();
-        clearExceptions();
-        errors.map(function (_ref3) {
-          var component = _ref3.component;
-          return component;
-        }).filter(Boolean).filter(function (_ref4) {
-          var retryHotLoaderError = _ref4.retryHotLoaderError;
-          return !!retryHotLoaderError;
-        }).forEach(function (component) {
-          return component.retryHotLoaderError();
-        });
-
-        return {};
-      });
-    }, _temp), possibleConstructorReturn(_this, _ret);
-  }
-
-  ErrorOverlay.prototype.render = function render() {
-    var errors = this.props.errors;
-
-    if (!errors.length) {
-      return null;
-    }
-    var visible = this.state.visible;
-
-    return React__default.createElement(
-      'div',
-      { style: overlayStyle },
-      React__default.createElement(
-        'h2',
-        { style: { margin: 0 } },
-        '\u269B\uFE0F\uD83D\uDD25\uD83D\uDE2D: hot update was not successful ',
-        React__default.createElement(
-          'button',
-          { onClick: this.toggle },
-          visible ? 'collapse' : 'expand'
-        ),
-        React__default.createElement(
-          'button',
-          { onClick: this.retry },
-          'Retry'
-        )
-      ),
-      visible && React__default.createElement(
-        'ul',
-        { style: listStyle },
-        errors.map(function (err, i) {
-          return React__default.createElement(
-            'li',
-            { key: i },
-            React__default.createElement(
-              'span',
-              { style: liCounter },
-              '(',
-              i + 1,
-              '/',
-              errors.length,
-              ')'
-            ),
-            mapError(err)
-          );
-        })
-      )
-    );
-  };
-
-  return ErrorOverlay;
-}(React__default.Component);
-
-var initErrorOverlay = function initErrorOverlay() {
-  if (typeof document === 'undefined' || !document.body) {
-    return;
-  }
-  var div = document.querySelector('.react-hot-loader-error-overlay');
-  if (!div) {
-    div = document.createElement('div');
-    div.className = 'react-hot-loader-error-overlay';
-    document.body.appendChild(div);
-  }
-  if (lastError.length) {
-    var Overlay = configuration.ErrorOverlay || ErrorOverlay;
-    ReactDOM.render(React__default.createElement(Overlay, { errors: lastError }), div);
-  } else {
-    div.parentNode.removeChild(div);
-  }
-};
-
-function clearExceptions() {
-  if (lastError.length) {
-    lastError = [];
-    initErrorOverlay();
-  }
-}
-
-function logException(error, errorInfo, component) {
-  // do not suppress error
-
-  /* eslint-disable no-console */
-  console.error(error);
-  /* eslint-enable */
-
-  lastError.push({ error: error, errorInfo: errorInfo, component: component });
-  initErrorOverlay();
-}
-
-/* eslint-disable no-underscore-dangle */
-
-var hotRenderWithHooks = ReactDOM.hotRenderWithHooks || function (fiber, render) {
-  return render();
-};
-
-function pushStack(stack, node) {
-  stack.type = node.type;
-  stack.elementType = node.elementType || node.type;
-  stack.children = [];
-  stack.instance = typeof node.type === 'function' ? node.stateNode : stack;
-  stack.fiber = node;
-
-  if (!stack.instance) {
-    stack.instance = {
-      SFC_fake: stack.type,
-      props: {},
-      render: function render() {
-        return hotRenderWithHooks(node, function () {
-          return stack.type(stack.instance.props);
-        });
-      }
-    };
-  }
-}
-
-function hydrateFiberStack(node, stack) {
-  pushStack(stack, node);
-  if (node.child) {
-    var child = node.child;
-
-    do {
-      var childStack = {};
-      hydrateFiberStack(child, childStack);
-      stack.children.push(childStack);
-      child = child.sibling;
-    } while (child);
-  }
-}
-
-/* eslint-disable no-underscore-dangle */
-
-function pushState(stack, type, instance) {
-  stack.type = type;
-  stack.elementType = type;
-  stack.children = [];
-  stack.instance = instance || stack;
-
-  if (typeof type === 'function' && type.isStatelessFunctionalProxy) {
-    // In React 15 SFC is wrapped by component. We have to detect our proxies and change the way it works
-    stack.instance = {
-      SFC_fake: type,
-      props: {},
-      render: function render() {
-        return type(stack.instance.props);
-      }
-    };
-  }
-}
-
-function hydrateLegacyStack(node, stack) {
-  if (node._currentElement) {
-    pushState(stack, node._currentElement.type, node._instance || stack);
-  }
-
-  if (node._renderedComponent) {
-    var childStack = {};
-    hydrateLegacyStack(node._renderedComponent, childStack);
-    stack.children.push(childStack);
-  } else if (node._renderedChildren) {
-    Object.keys(node._renderedChildren).forEach(function (key) {
-      var childStack = {};
-      hydrateLegacyStack(node._renderedChildren[key], childStack);
-      stack.children.push(childStack);
-    });
-  }
-}
-
-var shouldNotPatchComponent = function shouldNotPatchComponent(type) {
-  return isTypeBlacklisted(type);
-};
-
-function resolveUtility(type) {
-  // all "utility" types are resolved to their __initial__ shapes
-  // that enables to never change reference to them, and gives the ability to maintain React Tree on HMR
-
-  // all operations could be skipped with react-hot-dom enabled
-
-  if ((typeof type === 'undefined' ? 'undefined' : _typeof(type)) === 'object') {
-    if (configuration.integratedComparator) {
-      return type;
-    }
-    var element = { type: type };
-    if (isLazyType(element) || isMemoType(element) || isForwardType(element) || isContextType(element)) {
-      return getProxyByType(type) || type;
-    }
-  }
-
-  return undefined;
-}
-
-function resolveComponent(type) {
-  var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-
-  var existingProxy = getProxyByType(type);
-
-  // cold API
-  if (shouldNotPatchComponent(type)) {
-    return existingProxy ? existingProxy.getCurrent() : type;
-  }
-
-  if (!existingProxy && configuration.onComponentCreate) {
-    configuration.onComponentCreate(type, getComponentDisplayName(type));
-    if (shouldNotPatchComponent(type)) {
-      return type;
-    }
-  }
-
-  var proxy = internalConfiguration.disableProxyCreation ? existingProxy : createProxyForType(type, options);
-
-  return proxy ? proxy.get() : undefined;
-}
-
-function resolveProxy(type) {
-  if (isProxyType(type)) {
-    return type;
-  }
-
-  return undefined;
-}
-
-function resolveNotComponent(type) {
-  if (!isCompositeComponent(type)) {
-    return type;
-  }
-
-  return undefined;
-}
-
-var getLatestTypeVersion = function getLatestTypeVersion(type) {
-  var existingProxy = getProxyByType(type);
-  return existingProxy && existingProxy.getCurrent && existingProxy.getCurrent();
-};
-
-var resolveSimpleType = function resolveSimpleType(type) {
-  if (!type) {
-    return type;
-  }
-
-  var simpleResult = resolveProxy(type) || resolveUtility(type) || resolveNotComponent(type);
-  if (simpleResult) {
-    return simpleResult;
-  }
-
-  var lastType = getLatestTypeVersion(type);
-
-  // only lazy loaded components any now failing into this branch
-
-  // if (lastType && lastType !== type) {
-  //   console.warn('RHL: used type', type, 'is obsolete. Something is wrong with HMR.');
-  // }
-
-  return lastType || type;
-};
-
-var resolveType = function resolveType(type) {
-  var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-
-  if (!type) {
-    return type;
-  }
-
-  return resolveProxy(type) || resolveUtility(type) || resolveNotComponent(type) || resolveComponent(type, options) || type;
-};
-
-/* eslint-disable no-underscore-dangle */
-
-function getReactStack(instance) {
-  var rootNode = getInternalInstance(instance);
-  var stack = {};
-  if (rootNode) {
-    // React stack
-    var isFiber = typeof rootNode.tag === 'number';
-    if (isFiber) {
-      hydrateFiberStack(rootNode, stack);
-    } else {
-      hydrateLegacyStack(rootNode, stack);
-    }
-  }
-
-  return stack;
-}
-
-var markUpdate = function markUpdate(_ref) {
-  var fiber = _ref.fiber;
-
-  // do not update what we should not
-  if (!fiber || typeof fiber.type === 'string') {
-    return;
-  }
-
-  var mostResentType = resolveType(fiber.type) || fiber.type;
-  fiber.type = mostResentType;
-  // do not change fiber.elementType to keep old information for the hot-update
-
-  fiber.expirationTime = 1;
-  if (fiber.alternate) {
-    fiber.alternate.expirationTime = 1;
-    fiber.alternate.type = fiber.type;
-  }
-
-  if (fiber.memoizedProps && _typeof(fiber.memoizedProps) === 'object') {
-    fiber.memoizedProps = _extends({
-      cacheBusterProp: true
-    }, fiber.memoizedProps);
-  }
-
-  if (fiber.stateNode) ;
-};
-
-var cleanupReact = function cleanupReact() {
-  if (ReactDOM.hotCleanup) {
-    ReactDOM.hotCleanup();
-  }
-};
-
-var deepMarkUpdate = function deepMarkUpdate(stack) {
-  markUpdate(stack);
-  if (stack.children) {
-    stack.children.forEach(deepMarkUpdate);
-  }
-};
-
-var renderStack = [];
-
-var stackReport = function stackReport() {
-  var rev = renderStack.slice().reverse();
-  logger.warn('in', rev[0].name, rev);
-};
-
-var emptyMap = new Map();
-var stackContext = function stackContext() {
-  return (renderStack[renderStack.length - 1] || {}).context || emptyMap;
-};
-
-var shouldUseRenderMethod = function shouldUseRenderMethod(fn) {
-  return fn && (isReactClassInstance(fn) || fn.SFC_fake);
-};
-
-var getElementType$1 = function getElementType$$1(child) {
-  return child.type[UNWRAP_PROXY] ? child.type[UNWRAP_PROXY]() : child.type;
-};
-
-var filterNullArray = function filterNullArray(a) {
-  if (!a) return [];
-  return a.filter(function (x) {
-    return !!x;
-  });
-};
-
-var unflatten = function unflatten(a) {
-  return a.reduce(function (acc, a) {
-    if (Array.isArray(a)) {
-      acc.push.apply(acc, unflatten(a));
-    } else {
-      acc.push(a);
-    }
-    return acc;
-  }, []);
-};
-
-var isArray = function isArray(fn) {
-  return Array.isArray(fn);
-};
-var asArray = function asArray(a) {
-  return isArray(a) ? a : [a];
-};
-
-var render = function render(component, stack) {
-  if (!component) {
-    return [];
-  }
-  if (component.hotComponentUpdate) {
-    component.hotComponentUpdate();
-  }
-  if (shouldUseRenderMethod(component)) {
-    // not calling real render method to prevent call recursion.
-    // stateless components does not have hotComponentRender
-    return component.hotComponentRender ? component.hotComponentRender() : component.render();
-  }
-  if (isForwardType(component)) {
-    // render forward type in a sandbox
-    return hotRenderWithHooks(stack.fiber, function () {
-      return component.type.render(component.props, null);
-    });
-  }
-  if (isArray(component)) {
-    return component.map(render);
-  }
-  if (component.children) {
-    return component.children;
-  }
-
-  return [];
-};
-
-var NO_CHILDREN = { children: [] };
-var mapChildren = function mapChildren(children, instances) {
-  return {
-    children: children.filter(function (c) {
-      return c;
-    }).map(function (child, index) {
-      if ((typeof child === 'undefined' ? 'undefined' : _typeof(child)) !== 'object' || child.isMerged) {
-        return child;
-      }
-      var instanceLine = instances[index] || {};
-      var oldChildren = asArray(instanceLine.children || []);
-
-      if (Array.isArray(child)) {
-        return _extends({
-          type: null
-        }, mapChildren(child, oldChildren));
-      }
-
-      var newChildren = asArray(child.props && child.props.children || child.children || []);
-      var nextChildren = child.type !== 'function' && oldChildren.length && mapChildren(newChildren, oldChildren);
-
-      return _extends({
-        nextProps: child.props,
-        isMerged: true
-      }, instanceLine, nextChildren || {}, {
-        type: child.type
-      });
-    })
-  };
-};
-
-var mergeInject = function mergeInject(a, b, instance) {
-  if (a && !Array.isArray(a)) {
-    return mergeInject([a], b);
-  }
-  if (b && !Array.isArray(b)) {
-    return mergeInject(a, [b]);
-  }
-
-  if (!a || !b) {
-    return NO_CHILDREN;
-  }
-  if (a.length === b.length) {
-    return mapChildren(a, b);
-  }
-
-  // in some cases (no confidence here) B could contain A except null children
-  // in some cases - could not.
-  // this depends on React version and the way you build component.
-
-  var nonNullA = filterNullArray(a);
-  if (nonNullA.length === b.length) {
-    return mapChildren(nonNullA, b);
-  }
-
-  var flatA = unflatten(nonNullA);
-  var flatB = unflatten(b);
-  if (flatA.length === flatB.length) {
-    return mapChildren(flatA, flatB);
-  }
-  if (flatB.length === 0 && flatA.length === 1 && _typeof(flatA[0]) !== 'object') ; else if (!configuration.IS_REACT_MERGE_ENABLED) {
-    logger.warn('React-hot-loader: unable to merge ', a, 'and children of ', instance);
-    stackReport();
-  }
-  return NO_CHILDREN;
-};
-
-var transformFlowNode = function transformFlowNode(flow) {
-  return flow.reduce(function (acc, node) {
-    if (node && isFragmentNode(node)) {
-      if (node.props && node.props.children) {
-        return [].concat(acc, filterNullArray(asArray(node.props.children)));
-      }
-      if (node.children) {
-        return [].concat(acc, filterNullArray(asArray(node.children)));
-      }
-    }
-    return [].concat(acc, [node]);
-  }, []);
-};
-
-var scheduledUpdates = [];
-var scheduledUpdate = 0;
-
-var flushScheduledUpdates = function flushScheduledUpdates() {
-  var instances = scheduledUpdates;
-  scheduledUpdates = [];
-  scheduledUpdate = 0;
-  instances.forEach(function (instance) {
-    return instance[PROXY_IS_MOUNTED] && updateInstance(instance);
-  });
-};
-
-var unscheduleUpdate = function unscheduleUpdate(instance) {
-  scheduledUpdates = scheduledUpdates.filter(function (inst) {
-    return inst !== instance;
-  });
-};
-
-var scheduleInstanceUpdate = function scheduleInstanceUpdate(instance) {
-  scheduledUpdates.push(instance);
-  if (!scheduledUpdate) {
-    scheduledUpdate = setTimeout(flushScheduledUpdates, 4);
-  }
-};
-
-var hotReplacementRender = function hotReplacementRender(instance, stack) {
-  if (isReactClassInstance(instance)) {
-    var type = getElementType$1(stack);
-
-    renderStack.push({
-      name: getComponentDisplayName(type),
-      type: type,
-      props: stack.instance.props,
-      context: stackContext()
-    });
-  }
-
-  try {
-    var flow = transformFlowNode(filterNullArray(asArray(render(instance, stack))));
-
-    var children = stack.children;
-
-
-    flow.forEach(function (child, index) {
-      var childType = child.type;
-      var stackChild = children[index];
-      var next = function next(instance) {
-        // copy over props as long new component may be hidden inside them
-        // child does not have all props, as long some of them can be calculated on componentMount.
-        var realProps = instance.props;
-        var nextProps = _extends({}, realProps, child.nextProps || {}, child.props || {});
-
-        if (isReactClassInstance(instance) && instance.componentWillUpdate) {
-          // Force-refresh component (bypass redux renderedComponent)
-          instance.componentWillUpdate(_extends({}, realProps), instance.state);
-        }
-        instance.props = nextProps;
-        hotReplacementRender(instance, stackChild);
-        instance.props = realProps;
-      };
-
-      // text node
-      if ((typeof child === 'undefined' ? 'undefined' : _typeof(child)) !== 'object' || !stackChild || !stackChild.instance) {
-        if (stackChild && stackChild.children && stackChild.children.length) {
-          logger.error('React-hot-loader: reconciliation failed', 'could not dive into [', child, '] while some elements are still present in the tree.');
-          stackReport();
-        }
-        return;
-      }
-
-      // comparing rendered type to fiber.ElementType
-      if ((typeof childType === 'undefined' ? 'undefined' : _typeof(childType)) !== _typeof(stackChild.elementType)) {
-        // Portals could generate undefined !== null
-        if (childType && stackChild.type) {
-          logger.warn('React-hot-loader: got ', childType, 'instead of', stackChild.type);
-          stackReport();
-        }
-        return;
-      }
-
-      if (isMemoType(child) || isLazyType(child)) {
-        // force update memo children
-        if (stackChild.children && stackChild.children[0]) {
-          scheduleInstanceUpdate(stackChild.children[0].instance);
-        }
-        childType = childType.type || childType;
-      }
-
-      if (isForwardType(child)) {
-        next(stackChild.instance);
-      } else if (isContextConsumer(child)) {
-        try {
-          var contextValue = stackContext().get(getContextProvider(childType));
-          next({
-            children: (child.props ? child.props.children : child.children[0])(contextValue !== undefined ? contextValue : childType[CONTEXT_CURRENT_VALUE])
-          });
-        } catch (e) {
-          // do nothing, yet
-        }
-      } else if (typeof childType !== 'function') {
-        // React
-        var childName = childType ? getComponentDisplayName(childType) : 'empty';
-        var extraContext = stackContext();
-
-        if (isContextProvider(child)) {
-          extraContext = new Map(extraContext);
-          extraContext.set(getContextProvider(childType), _extends({}, child.nextProps || {}, child.props || {}).value);
-          childName = 'ContextProvider';
-        }
-
-        renderStack.push({
-          name: childName,
-          type: childType,
-          props: stack.instance.props,
-          context: extraContext
-        });
-
-        next(
-        // move types from render to the instances of hydrated tree
-        mergeInject(transformFlowNode(asArray(child.props ? child.props.children : child.children)), stackChild.instance.children, stackChild.instance));
-        renderStack.pop();
-      } else {
-        if (childType === stackChild.type) {
-          next(stackChild.instance);
-        } else {
-          // unwrap proxy
-          var _childType = getElementType$1(child);
-
-          if (isMemoType(child)) {
-            _childType = _childType.type || _childType;
-          }
-
-          if (!stackChild.type[PROXY_KEY]) {
-            if (!configuration.IS_REACT_MERGE_ENABLED) {
-              if (isTypeBlacklisted(stackChild.type)) {
-                logger.warn('React-hot-loader: cold element got updated ', stackChild.type);
-              }
-            }
-          }
-
-          if (isRegisteredComponent(_childType) || isRegisteredComponent(stackChild.type)) {
-            // one of elements are registered via babel plugin, and should not be handled by hot swap
-            if (resolveType(_childType) === resolveType(stackChild.type)) {
-              next(stackChild.instance);
-            }
-          } else if (areSwappable(_childType, stackChild.type)) {
-            // they are both registered, or have equal code/displayname/signature
-
-            // update proxy using internal PROXY_KEY
-            updateProxyById(stackChild.type[PROXY_KEY] || getIdByType(stackChild.type), _childType);
-
-            next(stackChild.instance);
-          } else {
-            logger.warn('React-hot-loader: a ' + getComponentDisplayName(_childType) + ' was found where a ' + getComponentDisplayName(stackChild) + ' was expected.\n          ' + _childType);
-            stackReport();
-          }
-        }
-
-        scheduleInstanceUpdate(stackChild.instance);
-      }
-    });
-  } catch (e) {
-    if (e.then) ; else {
-      logger.warn('React-hot-loader: run time error during reconciliation', e);
-    }
-  }
-
-  if (isReactClassInstance(instance)) {
-    renderStack.pop();
-  }
-};
-
-var hotReplacementRender$1 = (function (instance, stack) {
-  if (configuration.disableHotRenderer) {
-    return;
-  }
-  try {
-    // disable reconciler to prevent upcoming components from proxying.
-    internalConfiguration.disableProxyCreation = true;
-    renderStack = [];
-    hotReplacementRender(instance, stack);
-  } catch (e) {
-    logger.warn('React-hot-loader: reconcilation failed due to error', e);
-  } finally {
-    internalConfiguration.disableProxyCreation = false;
-  }
+Object.defineProperty(exports, "__esModule", {
+  value: true
 });
 
-var reconcileHotReplacement = function reconcileHotReplacement(ReactInstance) {
-  var stack = getReactStack(ReactInstance);
-  hotReplacementRender$1(ReactInstance, stack);
-  cleanupReact();
-  deepMarkUpdate(stack);
-};
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var renderReconciler = function renderReconciler(target, force) {
-  // we are not inside parent reconcilation
-  var currentGeneration = get$1();
-  var componentGeneration = target[RENDERED_GENERATION];
+var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 
-  target[RENDERED_GENERATION] = currentGeneration;
+var _react2 = _interopRequireDefault(_react);
 
-  if (!internalConfiguration.disableProxyCreation) {
-    if ((componentGeneration || force) && componentGeneration !== currentGeneration) {
-      enterHotUpdate();
-      reconcileHotReplacement(target);
-      return true;
-    }
-  }
-  return false;
-};
+var _propTypes = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
 
-function asyncReconciledRender(target) {
-  renderReconciler(target, false);
-}
+var _propTypes2 = _interopRequireDefault(_propTypes);
 
-function proxyWrapper(element) {
-  // post wrap on post render
-  if (!internalConfiguration.disableProxyCreation) {
-    unscheduleUpdate(this);
-  }
+var _howler4 = __webpack_require__(/*! ./howler */ "./node_modules/react-howler/lib/howler.js");
 
-  if (!element) {
-    return element;
-  }
-  if (Array.isArray(element)) {
-    return element.map(proxyWrapper);
-  }
-  if (typeof element.type === 'function') {
-    var proxy = getProxyByType(element.type);
-    if (proxy) {
-      return _extends({}, element, {
-        type: proxy.get()
-      });
-    }
-  }
-  return element;
-}
+var _utils = __webpack_require__(/*! ./utils */ "./node_modules/react-howler/lib/utils.js");
 
-var ERROR_STATE = 'react_hot_loader_catched_error';
-var ERROR_STATE_PROTO = 'react_hot_loader_catched_error-prototype';
-var OLD_RENDER = 'react_hot_loader_original_render';
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function componentDidCatch(error, errorInfo) {
-  this[ERROR_STATE] = {
-    location: 'boundary',
-    error: error,
-    errorInfo: errorInfo,
-    generation: get$1()
-  };
-  Object.getPrototypeOf(this)[ERROR_STATE_PROTO] = this[ERROR_STATE];
-  if (!configuration.errorReporter) {
-    logException(error, errorInfo, this);
-  }
-  this.forceUpdate();
-}
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-function componentRender() {
-  var _ref = this[ERROR_STATE] || {},
-      error = _ref.error,
-      errorInfo = _ref.errorInfo,
-      generation = _ref.generation;
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-  if (error && generation === get$1()) {
-    return React__default.createElement(configuration.errorReporter || EmptyErrorPlaceholder, {
-      error: error,
-      errorInfo: errorInfo,
-      component: this
-    });
-  }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-  if (this.hotComponentUpdate) {
-    this.hotComponentUpdate();
-  }
-  try {
-    var _OLD_RENDER$render;
+var ReactHowler = function (_Component) {
+  _inherits(ReactHowler, _Component);
 
-    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
+  function ReactHowler(props) {
+    _classCallCheck(this, ReactHowler);
 
-    return (_OLD_RENDER$render = this[OLD_RENDER].render).call.apply(_OLD_RENDER$render, [this].concat(args));
-  } catch (renderError) {
-    this[ERROR_STATE] = {
-      location: 'render',
-      error: renderError,
-      generation: get$1()
-    };
-    if (!configuration.errorReporter) {
-      logException(renderError, undefined, this);
-    }
-    return componentRender.call(this);
-  }
-}
+    var _this = _possibleConstructorReturn(this, (ReactHowler.__proto__ || Object.getPrototypeOf(ReactHowler)).call(this, props));
 
-function retryHotLoaderError() {
-  delete this[ERROR_STATE];
-  this.forceUpdate();
-}
-
-setComparisonHooks(function () {
-  return {};
-}, function (component) {
-  if (!hotComparisonOpen()) {
-    return;
-  }
-  var prototype = component.prototype;
-
-  if (!prototype[OLD_RENDER]) {
-    var renderDescriptior = Object.getOwnPropertyDescriptor(prototype, 'render');
-    prototype[OLD_RENDER] = {
-      descriptor: renderDescriptior ? renderDescriptior.value : undefined,
-      render: prototype.render
-    };
-    prototype.componentDidCatch = componentDidCatch;
-    prototype.retryHotLoaderError = retryHotLoaderError;
-
-    prototype.render = componentRender;
-  }
-  delete prototype[ERROR_STATE];
-}, function (_ref2) {
-  var prototype = _ref2.prototype;
-
-  if (prototype[OLD_RENDER]) {
-    var _ref3 = prototype[ERROR_STATE_PROTO] || {},
-        generation = _ref3.generation;
-
-    if (generation === get$1()) ; else {
-      delete prototype.componentDidCatch;
-      delete prototype.retryHotLoaderError;
-
-      // undo only what we did
-      if (prototype.render === componentRender) {
-        if (!prototype[OLD_RENDER].descriptor) {
-          delete prototype.render;
-        } else {
-          prototype.render = prototype[OLD_RENDER].descriptor;
-        }
-      } else {
-        console.error('React-Hot-Loader: something unexpectedly mutated Component', prototype);
-      }
-      delete prototype[ERROR_STATE_PROTO];
-      delete prototype[OLD_RENDER];
-    }
-  }
-});
-
-setStandInOptions({
-  componentWillRender: asyncReconciledRender,
-  componentDidRender: proxyWrapper,
-  componentDidUpdate: function componentDidUpdate(component) {
-    component[RENDERED_GENERATION] = get$1();
-    flushScheduledUpdates();
-  }
-});
-
-var AppContainer = function (_React$Component) {
-  inherits(AppContainer, _React$Component);
-
-  AppContainer.getDerivedStateFromProps = function getDerivedStateFromProps(nextProps, prevState) {
-    if (prevState.generation !== get$1()) {
-      // Hot reload is happening.
-      return {
-        error: null,
-        generation: get$1()
-      };
-    }
-    return null;
-  };
-
-  function AppContainer(props) {
-    classCallCheck(this, AppContainer);
-
-    var _this = possibleConstructorReturn(this, _React$Component.call(this, props));
-
-    if (configuration.showReactDomPatchNotification) {
-      configuration.showReactDomPatchNotification = false;
-      console.warn('React-Hot-Loader: react-🔥-dom patch is not detected. React 16.6+ features may not work.');
-    }
-
-    _this.state = {
-      error: null,
-      errorInfo: null,
-      // eslint-disable-next-line react/no-unused-state
-      generation: 0
-    };
+    _this.initHowler = _this.initHowler.bind(_this);
     return _this;
   }
 
-  AppContainer.prototype.shouldComponentUpdate = function shouldComponentUpdate(prevProps, prevState) {
-    // Don't update the component if the state had an error and still has one.
-    // This allows to break an infinite loop of error -> render -> error -> render
-    // https://github.com/gaearon/react-hot-loader/issues/696
-    if (prevState.error && this.state.error) {
-      return false;
+  _createClass(ReactHowler, [{
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      this.initHowler();
     }
-
-    return true;
-  };
-
-  AppContainer.prototype.componentDidCatch = function componentDidCatch(error, errorInfo) {
-    logger.error(error);
-
-    if (!hotComparisonOpen()) {
-      // do not log error outside of HMR cycle
-
-      // trigger update to kick error
-      this.setState({});
-      throw error;
-    }
-    var _props$errorReporter = this.props.errorReporter,
-        errorReporter = _props$errorReporter === undefined ? configuration.errorReporter : _props$errorReporter;
-
-    if (!errorReporter) {
-      logException(error, errorInfo, this);
-    }
-    this.setState({
-      error: error,
-      errorInfo: errorInfo
-    });
-  };
-
-  AppContainer.prototype.retryHotLoaderError = function retryHotLoaderError$$1() {
-    var _this2 = this;
-
-    this.setState({ error: null }, function () {
-      retryHotLoaderError.call(_this2);
-    });
-  };
-
-  AppContainer.prototype.render = function render() {
-    var _state = this.state,
-        error = _state.error,
-        errorInfo = _state.errorInfo;
-    var _props$errorReporter2 = this.props.errorReporter,
-        ErrorReporter = _props$errorReporter2 === undefined ? configuration.errorReporter || EmptyErrorPlaceholder : _props$errorReporter2;
-
-
-    if (error && this.props.errorBoundary) {
-      return React__default.createElement(ErrorReporter, { error: error, errorInfo: errorInfo, component: this });
-    }
-
-    if (this.hotComponentUpdate) {
-      this.hotComponentUpdate();
-    } else {
-      throw new Error('React-Hot-Loader: AppContainer should be patched');
-    }
-
-    return React__default.Children.only(this.props.children);
-  };
-
-  return AppContainer;
-}(React__default.Component);
-
-AppContainer.reactHotLoadable = false;
-
-
-AppContainer.propTypes = {
-  children: function children(props) {
-    if (React__default.Children.count(props.children) !== 1) {
-      return new Error('Invalid prop "children" supplied to AppContainer. ' + 'Expected a single React element with your app’s root component, e.g. <App />.');
-    }
-
-    return undefined;
-  },
-
-  errorReporter: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
-  errorBoundary: PropTypes.bool
-};
-
-AppContainer.defaultProps = {
-  errorBoundary: true
-};
-
-//  trying first react-lifecycles-compat.polyfill, then trying react-lifecycles-compat, which could be .default
-var realPolyfill = defaultPolyfill.polyfill || defaultPolyfill__default;
-realPolyfill(AppContainer);
-
-var lazyConstructor = '_ctor';
-
-var patchLazyConstructor = function patchLazyConstructor(target) {
-  if (!configuration.trackTailUpdates && !target[lazyConstructor].isPatchedByReactHotLoader) {
-    var ctor = target[lazyConstructor];
-    target[lazyConstructor] = function () {
-      return ctor().then(function (m) {
-        var C = resolveType(m.default);
-        // chunks has been updated - new hot loader process is taking a place
-        enterHotUpdate();
-        if (!React__default.forwardRef) {
-          return {
-            default: function _default(props) {
-              return React__default.createElement(
-                AppContainer,
-                null,
-                React__default.createElement(C, props)
-              );
-            }
-          };
-        }
-        return {
-          default: React__default.forwardRef(function (props, ref) {
-            return React__default.createElement(
-              AppContainer,
-              null,
-              React__default.createElement(C, _extends({}, props, { ref: ref }))
-            );
-          })
-        };
-      });
-    };
-    target[lazyConstructor].isPatchedByReactHotLoader = true;
-  }
-};
-
-var updateLazy = function updateLazy(target, type) {
-  var ctor = type[lazyConstructor];
-  if (target[lazyConstructor] !== type[lazyConstructor]) {
-    // just execute `import` and RHL.register will do the job
-    ctor();
-  }
-  patchLazyConstructor(target);
-  patchLazyConstructor(type);
-};
-
-var updateMemo = function updateMemo(target, _ref) {
-  var type = _ref.type;
-
-  target.type = resolveType(type);
-};
-
-var updateForward = function updateForward(target, _ref2) {
-  var render = _ref2.render;
-
-  target.render = render;
-};
-
-var updateContext = function updateContext() {
-  // nil
-};
-
-var getInnerComponentType = function getInnerComponentType(component) {
-  var unwrapper = component[UNWRAP_PROXY];
-  return unwrapper ? unwrapper() : component;
-};
-
-function haveEqualSignatures(prevType, nextType) {
-  try {
-    var prevSignature = getSignature(prevType);
-    var nextSignature = getSignature(nextType);
-
-    if (prevSignature === undefined && nextSignature === undefined) {
-      return true;
-    }
-    if (prevSignature === undefined || nextSignature === undefined) {
-      return false;
-    }
-    if (prevSignature.key !== nextSignature.key) {
-      return false;
-    }
-
-    // TODO: we might need to calculate previous signature earlier in practice,
-    // such as during the first time a component is resolved. We'll revisit this.
-    var prevCustomHooks = prevSignature.getCustomHooks();
-    var nextCustomHooks = nextSignature.getCustomHooks();
-    if (prevCustomHooks.length !== nextCustomHooks.length) {
-      return false;
-    }
-
-    for (var i = 0; i < nextCustomHooks.length; i++) {
-      if (!haveEqualSignatures(prevCustomHooks[i], nextCustomHooks[i])) {
-        return false;
-      }
-    }
-  } catch (e) {
-    logger.error('React-Hot-Loader: error occurred while comparing hook signature', e);
-    return false;
-  }
-
-  return true;
-}
-
-var areSignaturesCompatible = function areSignaturesCompatible(a, b) {
-  // compare signatures of two components
-  // non-equal component have to remount and there is two options to do it
-  // - fail the comparison, remounting all tree below
-  // - fulfill it, but set `_debugNeedsRemount` on a fiber to drop only local state
-  // the second way is not published yet, so going with the first one
-  if (!haveEqualSignatures(a, b)) {
-    logger.warn('⚛️🔥🎣 Hook order change detected: component', a, 'has been remounted');
-    return false;
-  }
-  return true;
-};
-
-var compareRegistered = function compareRegistered(a, b) {
-  return getIdByType(a) === getIdByType(b) && getProxyByType(a) === getProxyByType(b) && areSignaturesCompatible(a, b);
-};
-
-var areDeepSwappable = function areDeepSwappable(oldType, newType) {
-  var type = { type: oldType };
-
-  if (typeof oldType === 'function') {
-    return areSwappable(oldType, newType);
-  }
-
-  if (isForwardType(type)) {
-    return areDeepSwappable(oldType.render, newType.render);
-  }
-
-  if (isMemoType(type)) {
-    return areDeepSwappable(oldType.type, newType.type);
-  }
-
-  // that's not safe
-  // if (isLazyType(type)) {
-  //   return areDeepSwappable(oldType._ctor, newType._ctor)
-  // }
-
-  return false;
-};
-
-var compareComponents = function compareComponents(oldType, newType, setNewType, baseType) {
-  var defaultResult = oldType === newType;
-
-  if (oldType && !newType || !oldType && newType || (typeof oldType === 'undefined' ? 'undefined' : _typeof(oldType)) !== (typeof newType === 'undefined' ? 'undefined' : _typeof(newType)) || getElementType(oldType) !== getElementType(newType) || 0) {
-    return defaultResult;
-  }
-
-  if (getIdByType(newType) || getIdByType(oldType)) {
-    if (!compareRegistered(oldType, newType)) {
-      return false;
-    }
-    defaultResult = true;
-  }
-
-  if (isForwardType({ type: oldType }) && isForwardType({ type: newType })) {
-    if (!compareRegistered(oldType.render, newType.render)) {
-      return false;
-    }
-    if (oldType.render === newType.render || areDeepSwappable(oldType, newType)) {
-      setNewType(newType);
-      return true;
-    }
-    return defaultResult;
-  }
-
-  if (isMemoType({ type: oldType }) && isMemoType({ type: newType })) {
-    if (!compareRegistered(oldType.type, newType.type)) {
-      return false;
-    }
-    if (oldType.type === newType.type || areDeepSwappable(oldType, newType)) {
-      if (baseType) {
-        // memo form different fibers, why?
-        if (baseType.$$typeof === newType.$$typeof) {
-          setNewType(newType);
-        } else {
-          setNewType(newType.type);
-        }
+  }, {
+    key: 'componentWillReceiveProps',
+    value: function componentWillReceiveProps(props) {
+      // The src prop must be either a string or an array of strings
+      // Because of this, we can use it's JSON representation to check for changes
+      if (JSON.stringify(props.src) !== JSON.stringify(this.props.src)) {
+        this.initHowler(props);
       } else {
-        logger.warn('Please update hot-loader/react-dom');
-        if (isReactClass(newType.type)) {
-          setNewType(newType);
-        } else {
-          setNewType(newType.type);
-        }
-      }
-
-      return true;
-    }
-    return defaultResult;
-  }
-
-  if (isLazyType({ type: oldType })) {
-    updateLazy(oldType, newType);
-    // no need to update
-    // setNewType(newType);
-    return defaultResult;
-  }
-
-  if (isContextType({ type: oldType })) {
-    // update provider
-    setNewType(newType);
-    return defaultResult;
-  }
-
-  if (typeof newType === 'function' && (defaultResult || newType !== oldType && areSignaturesCompatible(newType, oldType) && areSwappable(newType, oldType))) {
-    var unwrapFactory = newType[UNWRAP_PROXY];
-    var oldProxy = unwrapFactory && getProxyByType(unwrapFactory());
-    if (oldProxy) {
-      oldProxy.dereference();
-      updateProxyById(oldType[PROXY_KEY] || getIdByType(oldType), getInnerComponentType(newType));
-    } else {
-      setNewType(newType);
-    }
-    return true;
-  }
-
-  return defaultResult;
-};
-
-var knownPairs = new WeakMap();
-var emptyMap$1 = new WeakMap();
-
-var getKnownPair = function getKnownPair(oldType, newType) {
-  var pair = knownPairs.get(oldType) || emptyMap$1;
-  return pair.get(newType);
-};
-
-var hotComponentCompare = function hotComponentCompare(oldType, preNewType, setNewType, baseType) {
-  var hotActive = hotComparisonOpen();
-  var newType = configuration.integratedResolver ? resolveType(preNewType) : preNewType;
-
-  // TODO: find out the root cause
-  // we could not use "fast result" here - go a full part to update a fiber.
-  // const knownType = getKnownPair(oldType, newType);
-  // if (knownType !== undefined) {
-  //   return knownType;
-  // }
-
-  var result = oldType === newType;
-
-  if (hotActive) {
-    // pre fail components which could not be merged
-    if (!isReloadableComponent(oldType) || !isReloadableComponent(newType) || isColdType(oldType) || isColdType(oldType) || !oldType || !newType || 0) {
-      return result;
-    }
-
-    result = compareComponents(oldType, newType, setNewType, baseType);
-    var pair = knownPairs.get(oldType) || new WeakMap();
-    pair.set(newType, result);
-    knownPairs.set(oldType, pair);
-    return result;
-  }
-
-  // result - true if components are equal, or were "equal" at any point in the past
-  return result || getKnownPair(oldType, newType) || false;
-};
-
-/* eslint-disable no-use-before-define */
-
-var forceSimpleSFC = { proxy: { pureSFC: true } };
-
-var hookWrapper = function hookWrapper(hook) {
-  var wrappedHook = function wrappedHook(cb, deps) {
-    if (configuration.reloadHooks && deps) {
-      var inputs = [].concat(deps);
-
-      // reload hooks which have changed string representation
-      if (configuration.reloadHooksOnBodyChange) {
-        inputs.push(String(cb));
-      }
-
-      if (
-      // reload hooks with dependencies
-      deps.length > 0 ||
-      // reload all hooks of option is set
-      configuration.reloadLifeCycleHooks && deps.length === 0) {
-        inputs.push(getHotGeneration());
-      }
-
-      return hook(cb, inputs);
-    }
-    return hook(cb, deps);
-  };
-  wrappedHook.isPatchedByReactHotLoader = true;
-  return wrappedHook;
-};
-
-var noDeps = function noDeps() {
-  return [];
-};
-
-var reactHotLoader = {
-  signature: function signature(type, key) {
-    var getCustomHooks = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : noDeps;
-
-    addSignature(type, { key: key, getCustomHooks: getCustomHooks });
-    return type;
-  },
-  register: function register(type, uniqueLocalName, fileName) {
-    var options = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : {};
-
-    var id = fileName + '#' + uniqueLocalName;
-
-    if (isCompositeComponent(type) && typeof uniqueLocalName === 'string' && uniqueLocalName && typeof fileName === 'string' && fileName) {
-      var proxy = getProxyById(id);
-
-      if (proxy && proxy.getCurrent() !== type) {
-        if (!configuration.IS_REACT_MERGE_ENABLED) {
-          if (isTypeBlacklisted(type) || isTypeBlacklisted(proxy.getCurrent())) {
-            logger.error('React-hot-loader: Cold component', uniqueLocalName, 'at', fileName, 'has been updated');
-          }
-        }
-      }
-
-      if (configuration.onComponentRegister) {
-        configuration.onComponentRegister(type, uniqueLocalName, fileName);
-      }
-      if (configuration.onComponentCreate) {
-        configuration.onComponentCreate(type, getComponentDisplayName(type));
-      }
-
-      registerComponent(updateProxyById(id, type, options).get(), 2);
-      registerComponent(type);
-      increment();
-    }
-    if (isContextType({ type: type })) {
-      // possible options - Context, Consumer, Provider.
-      ['Provider', 'Consumer'].forEach(function (prop) {
-        var descriptor = Object.getOwnPropertyDescriptor(type, prop);
-        if (descriptor && descriptor.value) {
-          updateFunctionProxyById(id + ':' + prop, descriptor.value, updateContext);
-        }
-      });
-      updateFunctionProxyById(id, type, updateContext);
-      increment();
-    }
-    if (isLazyType({ type: type })) {
-      updateFunctionProxyById(id, type, updateLazy);
-      increment();
-    }
-    if (isForwardType({ type: type })) {
-      reactHotLoader.register(type.render, uniqueLocalName + ':render', fileName, forceSimpleSFC);
-      updateFunctionProxyById(id, type, updateForward);
-      increment();
-    }
-    if (isMemoType({ type: type })) {
-      reactHotLoader.register(type.type, uniqueLocalName + ':memo', fileName, forceSimpleSFC);
-      updateFunctionProxyById(id, type, updateMemo);
-      increment();
-    }
-  },
-  reset: function reset() {
-    resetProxies();
-  },
-  preact: function preact(instance) {
-    preactAdapter(instance, resolveType);
-  },
-  resolveType: function resolveType$$1(type) {
-    return resolveType(type);
-  },
-  patch: function patch(React$$1, ReactDOM$$1) {
-    var typeResolver = resolveType;
-    /* eslint-disable no-console */
-    if (ReactDOM$$1 && !ReactDOM$$1.render) {
-      logger.error('React-Hot-Loader: broken state detected, please import React-Hot-Loader before react-dom, see https://github.com/gaearon/react-hot-loader/issues/1315');
-    }
-    if (ReactDOM$$1 && ReactDOM$$1.setHotElementComparator) {
-      ReactDOM$$1.setHotElementComparator(hotComponentCompare);
-      configuration.disableHotRenderer = configuration.disableHotRendererWhenInjected;
-
-      configuration.ignoreSFC = configuration.ignoreSFCWhenInjected;
-
-      configuration.IS_REACT_MERGE_ENABLED = true;
-      configuration.showReactDomPatchNotification = false;
-      configuration.integratedComparator = true;
-
-      if (ReactDOM$$1.setHotTypeResolver) {
-        configuration.integratedResolver = true;
-        typeResolver = resolveSimpleType;
-        ReactDOM$$1.setHotTypeResolver(resolveType);
+        this.toggleHowler(props);
       }
     }
-
-    // PATCH REACT METHODS
-
-    /* eslint-enable */
-    if (!React$$1.createElement.isPatchedByReactHotLoader) {
-      var originalCreateElement = React$$1.createElement;
-      // Trick React into rendering a proxy so that
-      // its state is preserved when the class changes.
-      // This will update the proxy if it's for a known type.
-      React$$1.createElement = function (type) {
-        for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-          args[_key - 1] = arguments[_key];
-        }
-
-        return originalCreateElement.apply(undefined, [typeResolver(type)].concat(args));
-      };
-      React$$1.createElement.isPatchedByReactHotLoader = true;
+  }, {
+    key: 'componentWillUnmount',
+    value: function componentWillUnmount() {
+      this.destroyHowler();
     }
+    /**
+     * Create howler object with given props
+     */
 
-    if (!React$$1.cloneElement.isPatchedByReactHotLoader) {
-      var originalCloneElement = React$$1.cloneElement;
+  }, {
+    key: 'initHowler',
+    value: function initHowler() {
+      var props = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.props;
 
-      React$$1.cloneElement = function (element) {
-        for (var _len2 = arguments.length, args = Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {
-          args[_key2 - 1] = arguments[_key2];
-        }
-
-        var newType = element.type && typeResolver(element.type);
-        if (newType && newType !== element.type) {
-          return originalCloneElement.apply(undefined, [_extends({}, element, {
-            type: newType
-          })].concat(args));
-        }
-        return originalCloneElement.apply(undefined, [element].concat(args));
-      };
-
-      React$$1.cloneElement.isPatchedByReactHotLoader = true;
-    }
-
-    if (!React$$1.createFactory.isPatchedByReactHotLoader) {
-      // Patch React.createFactory to use patched createElement
-      // because the original implementation uses the internal,
-      // unpatched ReactElement.createElement
-      React$$1.createFactory = function (type) {
-        var factory = React$$1.createElement.bind(null, type);
-        factory.type = type;
-        return factory;
-      };
-      React$$1.createFactory.isPatchedByReactHotLoader = true;
-    }
-
-    if (!React$$1.Children.only.isPatchedByReactHotLoader) {
-      var originalChildrenOnly = React$$1.Children.only;
-      // Use the same trick as React.createElement
-      React$$1.Children.only = function (children) {
-        return originalChildrenOnly(_extends({}, children, {
-          type: typeResolver(children.type)
-        }));
-      };
-      React$$1.Children.only.isPatchedByReactHotLoader = true;
-    }
-
-    // PATCH REACT HOOKS
-
-    if (React$$1.useEffect && !React$$1.useEffect.isPatchedByReactHotLoader) {
-      React$$1.useEffect = hookWrapper(React$$1.useEffect);
-      React$$1.useLayoutEffect = hookWrapper(React$$1.useLayoutEffect);
-      React$$1.useCallback = hookWrapper(React$$1.useCallback);
-      React$$1.useMemo = hookWrapper(React$$1.useMemo);
-
-      // transform context for useContext
-      var useContext = React$$1.useContext;
-
-      React$$1.useContext = function (context) {
-        for (var _len3 = arguments.length, args = Array(_len3 > 1 ? _len3 - 1 : 0), _key3 = 1; _key3 < _len3; _key3++) {
-          args[_key3 - 1] = arguments[_key3];
-        }
-
-        return useContext.apply(undefined, [typeResolver(context)].concat(args));
-      };
-    }
-
-    // reactHotLoader.reset()
-  }
-};
-
-var openedModules = {};
-var lastModuleOpened = '';
-var getLastModuleOpened = function getLastModuleOpened() {
-  return lastModuleOpened;
-};
-
-var hotModules = {};
-
-var createHotModule = function createHotModule() {
-  return { instances: [], updateTimeout: 0 };
-};
-
-var hotModule = function hotModule(moduleId) {
-  if (!hotModules[moduleId]) {
-    hotModules[moduleId] = createHotModule();
-  }
-  return hotModules[moduleId];
-};
-
-var isOpened = function isOpened(sourceModule) {
-  return sourceModule && !!openedModules[sourceModule.id];
-};
-
-var enter = function enter(sourceModule) {
-  if (sourceModule && sourceModule.id) {
-    lastModuleOpened = sourceModule.id;
-    openedModules[sourceModule.id] = true;
-  } else {
-    logger.warn('React-hot-loader: no `module` variable found. Did you shadow a system variable?');
-  }
-};
-
-var leave = function leave(sourceModule) {
-  if (sourceModule && sourceModule.id) {
-    delete openedModules[sourceModule.id];
-  }
-};
-
-var createQueue = function createQueue() {
-  var runner = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : function (a) {
-    return a();
-  };
-
-  var promise = void 0;
-  var queue = [];
-
-  var runAll = function runAll() {
-    var oldQueue = queue;
-    oldQueue.forEach(function (cb) {
-      return cb();
-    });
-    queue = [];
-  };
-
-  var add = function add(cb) {
-    if (queue.length === 0) {
-      promise = Promise.resolve().then(function () {
-        return runner(runAll);
-      });
-    }
-    queue.push(cb);
-
-    return promise;
-  };
-
-  return add;
-};
-
-/* eslint-disable camelcase, no-undef */
-var requireIndirect =  true ? __webpack_require__ : undefined;
-/* eslint-enable */
-
-var chargeFailbackTimer = function chargeFailbackTimer(id) {
-  return setTimeout(function () {
-    var error = 'hot update failed for module "' + id + '". Last file processed: "' + getLastModuleOpened() + '".';
-    logger.error(error);
-    logException({
-      toString: function toString() {
-        return error;
-      }
-    });
-    // 100 ms more "code" tolerant that 0, and would catch error in any case
-  }, 100);
-};
-
-var clearFailbackTimer = function clearFailbackTimer(timerId) {
-  return clearTimeout(timerId);
-};
-
-var createHoc = function createHoc(SourceComponent, TargetComponent) {
-  hoistNonReactStatic(TargetComponent, SourceComponent);
-  TargetComponent.displayName = 'HotExported' + getComponentDisplayName(SourceComponent);
-  return TargetComponent;
-};
-
-var runInRequireQueue = createQueue();
-var runInRenderQueue = createQueue(function (cb) {
-  if (ReactDOM.unstable_batchedUpdates) {
-    ReactDOM.unstable_batchedUpdates(cb);
-  } else {
-    cb();
-  }
-});
-
-var makeHotExport = function makeHotExport(sourceModule, moduleId) {
-  var updateInstances = function updateInstances(possibleError) {
-    if (possibleError && possibleError instanceof Error) {
-      console.error(possibleError);
-      return;
-    }
-    var module = hotModule(moduleId);
-
-    var deepUpdate = function deepUpdate() {
-      // force flush all updates
-      runInRenderQueue(function () {
-        enterHotUpdate();
-        var gen = getHotGeneration();
-        module.instances.forEach(function (inst) {
-          return inst.forceUpdate();
+      this.destroyHowler();
+      if (typeof _howler4.Howl !== 'undefined') {
+        // Check if window is available
+        this.howler = new _howler4.Howl({
+          src: props.src,
+          format: props.format,
+          mute: props.mute,
+          loop: props.loop,
+          preload: props.preload,
+          volume: props.volume,
+          onend: props.onEnd,
+          onplay: props.onPlay,
+          onpause: props.onPause,
+          onvolume: props.onVolume,
+          onstop: props.onStop,
+          onload: props.onLoad,
+          onloaderror: props.onLoadError,
+          html5: props.html5
         });
 
-        if (configuration.trackTailUpdates) {
-          var runLimit = 0;
-          var checkTailUpdates = function checkTailUpdates() {
-            setTimeout(function () {
-              if (getHotGeneration() !== gen) {
-                // we know that some components were updated, but not tracking which ones
-                // even if their updates might be incorporated automatically (like lazy)
-                // we dont know which one should be tracked, and which updates are important
-                logger.warn('React-Hot-Loader: some components were updated out-of-bound. Updating your app to reconcile the changes.');
-                deepUpdate();
-              } else if (++runLimit < 5) {
-                checkTailUpdates();
-              }
-            }, 16);
-          };
-
-          checkTailUpdates();
+        if (props.playing) {
+          this.play();
         }
-      });
-    };
-
-    // require all modules
-    runInRequireQueue(function () {
-      try {
-        // webpack will require everything by this time
-        // but let's double check...
-        requireIndirect(moduleId);
-      } catch (e) {
-        console.error('React-Hot-Loader: error detected while loading', moduleId);
-        console.error(e);
-      }
-    }).then(deepUpdate);
-  };
-
-  if (sourceModule.hot) {
-    // Mark as self-accepted for Webpack (callback is an Error Handler)
-    // Update instances for Parcel (callback is an Accept Handler)
-    sourceModule.hot.accept(updateInstances);
-
-    // Webpack way
-    if (sourceModule.hot.addStatusHandler) {
-      if (sourceModule.hot.status() === 'idle') {
-        sourceModule.hot.addStatusHandler(function (status) {
-          if (status === 'apply') {
-            clearExceptions();
-            updateInstances();
-          }
-        });
       }
     }
-  } else {
-    logger.warn('React-hot-loader: Hot Module Replacement is not enabled');
-  }
-};
 
-var hot = function hot(sourceModule) {
-  if (!sourceModule) {
-    // this is fatal
-    throw new Error('React-hot-loader: `hot` was called without any argument provided');
-  }
-  var moduleId = sourceModule.id || sourceModule.i || sourceModule.filename;
-  if (!moduleId) {
-    console.error('`module` provided', sourceModule);
-    throw new Error('React-hot-loader: `hot` could not find the `name` of the the `module` you have provided');
-  }
-  var module = hotModule(moduleId);
-  makeHotExport(sourceModule, moduleId);
+    /**
+     * Stop, unload and destroy howler object
+     */
 
-  clearExceptions();
-  var failbackTimer = chargeFailbackTimer(moduleId);
-  var firstHotRegistered = false;
-
-  // TODO: Ensure that all exports from this file are react components.
-
-  return function (WrappedComponent, props) {
-    clearFailbackTimer(failbackTimer);
-    // register proxy for wrapped component
-    // only one hot per file would use this registration
-    if (!firstHotRegistered) {
-      firstHotRegistered = true;
-      reactHotLoader.register(WrappedComponent, getComponentDisplayName(WrappedComponent), 'RHL' + moduleId);
+  }, {
+    key: 'destroyHowler',
+    value: function destroyHowler() {
+      if (this.howler) {
+        this.howler.off(); // Remove event listener
+        this.howler.stop(); // Stop playback
+        this.howler.unload(); // Remove sound from pool
+        this.howler = null; // Destroy it
+      }
     }
+  }, {
+    key: 'toggleHowler',
+    value: function toggleHowler(props) {
+      props.playing ? this.play() : this.pause();
+      this.loop(props.loop);
 
-    return createHoc(WrappedComponent, function (_Component) {
-      inherits(ExportedComponent, _Component);
-
-      function ExportedComponent() {
-        classCallCheck(this, ExportedComponent);
-        return possibleConstructorReturn(this, _Component.apply(this, arguments));
+      if (props.mute !== this.props.mute) {
+        this.mute(props.mute);
       }
 
-      ExportedComponent.prototype.componentDidMount = function componentDidMount() {
-        module.instances.push(this);
-      };
+      if (props.volume !== this.props.volume) {
+        this.volume(props.volume);
+      }
 
-      ExportedComponent.prototype.componentWillUnmount = function componentWillUnmount() {
-        var _this2 = this;
+      if (typeof props.seek !== 'undefined' && props.seek !== this.seek()) {
+        this.seek(props.seek);
+      }
 
-        if (isOpened(sourceModule)) {
-          var componentName = getComponentDisplayName(WrappedComponent);
-          logger.error('React-hot-loader: Detected AppContainer unmount on module \'' + moduleId + '\' update.\n' + ('Did you use "hot(' + componentName + ')" and "ReactDOM.render()" in the same file?\n') + ('"hot(' + componentName + ')" shall only be used as export.\n') + 'Please refer to "Getting Started" (https://github.com/gaearon/react-hot-loader/).');
+      if (props.preload && this.howlerState() === 'unloaded') {
+        this.load();
+      }
+    }
+  }, {
+    key: 'play',
+
+
+    /**
+     * Begins playback of a sound when not playing
+     */
+    value: function play() {
+      var playing = this.howler.playing();
+
+      if (!playing) {
+        // Automatically load if we're trying to play
+        // and the howl is not loaded
+        if (this.howlerState() === 'unloaded') {
+          this.load();
         }
-        module.instances = module.instances.filter(function (a) {
-          return a !== _this2;
-        });
-      };
 
-      ExportedComponent.prototype.render = function render() {
-        return React__default.createElement(
-          AppContainer,
-          props,
-          React__default.createElement(WrappedComponent, this.props)
-        );
-      };
+        this.howler.play();
+      }
+    }
 
-      return ExportedComponent;
-    }(React.Component));
-  };
+    /**
+     * Pauses playback of sound or group
+     * If no id given, pauses all playback
+     * @param {Number} id = undefined [sound of group to pause]
+     */
+
+  }, {
+    key: 'pause',
+    value: function pause() {
+      var id = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : undefined;
+
+      if (id) {
+        this.howler.pause(id);
+      } else {
+        this.howler.pause();
+      }
+    }
+
+    /**
+     * Check the load status of the Howl
+     * @return {String} [unloaded, loading or loaded]
+     */
+
+  }, {
+    key: 'howlerState',
+    value: function howlerState() {
+      return this.howler.state();
+    }
+
+    /**
+     * Stops playback of sound or group
+     * If no id given, stops all playback
+     * @param {Number} id = undefined [sound of group to pause]
+     */
+
+  }, {
+    key: 'stop',
+    value: function stop() {
+      var id = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : undefined;
+
+      if (id) {
+        this.howler.stop(id);
+      } else {
+        this.howler.stop();
+      }
+    }
+
+    /**
+     * Mutes the sound, but doesn't pause the playback.
+     * @param {Boolean} [muted] [True to mute and false to unmute]
+     * @param {Number} [id] [The sound ID. If none is passed, all sounds in group are muted]
+     */
+
+  }, {
+    key: 'mute',
+    value: function mute() {
+      var _howler;
+
+      (_howler = this.howler).mute.apply(_howler, arguments);
+    }
+
+    /**
+     * Get/set volume of this sound or the group. This method optionally takes 0, 1 or 2 arguments.
+     * @param {Number} [volume] [Volume from 0.0 to 1.0]
+     * @param {Number} [id] [The sound ID. If none is passed, all sounds in group are muted]
+     */
+
+  }, {
+    key: 'volume',
+    value: function volume() {
+      var _howler2;
+
+      return (_howler2 = this.howler).volume.apply(_howler2, arguments);
+    }
+
+    /**
+     * Get/set whether to loop the sound or group. This method can optionally take 0, 1 or 2 arguments.
+     * @param {Boolean} [loop] [To loop or not to loop, that is the question]
+     * @param {Number} [id] [The sound ID. If none is passed, all sounds in group will have their loop property updated]
+     */
+
+  }, {
+    key: 'loop',
+    value: function loop() {
+      var _howler3;
+
+      return (_howler3 = this.howler).loop.apply(_howler3, arguments);
+    }
+
+    /**
+     * Set/get current position of player
+     * @param  {Number} pos [seek player to position]
+     * @return {Number}     [return current position]
+     */
+
+  }, {
+    key: 'seek',
+    value: function seek() {
+      var pos = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+
+      if (!this.howler) {
+        return 0;
+      }
+
+      if (!pos && pos !== 0) {
+        return this.howler.seek();
+      }
+
+      if (pos || pos === 0) {
+        this.howler.seek(pos);
+        return pos;
+      }
+    }
+
+    /**
+     * Get the duration of the audio source
+     * @return {Number} [Audio length in seconds. Will return 0 until after the load event fires]
+     */
+
+  }, {
+    key: 'duration',
+    value: function duration() {
+      return this.howler.duration();
+    }
+
+    /**
+     * load audio file
+     */
+
+  }, {
+    key: 'load',
+    value: function load() {
+      this.howler.load();
+    }
+
+    /**
+     * Only render a placeholder
+     */
+
+  }, {
+    key: 'render',
+    value: function render() {
+      return _react2.default.createElement('div', null);
+    }
+  }, {
+    key: 'howler',
+    set: function set(howl) {
+      if (howl) {
+        this._howler = howl;
+      }
+    },
+    get: function get() {
+      return this._howler;
+    }
+  }]);
+
+  return ReactHowler;
+}(_react.Component);
+
+ReactHowler.propTypes = {
+  src: _propTypes2.default.oneOfType([_propTypes2.default.string, _propTypes2.default.arrayOf(_propTypes2.default.string)]).isRequired,
+  format: _propTypes2.default.arrayOf(_propTypes2.default.string),
+  playing: _propTypes2.default.bool,
+  mute: _propTypes2.default.bool,
+  loop: _propTypes2.default.bool,
+  preload: _propTypes2.default.bool,
+  volume: _propTypes2.default.number,
+  onEnd: _propTypes2.default.func,
+  onPause: _propTypes2.default.func,
+  onPlay: _propTypes2.default.func,
+  onVolume: _propTypes2.default.func,
+  onStop: _propTypes2.default.func,
+  onLoad: _propTypes2.default.func,
+  onLoadError: _propTypes2.default.func,
+  html5: _propTypes2.default.bool
 };
 
-var getProxyOrType = function getProxyOrType(type) {
-  var proxy = getProxyByType(type);
-  return proxy ? proxy.get() : type;
+ReactHowler.defaultProps = {
+  playing: true, // Enable autoplay by default
+  format: [],
+  mute: false,
+  preload: true,
+  loop: false,
+  volume: 1.0,
+  onEnd: _utils.noop,
+  onPause: _utils.noop,
+  onPlay: _utils.noop,
+  onVolume: _utils.noop,
+  onStop: _utils.noop,
+  onLoad: _utils.noop,
+  onLoadError: _utils.noop,
+  html5: false
 };
 
-var areComponentsEqual = function areComponentsEqual(a, b) {
-  return getProxyOrType(a) === getProxyOrType(b);
-};
-
-var compareOrSwap = function compareOrSwap(oldType, newType) {
-  return hotComponentCompare(oldType, newType);
-};
-
-var cold = function cold(type) {
-  blacklistByType(type);
-  return type;
-};
-
-var configureComponent = function configureComponent(component, options) {
-  return setComponentOptions(component, options);
-};
-
-var setConfig = function setConfig(config) {
-  return setConfiguration(config);
-};
-
-reactHotLoader.patch(React__default, ReactDOM);
-
-exports.default = reactHotLoader;
-exports.AppContainer = AppContainer;
-exports.hot = hot;
-exports.enterModule = enter;
-exports.leaveModule = leave;
-exports.areComponentsEqual = areComponentsEqual;
-exports.compareOrSwap = compareOrSwap;
-exports.cold = cold;
-exports.configureComponent = configureComponent;
-exports.setConfig = setConfig;
-
+exports.default = ReactHowler;
 
 /***/ }),
 
-/***/ "./node_modules/react-hot-loader/dist/react-hot-loader.production.min.js":
-/*!*******************************************************************************!*\
-  !*** ./node_modules/react-hot-loader/dist/react-hot-loader.production.min.js ***!
-  \*******************************************************************************/
+/***/ "./node_modules/react-howler/lib/howler.js":
+/*!*************************************************!*\
+  !*** ./node_modules/react-howler/lib/howler.js ***!
+  \*************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-function _interopDefault(e){return e&&"object"==typeof e&&"default"in e?e.default:e}Object.defineProperty(exports,"__esModule",{value:!0});var React=_interopDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));function AppContainer(e){return AppContainer.warnAboutHMRDisabled&&(AppContainer.warnAboutHMRDisabled=!0,console.error("React-Hot-Loader: misconfiguration detected, using production version in non-production environment."),console.error("React-Hot-Loader: Hot Module Replacement is not enabled.")),React.Children.only(e.children)}AppContainer.warnAboutHMRDisabled=!1;var hot=function e(){return e.shouldWrapWithAppContainer?function(e){return function(n){return React.createElement(AppContainer,null,React.createElement(e,n))}}:function(e){return e}};hot.shouldWrapWithAppContainer=!1;var areComponentsEqual=function(e,n){return e===n},setConfig=function(){},cold=function(e){return e},configureComponent=function(){};exports.AppContainer=AppContainer,exports.hot=hot,exports.areComponentsEqual=areComponentsEqual,exports.setConfig=setConfig,exports.cold=cold,exports.configureComponent=configureComponent;
 
+
+var Howler = void 0;
+
+if (typeof window !== 'undefined') {
+  Howler = __webpack_require__(/*! howler */ "./node_modules/howler/dist/howler.js");
+}
+
+module.exports = Howler;
 
 /***/ }),
 
-/***/ "./node_modules/react-hot-loader/index.js":
+/***/ "./node_modules/react-howler/lib/index.js":
 /*!************************************************!*\
-  !*** ./node_modules/react-hot-loader/index.js ***!
+  !*** ./node_modules/react-howler/lib/index.js ***!
   \************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
@@ -4255,39 +4481,27 @@ function _interopDefault(e){return e&&"object"==typeof e&&"default"in e?e.defaul
 "use strict";
 
 
-if (false) {} else if (false) {} else if (typeof window === 'undefined') {
-  // this is just server environment
-  module.exports = __webpack_require__(/*! ./dist/react-hot-loader.production.min.js */ "./node_modules/react-hot-loader/dist/react-hot-loader.production.min.js");
-} else if (false) {} else {
-  var evalAllowed = false;
-  var evalError = null;
-  try {
-    eval('evalAllowed = true');
-  } catch (e) {
-    // eval not allowed due to CSP
-    evalError = e && e.message ? e.message : 'unknown reason';
-  }
+module.exports = __webpack_require__(/*! ./ReactHowler */ "./node_modules/react-howler/lib/ReactHowler.js").default;
 
-  // TODO: dont use eval to update methods. see #1273
-  // RHL needs setPrototypeOf to operate Component inheritance, and eval to patch methods
-  var jsFeaturesPresent = !!Object.setPrototypeOf;
+/***/ }),
 
-  if (!jsFeaturesPresent || !evalAllowed) {
-    // we are not in prod mode, but RHL could not be activated
-    console.warn(
-      'React-Hot-Loader is not supported in this environment:',
-      [
-        !jsFeaturesPresent && "some JS features are missing",
-        !evalAllowed && "`eval` is not allowed(" + evalError + ")"
-      ].join(','),
-      '.'
-    );
-    module.exports = __webpack_require__(/*! ./dist/react-hot-loader.production.min.js */ "./node_modules/react-hot-loader/dist/react-hot-loader.production.min.js");
-  } else {
-    module.exports = window.reactHotLoaderGlobal = __webpack_require__(/*! ./dist/react-hot-loader.development.js */ "./node_modules/react-hot-loader/dist/react-hot-loader.development.js");
-  }
-}
+/***/ "./node_modules/react-howler/lib/utils.js":
+/*!************************************************!*\
+  !*** ./node_modules/react-howler/lib/utils.js ***!
+  \************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
 
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+/**
+ * Noop function (do nothing)
+ */
+var noop = exports.noop = function noop() {};
 
 /***/ }),
 
@@ -4497,178 +4711,6 @@ exports.typeOf = typeOf;
 if (false) {} else {
   module.exports = __webpack_require__(/*! ./cjs/react-is.development.js */ "./node_modules/react-is/cjs/react-is.development.js");
 }
-
-
-/***/ }),
-
-/***/ "./node_modules/react-lifecycles-compat/react-lifecycles-compat.es.js":
-/*!****************************************************************************!*\
-  !*** ./node_modules/react-lifecycles-compat/react-lifecycles-compat.es.js ***!
-  \****************************************************************************/
-/*! exports provided: polyfill */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "polyfill", function() { return polyfill; });
-/**
- * Copyright (c) 2013-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
-
-function componentWillMount() {
-  // Call this.constructor.gDSFP to support sub-classes.
-  var state = this.constructor.getDerivedStateFromProps(this.props, this.state);
-  if (state !== null && state !== undefined) {
-    this.setState(state);
-  }
-}
-
-function componentWillReceiveProps(nextProps) {
-  // Call this.constructor.gDSFP to support sub-classes.
-  // Use the setState() updater to ensure state isn't stale in certain edge cases.
-  function updater(prevState) {
-    var state = this.constructor.getDerivedStateFromProps(nextProps, prevState);
-    return state !== null && state !== undefined ? state : null;
-  }
-  // Binding "this" is important for shallow renderer support.
-  this.setState(updater.bind(this));
-}
-
-function componentWillUpdate(nextProps, nextState) {
-  try {
-    var prevProps = this.props;
-    var prevState = this.state;
-    this.props = nextProps;
-    this.state = nextState;
-    this.__reactInternalSnapshotFlag = true;
-    this.__reactInternalSnapshot = this.getSnapshotBeforeUpdate(
-      prevProps,
-      prevState
-    );
-  } finally {
-    this.props = prevProps;
-    this.state = prevState;
-  }
-}
-
-// React may warn about cWM/cWRP/cWU methods being deprecated.
-// Add a flag to suppress these warnings for this special case.
-componentWillMount.__suppressDeprecationWarning = true;
-componentWillReceiveProps.__suppressDeprecationWarning = true;
-componentWillUpdate.__suppressDeprecationWarning = true;
-
-function polyfill(Component) {
-  var prototype = Component.prototype;
-
-  if (!prototype || !prototype.isReactComponent) {
-    throw new Error('Can only polyfill class components');
-  }
-
-  if (
-    typeof Component.getDerivedStateFromProps !== 'function' &&
-    typeof prototype.getSnapshotBeforeUpdate !== 'function'
-  ) {
-    return Component;
-  }
-
-  // If new component APIs are defined, "unsafe" lifecycles won't be called.
-  // Error if any of these lifecycles are present,
-  // Because they would work differently between older and newer (16.3+) versions of React.
-  var foundWillMountName = null;
-  var foundWillReceivePropsName = null;
-  var foundWillUpdateName = null;
-  if (typeof prototype.componentWillMount === 'function') {
-    foundWillMountName = 'componentWillMount';
-  } else if (typeof prototype.UNSAFE_componentWillMount === 'function') {
-    foundWillMountName = 'UNSAFE_componentWillMount';
-  }
-  if (typeof prototype.componentWillReceiveProps === 'function') {
-    foundWillReceivePropsName = 'componentWillReceiveProps';
-  } else if (typeof prototype.UNSAFE_componentWillReceiveProps === 'function') {
-    foundWillReceivePropsName = 'UNSAFE_componentWillReceiveProps';
-  }
-  if (typeof prototype.componentWillUpdate === 'function') {
-    foundWillUpdateName = 'componentWillUpdate';
-  } else if (typeof prototype.UNSAFE_componentWillUpdate === 'function') {
-    foundWillUpdateName = 'UNSAFE_componentWillUpdate';
-  }
-  if (
-    foundWillMountName !== null ||
-    foundWillReceivePropsName !== null ||
-    foundWillUpdateName !== null
-  ) {
-    var componentName = Component.displayName || Component.name;
-    var newApiName =
-      typeof Component.getDerivedStateFromProps === 'function'
-        ? 'getDerivedStateFromProps()'
-        : 'getSnapshotBeforeUpdate()';
-
-    throw Error(
-      'Unsafe legacy lifecycles will not be called for components using new component APIs.\n\n' +
-        componentName +
-        ' uses ' +
-        newApiName +
-        ' but also contains the following legacy lifecycles:' +
-        (foundWillMountName !== null ? '\n  ' + foundWillMountName : '') +
-        (foundWillReceivePropsName !== null
-          ? '\n  ' + foundWillReceivePropsName
-          : '') +
-        (foundWillUpdateName !== null ? '\n  ' + foundWillUpdateName : '') +
-        '\n\nThe above lifecycles should be removed. Learn more about this warning here:\n' +
-        'https://fb.me/react-async-component-lifecycle-hooks'
-    );
-  }
-
-  // React <= 16.2 does not support static getDerivedStateFromProps.
-  // As a workaround, use cWM and cWRP to invoke the new static lifecycle.
-  // Newer versions of React will ignore these lifecycles if gDSFP exists.
-  if (typeof Component.getDerivedStateFromProps === 'function') {
-    prototype.componentWillMount = componentWillMount;
-    prototype.componentWillReceiveProps = componentWillReceiveProps;
-  }
-
-  // React <= 16.2 does not support getSnapshotBeforeUpdate.
-  // As a workaround, use cWU to invoke the new lifecycle.
-  // Newer versions of React will ignore that lifecycle if gSBU exists.
-  if (typeof prototype.getSnapshotBeforeUpdate === 'function') {
-    if (typeof prototype.componentDidUpdate !== 'function') {
-      throw new Error(
-        'Cannot polyfill getSnapshotBeforeUpdate() for components that do not define componentDidUpdate() on the prototype'
-      );
-    }
-
-    prototype.componentWillUpdate = componentWillUpdate;
-
-    var componentDidUpdate = prototype.componentDidUpdate;
-
-    prototype.componentDidUpdate = function componentDidUpdatePolyfill(
-      prevProps,
-      prevState,
-      maybeSnapshot
-    ) {
-      // 16.3+ will not execute our will-update method;
-      // It will pass a snapshot value to did-update though.
-      // Older versions will require our polyfilled will-update value.
-      // We need to handle both cases, but can't just check for the presence of "maybeSnapshot",
-      // Because for <= 15.x versions this might be a "prevContext" object.
-      // We also can't just check "__reactInternalSnapshot",
-      // Because get-snapshot might return a falsy value.
-      // So check for the explicit __reactInternalSnapshotFlag flag to determine behavior.
-      var snapshot = this.__reactInternalSnapshotFlag
-        ? this.__reactInternalSnapshot
-        : maybeSnapshot;
-
-      componentDidUpdate.call(this, prevProps, prevState, snapshot);
-    };
-  }
-
-  return Component;
-}
-
-
 
 
 /***/ }),
@@ -5804,6 +5846,1764 @@ ReactSlider.propTypes =  true ? {
 
 /***/ }),
 
+/***/ "./node_modules/react-tooltip/dist/index.es.js":
+/*!*****************************************************!*\
+  !*** ./node_modules/react-tooltip/dist/index.es.js ***!
+  \*****************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var uuid__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! uuid */ "./node_modules/uuid/dist/esm-browser/index.js");
+function ___$insertStyle(css) {
+  if (!css) {
+    return;
+  }
+  if (typeof window === 'undefined') {
+    return;
+  }
+
+  var style = document.createElement('style');
+
+  style.setAttribute('type', 'text/css');
+  style.innerHTML = css;
+  document.head.appendChild(style);
+  return css;
+}
+
+
+
+
+
+function _classCallCheck(instance, Constructor) {
+  if (!(instance instanceof Constructor)) {
+    throw new TypeError("Cannot call a class as a function");
+  }
+}
+
+function _defineProperties(target, props) {
+  for (var i = 0; i < props.length; i++) {
+    var descriptor = props[i];
+    descriptor.enumerable = descriptor.enumerable || false;
+    descriptor.configurable = true;
+    if ("value" in descriptor) descriptor.writable = true;
+    Object.defineProperty(target, descriptor.key, descriptor);
+  }
+}
+
+function _createClass(Constructor, protoProps, staticProps) {
+  if (protoProps) _defineProperties(Constructor.prototype, protoProps);
+  if (staticProps) _defineProperties(Constructor, staticProps);
+  return Constructor;
+}
+
+function _defineProperty(obj, key, value) {
+  if (key in obj) {
+    Object.defineProperty(obj, key, {
+      value: value,
+      enumerable: true,
+      configurable: true,
+      writable: true
+    });
+  } else {
+    obj[key] = value;
+  }
+
+  return obj;
+}
+
+function _extends() {
+  _extends = Object.assign || function (target) {
+    for (var i = 1; i < arguments.length; i++) {
+      var source = arguments[i];
+
+      for (var key in source) {
+        if (Object.prototype.hasOwnProperty.call(source, key)) {
+          target[key] = source[key];
+        }
+      }
+    }
+
+    return target;
+  };
+
+  return _extends.apply(this, arguments);
+}
+
+function ownKeys(object, enumerableOnly) {
+  var keys = Object.keys(object);
+
+  if (Object.getOwnPropertySymbols) {
+    var symbols = Object.getOwnPropertySymbols(object);
+    if (enumerableOnly) symbols = symbols.filter(function (sym) {
+      return Object.getOwnPropertyDescriptor(object, sym).enumerable;
+    });
+    keys.push.apply(keys, symbols);
+  }
+
+  return keys;
+}
+
+function _objectSpread2(target) {
+  for (var i = 1; i < arguments.length; i++) {
+    var source = arguments[i] != null ? arguments[i] : {};
+
+    if (i % 2) {
+      ownKeys(Object(source), true).forEach(function (key) {
+        _defineProperty(target, key, source[key]);
+      });
+    } else if (Object.getOwnPropertyDescriptors) {
+      Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));
+    } else {
+      ownKeys(Object(source)).forEach(function (key) {
+        Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      });
+    }
+  }
+
+  return target;
+}
+
+function _inherits(subClass, superClass) {
+  if (typeof superClass !== "function" && superClass !== null) {
+    throw new TypeError("Super expression must either be null or a function");
+  }
+
+  subClass.prototype = Object.create(superClass && superClass.prototype, {
+    constructor: {
+      value: subClass,
+      writable: true,
+      configurable: true
+    }
+  });
+  if (superClass) _setPrototypeOf(subClass, superClass);
+}
+
+function _getPrototypeOf(o) {
+  _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) {
+    return o.__proto__ || Object.getPrototypeOf(o);
+  };
+  return _getPrototypeOf(o);
+}
+
+function _setPrototypeOf(o, p) {
+  _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) {
+    o.__proto__ = p;
+    return o;
+  };
+
+  return _setPrototypeOf(o, p);
+}
+
+function _assertThisInitialized(self) {
+  if (self === void 0) {
+    throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+  }
+
+  return self;
+}
+
+function _possibleConstructorReturn(self, call) {
+  if (call && (typeof call === "object" || typeof call === "function")) {
+    return call;
+  }
+
+  return _assertThisInitialized(self);
+}
+
+var CONSTANT = {
+  GLOBAL: {
+    HIDE: "__react_tooltip_hide_event",
+    REBUILD: "__react_tooltip_rebuild_event",
+    SHOW: "__react_tooltip_show_event"
+  }
+};
+
+/**
+ * Static methods for react-tooltip
+ */
+
+var dispatchGlobalEvent = function dispatchGlobalEvent(eventName, opts) {
+  // Compatible with IE
+  // @see http://stackoverflow.com/questions/26596123/internet-explorer-9-10-11-event-constructor-doesnt-work
+  // @see https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent/CustomEvent
+  var event;
+
+  if (typeof window.CustomEvent === "function") {
+    event = new window.CustomEvent(eventName, {
+      detail: opts
+    });
+  } else {
+    event = document.createEvent("Event");
+    event.initEvent(eventName, false, true, opts);
+  }
+
+  window.dispatchEvent(event);
+};
+
+function staticMethods (target) {
+  /**
+   * Hide all tooltip
+   * @trigger ReactTooltip.hide()
+   */
+  target.hide = function (target) {
+    dispatchGlobalEvent(CONSTANT.GLOBAL.HIDE, {
+      target: target
+    });
+  };
+  /**
+   * Rebuild all tooltip
+   * @trigger ReactTooltip.rebuild()
+   */
+
+
+  target.rebuild = function () {
+    dispatchGlobalEvent(CONSTANT.GLOBAL.REBUILD);
+  };
+  /**
+   * Show specific tooltip
+   * @trigger ReactTooltip.show()
+   */
+
+
+  target.show = function (target) {
+    dispatchGlobalEvent(CONSTANT.GLOBAL.SHOW, {
+      target: target
+    });
+  };
+
+  target.prototype.globalRebuild = function () {
+    if (this.mount) {
+      this.unbindListener();
+      this.bindListener();
+    }
+  };
+
+  target.prototype.globalShow = function (event) {
+    if (this.mount) {
+      var hasTarget = event && event.detail && event.detail.target && true || false; // Create a fake event, specific show will limit the type to `solid`
+      // only `float` type cares e.clientX e.clientY
+
+      this.showTooltip({
+        currentTarget: hasTarget && event.detail.target
+      }, true);
+    }
+  };
+
+  target.prototype.globalHide = function (event) {
+    if (this.mount) {
+      var hasTarget = event && event.detail && event.detail.target && true || false;
+      this.hideTooltip({
+        currentTarget: hasTarget && event.detail.target
+      }, hasTarget);
+    }
+  };
+}
+
+/**
+ * Events that should be bound to the window
+ */
+function windowListener (target) {
+  target.prototype.bindWindowEvents = function (resizeHide) {
+    // ReactTooltip.hide
+    window.removeEventListener(CONSTANT.GLOBAL.HIDE, this.globalHide);
+    window.addEventListener(CONSTANT.GLOBAL.HIDE, this.globalHide, false); // ReactTooltip.rebuild
+
+    window.removeEventListener(CONSTANT.GLOBAL.REBUILD, this.globalRebuild);
+    window.addEventListener(CONSTANT.GLOBAL.REBUILD, this.globalRebuild, false); // ReactTooltip.show
+
+    window.removeEventListener(CONSTANT.GLOBAL.SHOW, this.globalShow);
+    window.addEventListener(CONSTANT.GLOBAL.SHOW, this.globalShow, false); // Resize
+
+    if (resizeHide) {
+      window.removeEventListener("resize", this.onWindowResize);
+      window.addEventListener("resize", this.onWindowResize, false);
+    }
+  };
+
+  target.prototype.unbindWindowEvents = function () {
+    window.removeEventListener(CONSTANT.GLOBAL.HIDE, this.globalHide);
+    window.removeEventListener(CONSTANT.GLOBAL.REBUILD, this.globalRebuild);
+    window.removeEventListener(CONSTANT.GLOBAL.SHOW, this.globalShow);
+    window.removeEventListener("resize", this.onWindowResize);
+  };
+  /**
+   * invoked by resize event of window
+   */
+
+
+  target.prototype.onWindowResize = function () {
+    if (!this.mount) return;
+    this.hideTooltip();
+  };
+}
+
+/**
+ * Custom events to control showing and hiding of tooltip
+ *
+ * @attributes
+ * - `event` {String}
+ * - `eventOff` {String}
+ */
+var checkStatus = function checkStatus(dataEventOff, e) {
+  var show = this.state.show;
+  var id = this.props.id;
+  var isCapture = this.isCapture(e.currentTarget);
+  var currentItem = e.currentTarget.getAttribute("currentItem");
+  if (!isCapture) e.stopPropagation();
+
+  if (show && currentItem === "true") {
+    if (!dataEventOff) this.hideTooltip(e);
+  } else {
+    e.currentTarget.setAttribute("currentItem", "true");
+    setUntargetItems(e.currentTarget, this.getTargetArray(id));
+    this.showTooltip(e);
+  }
+};
+
+var setUntargetItems = function setUntargetItems(currentTarget, targetArray) {
+  for (var i = 0; i < targetArray.length; i++) {
+    if (currentTarget !== targetArray[i]) {
+      targetArray[i].setAttribute("currentItem", "false");
+    } else {
+      targetArray[i].setAttribute("currentItem", "true");
+    }
+  }
+};
+
+var customListeners = {
+  id: "9b69f92e-d3fe-498b-b1b4-c5e63a51b0cf",
+  set: function set(target, event, listener) {
+    if (this.id in target) {
+      var map = target[this.id];
+      map[event] = listener;
+    } else {
+      // this is workaround for WeakMap, which is not supported in older browsers, such as IE
+      Object.defineProperty(target, this.id, {
+        configurable: true,
+        value: _defineProperty({}, event, listener)
+      });
+    }
+  },
+  get: function get(target, event) {
+    var map = target[this.id];
+
+    if (map !== undefined) {
+      return map[event];
+    }
+  }
+};
+function customEvent (target) {
+  target.prototype.isCustomEvent = function (ele) {
+    var event = this.state.event;
+    return event || !!ele.getAttribute("data-event");
+  };
+  /* Bind listener for custom event */
+
+
+  target.prototype.customBindListener = function (ele) {
+    var _this = this;
+
+    var _this$state = this.state,
+        event = _this$state.event,
+        eventOff = _this$state.eventOff;
+    var dataEvent = ele.getAttribute("data-event") || event;
+    var dataEventOff = ele.getAttribute("data-event-off") || eventOff;
+    dataEvent.split(" ").forEach(function (event) {
+      ele.removeEventListener(event, customListeners.get(ele, event));
+      var customListener = checkStatus.bind(_this, dataEventOff);
+      customListeners.set(ele, event, customListener);
+      ele.addEventListener(event, customListener, false);
+    });
+
+    if (dataEventOff) {
+      dataEventOff.split(" ").forEach(function (event) {
+        ele.removeEventListener(event, _this.hideTooltip);
+        ele.addEventListener(event, _this.hideTooltip, false);
+      });
+    }
+  };
+  /* Unbind listener for custom event */
+
+
+  target.prototype.customUnbindListener = function (ele) {
+    var _this$state2 = this.state,
+        event = _this$state2.event,
+        eventOff = _this$state2.eventOff;
+    var dataEvent = event || ele.getAttribute("data-event");
+    var dataEventOff = eventOff || ele.getAttribute("data-event-off");
+    ele.removeEventListener(dataEvent, customListeners.get(ele, event));
+    if (dataEventOff) ele.removeEventListener(dataEventOff, this.hideTooltip);
+  };
+}
+
+/**
+ * Util method to judge if it should follow capture model
+ */
+function isCapture (target) {
+  target.prototype.isCapture = function (currentTarget) {
+    return currentTarget && currentTarget.getAttribute("data-iscapture") === "true" || this.props.isCapture || false;
+  };
+}
+
+/**
+ * Util method to get effect
+ */
+function getEffect (target) {
+  target.prototype.getEffect = function (currentTarget) {
+    var dataEffect = currentTarget.getAttribute("data-effect");
+    return dataEffect || this.props.effect || "float";
+  };
+}
+
+/**
+ * Util method to get effect
+ */
+
+var makeProxy = function makeProxy(e) {
+  var proxy = {};
+
+  for (var key in e) {
+    if (typeof e[key] === "function") {
+      proxy[key] = e[key].bind(e);
+    } else {
+      proxy[key] = e[key];
+    }
+  }
+
+  return proxy;
+};
+
+var bodyListener = function bodyListener(callback, options, e) {
+  var _options$respectEffec = options.respectEffect,
+      respectEffect = _options$respectEffec === void 0 ? false : _options$respectEffec,
+      _options$customEvent = options.customEvent,
+      customEvent = _options$customEvent === void 0 ? false : _options$customEvent;
+  var id = this.props.id;
+  var tip = e.target.getAttribute("data-tip") || null;
+  var forId = e.target.getAttribute("data-for") || null;
+  var target = e.target;
+
+  if (this.isCustomEvent(target) && !customEvent) {
+    return;
+  }
+
+  var isTargetBelongsToTooltip = id == null && forId == null || forId === id;
+
+  if (tip != null && (!respectEffect || this.getEffect(target) === "float") && isTargetBelongsToTooltip) {
+    var proxy = makeProxy(e);
+    proxy.currentTarget = target;
+    callback(proxy);
+  }
+};
+
+var findCustomEvents = function findCustomEvents(targetArray, dataAttribute) {
+  var events = {};
+  targetArray.forEach(function (target) {
+    var event = target.getAttribute(dataAttribute);
+    if (event) event.split(" ").forEach(function (event) {
+      return events[event] = true;
+    });
+  });
+  return events;
+};
+
+var getBody = function getBody() {
+  return document.getElementsByTagName("body")[0];
+};
+
+function bodyMode (target) {
+  target.prototype.isBodyMode = function () {
+    return !!this.props.bodyMode;
+  };
+
+  target.prototype.bindBodyListener = function (targetArray) {
+    var _this = this;
+
+    var _this$state = this.state,
+        event = _this$state.event,
+        eventOff = _this$state.eventOff,
+        possibleCustomEvents = _this$state.possibleCustomEvents,
+        possibleCustomEventsOff = _this$state.possibleCustomEventsOff;
+    var body = getBody();
+    var customEvents = findCustomEvents(targetArray, "data-event");
+    var customEventsOff = findCustomEvents(targetArray, "data-event-off");
+    if (event != null) customEvents[event] = true;
+    if (eventOff != null) customEventsOff[eventOff] = true;
+    possibleCustomEvents.split(" ").forEach(function (event) {
+      return customEvents[event] = true;
+    });
+    possibleCustomEventsOff.split(" ").forEach(function (event) {
+      return customEventsOff[event] = true;
+    });
+    this.unbindBodyListener(body);
+    var listeners = this.bodyModeListeners = {};
+
+    if (event == null) {
+      listeners.mouseover = bodyListener.bind(this, this.showTooltip, {});
+      listeners.mousemove = bodyListener.bind(this, this.updateTooltip, {
+        respectEffect: true
+      });
+      listeners.mouseout = bodyListener.bind(this, this.hideTooltip, {});
+    }
+
+    for (var _event in customEvents) {
+      listeners[_event] = bodyListener.bind(this, function (e) {
+        var targetEventOff = e.currentTarget.getAttribute("data-event-off") || eventOff;
+        checkStatus.call(_this, targetEventOff, e);
+      }, {
+        customEvent: true
+      });
+    }
+
+    for (var _event2 in customEventsOff) {
+      listeners[_event2] = bodyListener.bind(this, this.hideTooltip, {
+        customEvent: true
+      });
+    }
+
+    for (var _event3 in listeners) {
+      body.addEventListener(_event3, listeners[_event3]);
+    }
+  };
+
+  target.prototype.unbindBodyListener = function (body) {
+    body = body || getBody();
+    var listeners = this.bodyModeListeners;
+
+    for (var event in listeners) {
+      body.removeEventListener(event, listeners[event]);
+    }
+  };
+}
+
+/**
+ * Tracking target removing from DOM.
+ * It's necessary to hide tooltip when it's target disappears.
+ * Otherwise, the tooltip would be shown forever until another target
+ * is triggered.
+ *
+ * If MutationObserver is not available, this feature just doesn't work.
+ */
+// https://hacks.mozilla.org/2012/05/dom-mutationobserver-reacting-to-dom-changes-without-killing-browser-performance/
+var getMutationObserverClass = function getMutationObserverClass() {
+  return window.MutationObserver || window.WebKitMutationObserver || window.MozMutationObserver;
+};
+
+function trackRemoval (target) {
+  target.prototype.bindRemovalTracker = function () {
+    var _this = this;
+
+    var MutationObserver = getMutationObserverClass();
+    if (MutationObserver == null) return;
+    var observer = new MutationObserver(function (mutations) {
+      for (var m1 = 0; m1 < mutations.length; m1++) {
+        var mutation = mutations[m1];
+
+        for (var m2 = 0; m2 < mutation.removedNodes.length; m2++) {
+          var element = mutation.removedNodes[m2];
+
+          if (element === _this.state.currentTarget) {
+            _this.hideTooltip();
+
+            return;
+          }
+        }
+      }
+    });
+    observer.observe(window.document, {
+      childList: true,
+      subtree: true
+    });
+    this.removalTracker = observer;
+  };
+
+  target.prototype.unbindRemovalTracker = function () {
+    if (this.removalTracker) {
+      this.removalTracker.disconnect();
+      this.removalTracker = null;
+    }
+  };
+}
+
+/**
+ * Calculate the position of tooltip
+ *
+ * @params
+ * - `e` {Event} the event of current mouse
+ * - `target` {Element} the currentTarget of the event
+ * - `node` {DOM} the react-tooltip object
+ * - `place` {String} top / right / bottom / left
+ * - `effect` {String} float / solid
+ * - `offset` {Object} the offset to default position
+ *
+ * @return {Object}
+ * - `isNewState` {Bool} required
+ * - `newState` {Object}
+ * - `position` {Object} {left: {Number}, top: {Number}}
+ */
+function getPosition (e, target, node, place, desiredPlace, effect, offset) {
+  var _getDimensions = getDimensions(node),
+      tipWidth = _getDimensions.width,
+      tipHeight = _getDimensions.height;
+
+  var _getDimensions2 = getDimensions(target),
+      targetWidth = _getDimensions2.width,
+      targetHeight = _getDimensions2.height;
+
+  var _getCurrentOffset = getCurrentOffset(e, target, effect),
+      mouseX = _getCurrentOffset.mouseX,
+      mouseY = _getCurrentOffset.mouseY;
+
+  var defaultOffset = getDefaultPosition(effect, targetWidth, targetHeight, tipWidth, tipHeight);
+
+  var _calculateOffset = calculateOffset(offset),
+      extraOffsetX = _calculateOffset.extraOffsetX,
+      extraOffsetY = _calculateOffset.extraOffsetY;
+
+  var windowWidth = window.innerWidth;
+  var windowHeight = window.innerHeight;
+
+  var _getParent = getParent(node),
+      parentTop = _getParent.parentTop,
+      parentLeft = _getParent.parentLeft; // Get the edge offset of the tooltip
+
+
+  var getTipOffsetLeft = function getTipOffsetLeft(place) {
+    var offsetX = defaultOffset[place].l;
+    return mouseX + offsetX + extraOffsetX;
+  };
+
+  var getTipOffsetRight = function getTipOffsetRight(place) {
+    var offsetX = defaultOffset[place].r;
+    return mouseX + offsetX + extraOffsetX;
+  };
+
+  var getTipOffsetTop = function getTipOffsetTop(place) {
+    var offsetY = defaultOffset[place].t;
+    return mouseY + offsetY + extraOffsetY;
+  };
+
+  var getTipOffsetBottom = function getTipOffsetBottom(place) {
+    var offsetY = defaultOffset[place].b;
+    return mouseY + offsetY + extraOffsetY;
+  }; //
+  // Functions to test whether the tooltip's sides are inside
+  // the client window for a given orientation p
+  //
+  //  _____________
+  // |             | <-- Right side
+  // | p = 'left'  |\
+  // |             |/  |\
+  // |_____________|   |_\  <-- Mouse
+  //      / \           |
+  //       |
+  //       |
+  //  Bottom side
+  //
+
+
+  var outsideLeft = function outsideLeft(p) {
+    return getTipOffsetLeft(p) < 0;
+  };
+
+  var outsideRight = function outsideRight(p) {
+    return getTipOffsetRight(p) > windowWidth;
+  };
+
+  var outsideTop = function outsideTop(p) {
+    return getTipOffsetTop(p) < 0;
+  };
+
+  var outsideBottom = function outsideBottom(p) {
+    return getTipOffsetBottom(p) > windowHeight;
+  }; // Check whether the tooltip with orientation p is completely inside the client window
+
+
+  var outside = function outside(p) {
+    return outsideLeft(p) || outsideRight(p) || outsideTop(p) || outsideBottom(p);
+  };
+
+  var inside = function inside(p) {
+    return !outside(p);
+  };
+
+  var placesList = ["top", "bottom", "left", "right"];
+  var insideList = [];
+
+  for (var i = 0; i < 4; i++) {
+    var p = placesList[i];
+
+    if (inside(p)) {
+      insideList.push(p);
+    }
+  }
+
+  var isNewState = false;
+  var newPlace;
+  var shouldUpdatePlace = desiredPlace !== place;
+
+  if (inside(desiredPlace) && shouldUpdatePlace) {
+    isNewState = true;
+    newPlace = desiredPlace;
+  } else if (insideList.length > 0 && outside(desiredPlace) && outside(place)) {
+    isNewState = true;
+    newPlace = insideList[0];
+  }
+
+  if (isNewState) {
+    return {
+      isNewState: true,
+      newState: {
+        place: newPlace
+      }
+    };
+  }
+
+  return {
+    isNewState: false,
+    position: {
+      left: parseInt(getTipOffsetLeft(place) - parentLeft, 10),
+      top: parseInt(getTipOffsetTop(place) - parentTop, 10)
+    }
+  };
+}
+
+var getDimensions = function getDimensions(node) {
+  var _node$getBoundingClie = node.getBoundingClientRect(),
+      height = _node$getBoundingClie.height,
+      width = _node$getBoundingClie.width;
+
+  return {
+    height: parseInt(height, 10),
+    width: parseInt(width, 10)
+  };
+}; // Get current mouse offset
+
+
+var getCurrentOffset = function getCurrentOffset(e, currentTarget, effect) {
+  var boundingClientRect = currentTarget.getBoundingClientRect();
+  var targetTop = boundingClientRect.top;
+  var targetLeft = boundingClientRect.left;
+
+  var _getDimensions3 = getDimensions(currentTarget),
+      targetWidth = _getDimensions3.width,
+      targetHeight = _getDimensions3.height;
+
+  if (effect === "float") {
+    return {
+      mouseX: e.clientX,
+      mouseY: e.clientY
+    };
+  }
+
+  return {
+    mouseX: targetLeft + targetWidth / 2,
+    mouseY: targetTop + targetHeight / 2
+  };
+}; // List all possibility of tooltip final offset
+// This is useful in judging if it is necessary for tooltip to switch position when out of window
+
+
+var getDefaultPosition = function getDefaultPosition(effect, targetWidth, targetHeight, tipWidth, tipHeight) {
+  var top;
+  var right;
+  var bottom;
+  var left;
+  var disToMouse = 3;
+  var triangleHeight = 2;
+  var cursorHeight = 12; // Optimize for float bottom only, cause the cursor will hide the tooltip
+
+  if (effect === "float") {
+    top = {
+      l: -(tipWidth / 2),
+      r: tipWidth / 2,
+      t: -(tipHeight + disToMouse + triangleHeight),
+      b: -disToMouse
+    };
+    bottom = {
+      l: -(tipWidth / 2),
+      r: tipWidth / 2,
+      t: disToMouse + cursorHeight,
+      b: tipHeight + disToMouse + triangleHeight + cursorHeight
+    };
+    left = {
+      l: -(tipWidth + disToMouse + triangleHeight),
+      r: -disToMouse,
+      t: -(tipHeight / 2),
+      b: tipHeight / 2
+    };
+    right = {
+      l: disToMouse,
+      r: tipWidth + disToMouse + triangleHeight,
+      t: -(tipHeight / 2),
+      b: tipHeight / 2
+    };
+  } else if (effect === "solid") {
+    top = {
+      l: -(tipWidth / 2),
+      r: tipWidth / 2,
+      t: -(targetHeight / 2 + tipHeight + triangleHeight),
+      b: -(targetHeight / 2)
+    };
+    bottom = {
+      l: -(tipWidth / 2),
+      r: tipWidth / 2,
+      t: targetHeight / 2,
+      b: targetHeight / 2 + tipHeight + triangleHeight
+    };
+    left = {
+      l: -(tipWidth + targetWidth / 2 + triangleHeight),
+      r: -(targetWidth / 2),
+      t: -(tipHeight / 2),
+      b: tipHeight / 2
+    };
+    right = {
+      l: targetWidth / 2,
+      r: tipWidth + targetWidth / 2 + triangleHeight,
+      t: -(tipHeight / 2),
+      b: tipHeight / 2
+    };
+  }
+
+  return {
+    top: top,
+    bottom: bottom,
+    left: left,
+    right: right
+  };
+}; // Consider additional offset into position calculation
+
+
+var calculateOffset = function calculateOffset(offset) {
+  var extraOffsetX = 0;
+  var extraOffsetY = 0;
+
+  if (Object.prototype.toString.apply(offset) === "[object String]") {
+    offset = JSON.parse(offset.toString().replace(/'/g, '"'));
+  }
+
+  for (var key in offset) {
+    if (key === "top") {
+      extraOffsetY -= parseInt(offset[key], 10);
+    } else if (key === "bottom") {
+      extraOffsetY += parseInt(offset[key], 10);
+    } else if (key === "left") {
+      extraOffsetX -= parseInt(offset[key], 10);
+    } else if (key === "right") {
+      extraOffsetX += parseInt(offset[key], 10);
+    }
+  }
+
+  return {
+    extraOffsetX: extraOffsetX,
+    extraOffsetY: extraOffsetY
+  };
+}; // Get the offset of the parent elements
+
+
+var getParent = function getParent(currentTarget) {
+  var currentParent = currentTarget;
+
+  while (currentParent) {
+    if (window.getComputedStyle(currentParent).getPropertyValue("transform") !== "none") break;
+    currentParent = currentParent.parentElement;
+  }
+
+  var parentTop = currentParent && currentParent.getBoundingClientRect().top || 0;
+  var parentLeft = currentParent && currentParent.getBoundingClientRect().left || 0;
+  return {
+    parentTop: parentTop,
+    parentLeft: parentLeft
+  };
+};
+
+/**
+ * To get the tooltip content
+ * it may comes from data-tip or this.props.children
+ * it should support multiline
+ *
+ * @params
+ * - `tip` {String} value of data-tip
+ * - `children` {ReactElement} this.props.children
+ * - `multiline` {Any} could be Bool(true/false) or String('true'/'false')
+ *
+ * @return
+ * - String or react component
+ */
+function getTipContent (tip, children, getContent, multiline) {
+  if (children) return children;
+  if (getContent !== undefined && getContent !== null) return getContent; // getContent can be 0, '', etc.
+
+  if (getContent === null) return null; // Tip not exist and children is null or undefined
+
+  var regexp = /<br\s*\/?>/;
+
+  if (!multiline || multiline === "false" || !regexp.test(tip)) {
+    // No trim(), so that user can keep their input
+    return tip;
+  } // Multiline tooltip content
+
+
+  return tip.split(regexp).map(function (d, i) {
+    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+      key: i,
+      className: "multi-line"
+    }, d);
+  });
+}
+
+/**
+ * Support aria- and role in ReactTooltip
+ *
+ * @params props {Object}
+ * @return {Object}
+ */
+function parseAria(props) {
+  var ariaObj = {};
+  Object.keys(props).filter(function (prop) {
+    // aria-xxx and role is acceptable
+    return /(^aria-\w+$|^role$)/.test(prop);
+  }).forEach(function (prop) {
+    ariaObj[prop] = props[prop];
+  });
+  return ariaObj;
+}
+
+/**
+ * Convert nodelist to array
+ * @see https://github.com/facebook/fbjs/blob/e66ba20ad5be433eb54423f2b097d829324d9de6/packages/fbjs/src/core/createArrayFromMixed.js#L24
+ * NodeLists are functions in Safari
+ */
+function nodeListToArray (nodeList) {
+  var length = nodeList.length;
+
+  if (nodeList.hasOwnProperty) {
+    return Array.prototype.slice.call(nodeList);
+  }
+
+  return new Array(length).fill().map(function (index) {
+    return nodeList[index];
+  });
+}
+
+function generateUUID() {
+  return "t" + Object(uuid__WEBPACK_IMPORTED_MODULE_2__["v4"])();
+}
+
+___$insertStyle(".__react_component_tooltip {\n  border-radius: 3px;\n  display: inline-block;\n  font-size: 13px;\n  left: -999em;\n  opacity: 0;\n  padding: 8px 21px;\n  position: fixed;\n  pointer-events: none;\n  transition: opacity 0.3s ease-out;\n  top: -999em;\n  visibility: hidden;\n  z-index: 999;\n}\n.__react_component_tooltip.allow_hover, .__react_component_tooltip.allow_click {\n  pointer-events: auto;\n}\n.__react_component_tooltip::before, .__react_component_tooltip::after {\n  content: \"\";\n  width: 0;\n  height: 0;\n  position: absolute;\n}\n.__react_component_tooltip.show {\n  opacity: 0.9;\n  margin-top: 0;\n  margin-left: 0;\n  visibility: visible;\n}\n.__react_component_tooltip.place-top::before {\n  border-left: 10px solid transparent;\n  border-right: 10px solid transparent;\n  bottom: -8px;\n  left: 50%;\n  margin-left: -10px;\n}\n.__react_component_tooltip.place-bottom::before {\n  border-left: 10px solid transparent;\n  border-right: 10px solid transparent;\n  top: -8px;\n  left: 50%;\n  margin-left: -10px;\n}\n.__react_component_tooltip.place-left::before {\n  border-top: 6px solid transparent;\n  border-bottom: 6px solid transparent;\n  right: -8px;\n  top: 50%;\n  margin-top: -5px;\n}\n.__react_component_tooltip.place-right::before {\n  border-top: 6px solid transparent;\n  border-bottom: 6px solid transparent;\n  left: -8px;\n  top: 50%;\n  margin-top: -5px;\n}\n.__react_component_tooltip .multi-line {\n  display: block;\n  padding: 2px 0;\n  text-align: center;\n}");
+
+/**
+ * Default pop-up style values (text color, background color).
+ */
+var defaultColors = {
+  "dark": {
+    "text": "#fff",
+    "background": "#222",
+    "border": "transparent",
+    "arrow": "#222"
+  },
+  "success": {
+    "text": "#fff",
+    "background": "#8DC572",
+    "border": "transparent",
+    "arrow": "#8DC572"
+  },
+  "warning": {
+    "text": "#fff",
+    "background": "#F0AD4E",
+    "border": "transparent",
+    "arrow": "#F0AD4E"
+  },
+  "error": {
+    "text": "#fff",
+    "background": "#BE6464",
+    "border": "transparent",
+    "arrow": "#BE6464"
+  },
+  "info": {
+    "text": "#fff",
+    "background": "#337AB7",
+    "border": "transparent",
+    "arrow": "#337AB7"
+  },
+  "light": {
+    "text": "#222",
+    "background": "#fff",
+    "border": "transparent",
+    "arrow": "#fff"
+  }
+};
+function getDefaultPopupColors(type) {
+  return defaultColors[type] ? _objectSpread2({}, defaultColors[type]) : undefined;
+}
+
+/**
+* Generates the specific tooltip style for use on render.
+*/
+
+function generateTooltipStyle(uuid, customColors, type, hasBorder) {
+  return generateStyle(uuid, getPopupColors(customColors, type, hasBorder));
+}
+/**
+ * Generates the tooltip style rules based on the element-specified "data-type" property.
+ */
+
+function generateStyle(uuid, colors) {
+  var textColor = colors.text;
+  var backgroundColor = colors.background;
+  var borderColor = colors.border;
+  var arrowColor = colors.arrow;
+  return "\n  \t.".concat(uuid, " {\n\t    color: ").concat(textColor, ";\n\t    background: ").concat(backgroundColor, ";\n\t    border: 1px solid ").concat(borderColor, ";\n  \t}\n\n  \t.").concat(uuid, ".place-top {\n        margin-top: -10px;\n    }\n    .").concat(uuid, ".place-top::before {\n        border-top: 8px solid ").concat(borderColor, ";\n    }\n    .").concat(uuid, ".place-top::after {\n        border-left: 8px solid transparent;\n        border-right: 8px solid transparent;\n        bottom: -6px;\n        left: 50%;\n        margin-left: -8px;\n        border-top-color: ").concat(arrowColor, ";\n        border-top-style: solid;\n        border-top-width: 6px;\n    }\n\n    .").concat(uuid, ".place-bottom {\n        margin-top: 10px;\n    }\n    .").concat(uuid, ".place-bottom::before {\n        border-bottom: 8px solid ").concat(borderColor, ";\n    }\n    .").concat(uuid, ".place-bottom::after {\n        border-left: 8px solid transparent;\n        border-right: 8px solid transparent;\n        top: -6px;\n        left: 50%;\n        margin-left: -8px;\n        border-bottom-color: ").concat(arrowColor, ";\n        border-bottom-style: solid;\n        border-bottom-width: 6px;\n    }\n\n    .").concat(uuid, ".place-left {\n        margin-left: -10px;\n    }\n    .").concat(uuid, ".place-left::before {\n        border-left: 8px solid ").concat(borderColor, ";\n    }\n    .").concat(uuid, ".place-left::after {\n        border-top: 5px solid transparent;\n        border-bottom: 5px solid transparent;\n        right: -6px;\n        top: 50%;\n        margin-top: -4px;\n        border-left-color: ").concat(arrowColor, ";\n        border-left-style: solid;\n        border-left-width: 6px;\n    }\n\n    .").concat(uuid, ".place-right {\n        margin-left: 10px;\n    }\n    .").concat(uuid, ".place-right::before {\n        border-right: 8px solid ").concat(borderColor, ";\n    }\n    .").concat(uuid, ".place-right::after {\n        border-top: 5px solid transparent;\n        border-bottom: 5px solid transparent;\n        left: -6px;\n        top: 50%;\n        margin-top: -4px;\n        border-right-color: ").concat(arrowColor, ";\n        border-right-style: solid;\n        border-right-width: 6px;\n    }\n  ");
+}
+
+function getPopupColors(customColors, type, hasBorder) {
+  var textColor = customColors.text;
+  var backgroundColor = customColors.background;
+  var borderColor = customColors.border;
+  var arrowColor = customColors.arrow ? customColors.arrow : customColors.background;
+  var colors = getDefaultPopupColors(type);
+
+  if (textColor) {
+    colors.text = textColor;
+  }
+
+  if (backgroundColor) {
+    colors.background = backgroundColor;
+  }
+
+  if (hasBorder) {
+    if (borderColor) {
+      colors.border = borderColor;
+    } else {
+      colors.border = type === "light" ? "black" : "white";
+    }
+  }
+
+  if (arrowColor) {
+    colors.arrow = arrowColor;
+  }
+
+  return colors;
+}
+
+var _class, _class2, _temp;
+
+var ReactTooltip = staticMethods(_class = windowListener(_class = customEvent(_class = isCapture(_class = getEffect(_class = bodyMode(_class = trackRemoval(_class = (_temp = _class2 =
+/*#__PURE__*/
+function (_React$Component) {
+  _inherits(ReactTooltip, _React$Component);
+
+  _createClass(ReactTooltip, null, [{
+    key: "propTypes",
+    get: function get() {
+      return {
+        uuid: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string,
+        children: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.any,
+        place: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string,
+        type: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string,
+        effect: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string,
+        offset: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.object,
+        multiline: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.bool,
+        border: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.bool,
+        textColor: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string,
+        backgroundColor: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string,
+        borderColor: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string,
+        arrowColor: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string,
+        insecure: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.bool,
+        "class": prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string,
+        className: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string,
+        id: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string,
+        html: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.bool,
+        delayHide: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.number,
+        delayUpdate: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.number,
+        delayShow: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.number,
+        event: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string,
+        eventOff: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string,
+        isCapture: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.bool,
+        globalEventOff: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string,
+        getContent: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.any,
+        afterShow: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.func,
+        afterHide: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.func,
+        overridePosition: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.func,
+        disable: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.bool,
+        scrollHide: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.bool,
+        resizeHide: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.bool,
+        wrapper: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string,
+        bodyMode: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.bool,
+        possibleCustomEvents: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string,
+        possibleCustomEventsOff: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string,
+        clickable: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.bool
+      };
+    }
+  }]);
+
+  function ReactTooltip(props) {
+    var _this;
+
+    _classCallCheck(this, ReactTooltip);
+
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(ReactTooltip).call(this, props));
+    _this.state = {
+      uuid: generateUUID(),
+      place: props.place || "top",
+      // Direction of tooltip
+      desiredPlace: props.place || "top",
+      type: "dark",
+      // Color theme of tooltip
+      effect: "float",
+      // float or fixed
+      show: false,
+      border: false,
+      customColors: {},
+      offset: {},
+      extraClass: "",
+      html: false,
+      delayHide: 0,
+      delayShow: 0,
+      event: props.event || null,
+      eventOff: props.eventOff || null,
+      currentEvent: null,
+      // Current mouse event
+      currentTarget: null,
+      // Current target of mouse event
+      ariaProps: parseAria(props),
+      // aria- and role attributes
+      isEmptyTip: false,
+      disable: false,
+      possibleCustomEvents: props.possibleCustomEvents || "",
+      possibleCustomEventsOff: props.possibleCustomEventsOff || "",
+      originTooltip: null,
+      isMultiline: false
+    };
+
+    _this.bind(["showTooltip", "updateTooltip", "hideTooltip", "hideTooltipOnScroll", "getTooltipContent", "globalRebuild", "globalShow", "globalHide", "onWindowResize", "mouseOnToolTip"]);
+
+    _this.mount = true;
+    _this.delayShowLoop = null;
+    _this.delayHideLoop = null;
+    _this.delayReshow = null;
+    _this.intervalUpdateContent = null;
+    return _this;
+  }
+  /**
+   * For unify the bind and unbind listener
+   */
+
+
+  _createClass(ReactTooltip, [{
+    key: "bind",
+    value: function bind(methodArray) {
+      var _this2 = this;
+
+      methodArray.forEach(function (method) {
+        _this2[method] = _this2[method].bind(_this2);
+      });
+    }
+  }, {
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      var _this$props = this.props,
+          insecure = _this$props.insecure,
+          resizeHide = _this$props.resizeHide;
+      this.bindListener(); // Bind listener for tooltip
+
+      this.bindWindowEvents(resizeHide); // Bind global event for static method
+    }
+  }, {
+    key: "componentWillUnmount",
+    value: function componentWillUnmount() {
+      this.mount = false;
+      this.clearTimer();
+      this.unbindListener();
+      this.removeScrollListener();
+      this.unbindWindowEvents();
+    }
+    /**
+     * Return if the mouse is on the tooltip.
+     * @returns {boolean} true - mouse is on the tooltip
+     */
+
+  }, {
+    key: "mouseOnToolTip",
+    value: function mouseOnToolTip() {
+      var show = this.state.show;
+
+      if (show && this.tooltipRef) {
+        /* old IE or Firefox work around */
+        if (!this.tooltipRef.matches) {
+          /* old IE work around */
+          if (this.tooltipRef.msMatchesSelector) {
+            this.tooltipRef.matches = this.tooltipRef.msMatchesSelector;
+          } else {
+            /* old Firefox work around */
+            this.tooltipRef.matches = this.tooltipRef.mozMatchesSelector;
+          }
+        }
+
+        return this.tooltipRef.matches(":hover");
+      }
+
+      return false;
+    }
+    /**
+     * Pick out corresponded target elements
+     */
+
+  }, {
+    key: "getTargetArray",
+    value: function getTargetArray(id) {
+      var targetArray = [];
+      var selector;
+
+      if (!id) {
+        selector = "[data-tip]:not([data-for])";
+      } else {
+        var escaped = id.replace(/\\/g, "\\\\").replace(/"/g, '\\"');
+        selector = "[data-tip][data-for=\"".concat(escaped, "\"]");
+      } // Scan document for shadow DOM elements
+
+
+      nodeListToArray(document.getElementsByTagName("*")).filter(function (element) {
+        return element.shadowRoot;
+      }).forEach(function (element) {
+        targetArray = targetArray.concat(nodeListToArray(element.shadowRoot.querySelectorAll(selector)));
+      });
+      return targetArray.concat(nodeListToArray(document.querySelectorAll(selector)));
+    }
+    /**
+     * Bind listener to the target elements
+     * These listeners used to trigger showing or hiding the tooltip
+     */
+
+  }, {
+    key: "bindListener",
+    value: function bindListener() {
+      var _this3 = this;
+
+      var _this$props2 = this.props,
+          id = _this$props2.id,
+          globalEventOff = _this$props2.globalEventOff,
+          isCapture = _this$props2.isCapture;
+      var targetArray = this.getTargetArray(id);
+      targetArray.forEach(function (target) {
+        if (target.getAttribute("currentItem") === null) {
+          target.setAttribute("currentItem", "false");
+        }
+
+        _this3.unbindBasicListener(target);
+
+        if (_this3.isCustomEvent(target)) {
+          _this3.customUnbindListener(target);
+        }
+      });
+
+      if (this.isBodyMode()) {
+        this.bindBodyListener(targetArray);
+      } else {
+        targetArray.forEach(function (target) {
+          var isCaptureMode = _this3.isCapture(target);
+
+          var effect = _this3.getEffect(target);
+
+          if (_this3.isCustomEvent(target)) {
+            _this3.customBindListener(target);
+
+            return;
+          }
+
+          target.addEventListener("mouseenter", _this3.showTooltip, isCaptureMode);
+
+          if (effect === "float") {
+            target.addEventListener("mousemove", _this3.updateTooltip, isCaptureMode);
+          }
+
+          target.addEventListener("mouseleave", _this3.hideTooltip, isCaptureMode);
+        });
+      } // Global event to hide tooltip
+
+
+      if (globalEventOff) {
+        window.removeEventListener(globalEventOff, this.hideTooltip);
+        window.addEventListener(globalEventOff, this.hideTooltip, isCapture);
+      } // Track removal of targetArray elements from DOM
+
+
+      this.bindRemovalTracker();
+    }
+    /**
+     * Unbind listeners on target elements
+     */
+
+  }, {
+    key: "unbindListener",
+    value: function unbindListener() {
+      var _this4 = this;
+
+      var _this$props3 = this.props,
+          id = _this$props3.id,
+          globalEventOff = _this$props3.globalEventOff;
+
+      if (this.isBodyMode()) {
+        this.unbindBodyListener();
+      } else {
+        var targetArray = this.getTargetArray(id);
+        targetArray.forEach(function (target) {
+          _this4.unbindBasicListener(target);
+
+          if (_this4.isCustomEvent(target)) _this4.customUnbindListener(target);
+        });
+      }
+
+      if (globalEventOff) window.removeEventListener(globalEventOff, this.hideTooltip);
+      this.unbindRemovalTracker();
+    }
+    /**
+     * Invoke this before bind listener and unmount the component
+     * it is necessary to invoke this even when binding custom event
+     * so that the tooltip can switch between custom and default listener
+     */
+
+  }, {
+    key: "unbindBasicListener",
+    value: function unbindBasicListener(target) {
+      var isCaptureMode = this.isCapture(target);
+      target.removeEventListener("mouseenter", this.showTooltip, isCaptureMode);
+      target.removeEventListener("mousemove", this.updateTooltip, isCaptureMode);
+      target.removeEventListener("mouseleave", this.hideTooltip, isCaptureMode);
+    }
+  }, {
+    key: "getTooltipContent",
+    value: function getTooltipContent() {
+      var _this$props4 = this.props,
+          getContent = _this$props4.getContent,
+          children = _this$props4.children; // Generate tooltip content
+
+      var content;
+
+      if (getContent) {
+        if (Array.isArray(getContent)) {
+          content = getContent[0] && getContent[0](this.state.originTooltip);
+        } else {
+          content = getContent(this.state.originTooltip);
+        }
+      }
+
+      return getTipContent(this.state.originTooltip, children, content, this.state.isMultiline);
+    }
+  }, {
+    key: "isEmptyTip",
+    value: function isEmptyTip(placeholder) {
+      return typeof placeholder === "string" && placeholder === "" || placeholder === null;
+    }
+    /**
+     * When mouse enter, show the tooltip
+     */
+
+  }, {
+    key: "showTooltip",
+    value: function showTooltip(e, isGlobalCall) {
+      if (isGlobalCall) {
+        // Don't trigger other elements belongs to other ReactTooltip
+        var targetArray = this.getTargetArray(this.props.id);
+        var isMyElement = targetArray.some(function (ele) {
+          return ele === e.currentTarget;
+        });
+        if (!isMyElement) return;
+      } // Get the tooltip content
+      // calculate in this phrase so that tip width height can be detected
+
+
+      var _this$props5 = this.props,
+          multiline = _this$props5.multiline,
+          getContent = _this$props5.getContent;
+      var originTooltip = e.currentTarget.getAttribute("data-tip");
+      var isMultiline = e.currentTarget.getAttribute("data-multiline") || multiline || false; // If it is focus event or called by ReactTooltip.show, switch to `solid` effect
+
+      var switchToSolid = e instanceof window.FocusEvent || isGlobalCall; // if it needs to skip adding hide listener to scroll
+
+      var scrollHide = true;
+
+      if (e.currentTarget.getAttribute("data-scroll-hide")) {
+        scrollHide = e.currentTarget.getAttribute("data-scroll-hide") === "true";
+      } else if (this.props.scrollHide != null) {
+        scrollHide = this.props.scrollHide;
+      } // Make sure the correct place is set
+
+
+      var desiredPlace = e.currentTarget.getAttribute("data-place") || this.props.place || "top";
+      var effect = switchToSolid && "solid" || this.getEffect(e.currentTarget);
+      var offset = e.currentTarget.getAttribute("data-offset") || this.props.offset || {};
+      var result = getPosition(e, e.currentTarget, this.tooltipRef, desiredPlace, desiredPlace, effect, offset);
+
+      if (result.position && this.props.overridePosition) {
+        result.position = this.props.overridePosition(result.position, e, e.currentTarget, this.tooltipRef, desiredPlace, desiredPlace, effect, offset);
+      }
+
+      var place = result.isNewState ? result.newState.place : desiredPlace; // To prevent previously created timers from triggering
+
+      this.clearTimer();
+      var target = e.currentTarget;
+      var reshowDelay = this.state.show ? target.getAttribute("data-delay-update") || this.props.delayUpdate : 0;
+      var self = this;
+
+      var updateState = function updateState() {
+        self.setState({
+          originTooltip: originTooltip,
+          isMultiline: isMultiline,
+          desiredPlace: desiredPlace,
+          place: place,
+          type: target.getAttribute("data-type") || self.props.type || "dark",
+          customColors: {
+            text: target.getAttribute("data-text-color") || self.props.textColor || null,
+            background: target.getAttribute("data-background-color") || self.props.backgroundColor || null,
+            border: target.getAttribute("data-border-color") || self.props.borderColor || null,
+            arrow: target.getAttribute("data-arrow-color") || self.props.arrowColor || null
+          },
+          effect: effect,
+          offset: offset,
+          html: (target.getAttribute("data-html") ? target.getAttribute("data-html") === "true" : self.props.html) || false,
+          delayShow: target.getAttribute("data-delay-show") || self.props.delayShow || 0,
+          delayHide: target.getAttribute("data-delay-hide") || self.props.delayHide || 0,
+          delayUpdate: target.getAttribute("data-delay-update") || self.props.delayUpdate || 0,
+          border: (target.getAttribute("data-border") ? target.getAttribute("data-border") === "true" : self.props.border) || false,
+          extraClass: target.getAttribute("data-class") || self.props["class"] || self.props.className || "",
+          disable: (target.getAttribute("data-tip-disable") ? target.getAttribute("data-tip-disable") === "true" : self.props.disable) || false,
+          currentTarget: target
+        }, function () {
+          if (scrollHide) {
+            self.addScrollListener(self.state.currentTarget);
+          }
+
+          self.updateTooltip(e);
+
+          if (getContent && Array.isArray(getContent)) {
+            self.intervalUpdateContent = setInterval(function () {
+              if (self.mount) {
+                var _getContent = self.props.getContent;
+                var placeholder = getTipContent(originTooltip, "", _getContent[0](), isMultiline);
+                var isEmptyTip = self.isEmptyTip(placeholder);
+                self.setState({
+                  isEmptyTip: isEmptyTip
+                });
+                self.updatePosition();
+              }
+            }, getContent[1]);
+          }
+        });
+      }; // If there is no delay call immediately, don't allow events to get in first.
+
+
+      if (reshowDelay) {
+        this.delayReshow = setTimeout(updateState, reshowDelay);
+      } else {
+        updateState();
+      }
+    }
+    /**
+     * When mouse hover, update tool tip
+     */
+
+  }, {
+    key: "updateTooltip",
+    value: function updateTooltip(e) {
+      var _this5 = this;
+
+      var _this$state = this.state,
+          delayShow = _this$state.delayShow,
+          disable = _this$state.disable;
+      var afterShow = this.props.afterShow;
+      var placeholder = this.getTooltipContent();
+      var delayTime = parseInt(delayShow, 10);
+      var eventTarget = e.currentTarget || e.target; // Check if the mouse is actually over the tooltip, if so don't hide the tooltip
+
+      if (this.mouseOnToolTip()) {
+        return;
+      } // if the tooltip is empty, disable the tooltip
+
+
+      if (this.isEmptyTip(placeholder) || disable) {
+        return;
+      }
+
+      var updateState = function updateState() {
+        if (Array.isArray(placeholder) && placeholder.length > 0 || placeholder) {
+          var isInvisible = !_this5.state.show;
+
+          _this5.setState({
+            currentEvent: e,
+            currentTarget: eventTarget,
+            show: true
+          }, function () {
+            _this5.updatePosition();
+
+            if (isInvisible && afterShow) {
+              afterShow(e);
+            }
+          });
+        }
+      };
+
+      clearTimeout(this.delayShowLoop);
+
+      if (delayShow) {
+        this.delayShowLoop = setTimeout(updateState, delayTime);
+      } else {
+        updateState();
+      }
+    }
+    /*
+     * If we're mousing over the tooltip remove it when we leave.
+     */
+
+  }, {
+    key: "listenForTooltipExit",
+    value: function listenForTooltipExit() {
+      var show = this.state.show;
+
+      if (show && this.tooltipRef) {
+        this.tooltipRef.addEventListener("mouseleave", this.hideTooltip);
+      }
+    }
+  }, {
+    key: "removeListenerForTooltipExit",
+    value: function removeListenerForTooltipExit() {
+      var show = this.state.show;
+
+      if (show && this.tooltipRef) {
+        this.tooltipRef.removeEventListener("mouseleave", this.hideTooltip);
+      }
+    }
+    /**
+     * When mouse leave, hide tooltip
+     */
+
+  }, {
+    key: "hideTooltip",
+    value: function hideTooltip(e, hasTarget) {
+      var _this6 = this;
+
+      var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {
+        isScroll: false
+      };
+      var disable = this.state.disable;
+      var isScroll = options.isScroll;
+      var delayHide = isScroll ? 0 : this.state.delayHide;
+      var afterHide = this.props.afterHide;
+      var placeholder = this.getTooltipContent();
+      if (!this.mount) return;
+      if (this.isEmptyTip(placeholder) || disable) return; // if the tooltip is empty, disable the tooltip
+
+      if (hasTarget) {
+        // Don't trigger other elements belongs to other ReactTooltip
+        var targetArray = this.getTargetArray(this.props.id);
+        var isMyElement = targetArray.some(function (ele) {
+          return ele === e.currentTarget;
+        });
+        if (!isMyElement || !this.state.show) return;
+      }
+
+      var resetState = function resetState() {
+        var isVisible = _this6.state.show; // Check if the mouse is actually over the tooltip, if so don't hide the tooltip
+
+        if (_this6.mouseOnToolTip()) {
+          _this6.listenForTooltipExit();
+
+          return;
+        }
+
+        _this6.removeListenerForTooltipExit();
+
+        _this6.setState({
+          show: false
+        }, function () {
+          _this6.removeScrollListener();
+
+          if (isVisible && afterHide) {
+            afterHide(e);
+          }
+        });
+      };
+
+      this.clearTimer();
+
+      if (delayHide) {
+        this.delayHideLoop = setTimeout(resetState, parseInt(delayHide, 10));
+      } else {
+        resetState();
+      }
+    }
+    /**
+     * When scroll, hide tooltip
+     */
+
+  }, {
+    key: "hideTooltipOnScroll",
+    value: function hideTooltipOnScroll(event, hasTarget) {
+      this.hideTooltip(event, hasTarget, {
+        isScroll: true
+      });
+    }
+    /**
+     * Add scroll event listener when tooltip show
+     * automatically hide the tooltip when scrolling
+     */
+
+  }, {
+    key: "addScrollListener",
+    value: function addScrollListener(currentTarget) {
+      var isCaptureMode = this.isCapture(currentTarget);
+      window.addEventListener("scroll", this.hideTooltipOnScroll, isCaptureMode);
+    }
+  }, {
+    key: "removeScrollListener",
+    value: function removeScrollListener() {
+      window.removeEventListener("scroll", this.hideTooltipOnScroll);
+    } // Calculation the position
+
+  }, {
+    key: "updatePosition",
+    value: function updatePosition() {
+      var _this7 = this;
+
+      var _this$state2 = this.state,
+          currentEvent = _this$state2.currentEvent,
+          currentTarget = _this$state2.currentTarget,
+          place = _this$state2.place,
+          desiredPlace = _this$state2.desiredPlace,
+          effect = _this$state2.effect,
+          offset = _this$state2.offset;
+      var node = this.tooltipRef;
+      var result = getPosition(currentEvent, currentTarget, node, place, desiredPlace, effect, offset);
+
+      if (result.position && this.props.overridePosition) {
+        result.position = this.props.overridePosition(result.position, currentEvent, currentTarget, node, place, desiredPlace, effect, offset);
+      }
+
+      if (result.isNewState) {
+        // Switch to reverse placement
+        return this.setState(result.newState, function () {
+          _this7.updatePosition();
+        });
+      } // Set tooltip position
+
+
+      node.style.left = result.position.left + "px";
+      node.style.top = result.position.top + "px";
+    }
+    /**
+     * CLear all kinds of timeout of interval
+     */
+
+  }, {
+    key: "clearTimer",
+    value: function clearTimer() {
+      clearTimeout(this.delayShowLoop);
+      clearTimeout(this.delayHideLoop);
+      clearTimeout(this.delayReshow);
+      clearInterval(this.intervalUpdateContent);
+    }
+  }, {
+    key: "hasCustomColors",
+    value: function hasCustomColors() {
+      var _this8 = this;
+
+      return Boolean(Object.keys(this.state.customColors).find(function (color) {
+        return color !== "border" && _this8.state.customColors[color];
+      }) || this.state.border && this.state.customColors["border"]);
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var _this9 = this;
+
+      var _this$state3 = this.state,
+          extraClass = _this$state3.extraClass,
+          html = _this$state3.html,
+          ariaProps = _this$state3.ariaProps,
+          disable = _this$state3.disable;
+      var content = this.getTooltipContent();
+      var isEmptyTip = this.isEmptyTip(content);
+      var style = generateTooltipStyle(this.state.uuid, this.state.customColors, this.state.type, this.state.border);
+      var tooltipClass = "__react_component_tooltip" + " ".concat(this.state.uuid) + (this.state.show && !disable && !isEmptyTip ? " show" : "") + (this.state.border ? " border" : "") + " place-".concat(this.state.place) + // top, bottom, left, right
+      " type-".concat(this.hasCustomColors() ? "custom" : this.state.type) + ( // dark, success, warning, error, info, light, custom
+      this.props.delayUpdate ? " allow_hover" : "") + (this.props.clickable ? " allow_click" : "");
+      var Wrapper = this.props.wrapper;
+
+      if (ReactTooltip.supportedWrappers.indexOf(Wrapper) < 0) {
+        Wrapper = ReactTooltip.defaultProps.wrapper;
+      }
+
+      var wrapperClassName = [tooltipClass, extraClass].filter(Boolean).join(" ");
+
+      if (html) {
+        var htmlContent = "".concat(content, "\n<style>").concat(style, "</style>");
+        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Wrapper, _extends({
+          className: "".concat(wrapperClassName),
+          id: this.props.id,
+          ref: function ref(_ref) {
+            return _this9.tooltipRef = _ref;
+          }
+        }, ariaProps, {
+          "data-id": "tooltip",
+          dangerouslySetInnerHTML: {
+            __html: htmlContent
+          }
+        }));
+      } else {
+        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Wrapper, _extends({
+          className: "".concat(wrapperClassName),
+          id: this.props.id
+        }, ariaProps, {
+          ref: function ref(_ref2) {
+            return _this9.tooltipRef = _ref2;
+          },
+          "data-id": "tooltip"
+        }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("style", {
+          dangerouslySetInnerHTML: {
+            __html: style
+          }
+        }), content);
+      }
+    }
+  }], [{
+    key: "getDerivedStateFromProps",
+    value: function getDerivedStateFromProps(nextProps, prevState) {
+      var ariaProps = prevState.ariaProps;
+      var newAriaProps = parseAria(nextProps);
+      var isChanged = Object.keys(newAriaProps).some(function (props) {
+        return newAriaProps[props] !== ariaProps[props];
+      });
+
+      if (!isChanged) {
+        return null;
+      }
+
+      return _objectSpread2({}, prevState, {
+        ariaProps: newAriaProps
+      });
+    }
+  }]);
+
+  return ReactTooltip;
+}(react__WEBPACK_IMPORTED_MODULE_0___default.a.Component), _defineProperty(_class2, "defaultProps", {
+  insecure: true,
+  resizeHide: true,
+  wrapper: "div",
+  clickable: false
+}), _defineProperty(_class2, "supportedWrappers", ["div", "span"]), _defineProperty(_class2, "displayName", "ReactTooltip"), _temp)) || _class) || _class) || _class) || _class) || _class) || _class) || _class;
+
+/* harmony default export */ __webpack_exports__["default"] = (ReactTooltip);
+//# sourceMappingURL=index.es.js.map
+
+
+/***/ }),
+
 /***/ "./node_modules/react/index.js":
 /*!*******************************************************************************************!*\
   !*** delegated ./node_modules/react/index.js from dll-reference dll_2adc2403d89adc16ead0 ***!
@@ -5815,860 +7615,709 @@ module.exports = (__webpack_require__(/*! dll-reference dll_2adc2403d89adc16ead0
 
 /***/ }),
 
-/***/ "./node_modules/regenerator-runtime/runtime.js":
-/*!*****************************************************!*\
-  !*** ./node_modules/regenerator-runtime/runtime.js ***!
-  \*****************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ "./node_modules/uuid/dist/esm-browser/bytesToUuid.js":
+/*!***********************************************************!*\
+  !*** ./node_modules/uuid/dist/esm-browser/bytesToUuid.js ***!
+  \***********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
+"use strict";
+__webpack_require__.r(__webpack_exports__);
 /**
- * Copyright (c) 2014-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
+ * Convert array of 16 byte values to UUID string format of the form:
+ * XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
  */
+var byteToHex = [];
 
-var runtime = (function (exports) {
-  "use strict";
-
-  var Op = Object.prototype;
-  var hasOwn = Op.hasOwnProperty;
-  var undefined; // More compressible than void 0.
-  var $Symbol = typeof Symbol === "function" ? Symbol : {};
-  var iteratorSymbol = $Symbol.iterator || "@@iterator";
-  var asyncIteratorSymbol = $Symbol.asyncIterator || "@@asyncIterator";
-  var toStringTagSymbol = $Symbol.toStringTag || "@@toStringTag";
-
-  function wrap(innerFn, outerFn, self, tryLocsList) {
-    // If outerFn provided and outerFn.prototype is a Generator, then outerFn.prototype instanceof Generator.
-    var protoGenerator = outerFn && outerFn.prototype instanceof Generator ? outerFn : Generator;
-    var generator = Object.create(protoGenerator.prototype);
-    var context = new Context(tryLocsList || []);
-
-    // The ._invoke method unifies the implementations of the .next,
-    // .throw, and .return methods.
-    generator._invoke = makeInvokeMethod(innerFn, self, context);
-
-    return generator;
-  }
-  exports.wrap = wrap;
-
-  // Try/catch helper to minimize deoptimizations. Returns a completion
-  // record like context.tryEntries[i].completion. This interface could
-  // have been (and was previously) designed to take a closure to be
-  // invoked without arguments, but in all the cases we care about we
-  // already have an existing method we want to call, so there's no need
-  // to create a new function object. We can even get away with assuming
-  // the method takes exactly one argument, since that happens to be true
-  // in every case, so we don't have to touch the arguments object. The
-  // only additional allocation required is the completion record, which
-  // has a stable shape and so hopefully should be cheap to allocate.
-  function tryCatch(fn, obj, arg) {
-    try {
-      return { type: "normal", arg: fn.call(obj, arg) };
-    } catch (err) {
-      return { type: "throw", arg: err };
-    }
-  }
-
-  var GenStateSuspendedStart = "suspendedStart";
-  var GenStateSuspendedYield = "suspendedYield";
-  var GenStateExecuting = "executing";
-  var GenStateCompleted = "completed";
-
-  // Returning this object from the innerFn has the same effect as
-  // breaking out of the dispatch switch statement.
-  var ContinueSentinel = {};
-
-  // Dummy constructor functions that we use as the .constructor and
-  // .constructor.prototype properties for functions that return Generator
-  // objects. For full spec compliance, you may wish to configure your
-  // minifier not to mangle the names of these two functions.
-  function Generator() {}
-  function GeneratorFunction() {}
-  function GeneratorFunctionPrototype() {}
-
-  // This is a polyfill for %IteratorPrototype% for environments that
-  // don't natively support it.
-  var IteratorPrototype = {};
-  IteratorPrototype[iteratorSymbol] = function () {
-    return this;
-  };
-
-  var getProto = Object.getPrototypeOf;
-  var NativeIteratorPrototype = getProto && getProto(getProto(values([])));
-  if (NativeIteratorPrototype &&
-      NativeIteratorPrototype !== Op &&
-      hasOwn.call(NativeIteratorPrototype, iteratorSymbol)) {
-    // This environment has a native %IteratorPrototype%; use it instead
-    // of the polyfill.
-    IteratorPrototype = NativeIteratorPrototype;
-  }
-
-  var Gp = GeneratorFunctionPrototype.prototype =
-    Generator.prototype = Object.create(IteratorPrototype);
-  GeneratorFunction.prototype = Gp.constructor = GeneratorFunctionPrototype;
-  GeneratorFunctionPrototype.constructor = GeneratorFunction;
-  GeneratorFunctionPrototype[toStringTagSymbol] =
-    GeneratorFunction.displayName = "GeneratorFunction";
-
-  // Helper for defining the .next, .throw, and .return methods of the
-  // Iterator interface in terms of a single ._invoke method.
-  function defineIteratorMethods(prototype) {
-    ["next", "throw", "return"].forEach(function(method) {
-      prototype[method] = function(arg) {
-        return this._invoke(method, arg);
-      };
-    });
-  }
-
-  exports.isGeneratorFunction = function(genFun) {
-    var ctor = typeof genFun === "function" && genFun.constructor;
-    return ctor
-      ? ctor === GeneratorFunction ||
-        // For the native GeneratorFunction constructor, the best we can
-        // do is to check its .name property.
-        (ctor.displayName || ctor.name) === "GeneratorFunction"
-      : false;
-  };
-
-  exports.mark = function(genFun) {
-    if (Object.setPrototypeOf) {
-      Object.setPrototypeOf(genFun, GeneratorFunctionPrototype);
-    } else {
-      genFun.__proto__ = GeneratorFunctionPrototype;
-      if (!(toStringTagSymbol in genFun)) {
-        genFun[toStringTagSymbol] = "GeneratorFunction";
-      }
-    }
-    genFun.prototype = Object.create(Gp);
-    return genFun;
-  };
-
-  // Within the body of any async function, `await x` is transformed to
-  // `yield regeneratorRuntime.awrap(x)`, so that the runtime can test
-  // `hasOwn.call(value, "__await")` to determine if the yielded value is
-  // meant to be awaited.
-  exports.awrap = function(arg) {
-    return { __await: arg };
-  };
-
-  function AsyncIterator(generator, PromiseImpl) {
-    function invoke(method, arg, resolve, reject) {
-      var record = tryCatch(generator[method], generator, arg);
-      if (record.type === "throw") {
-        reject(record.arg);
-      } else {
-        var result = record.arg;
-        var value = result.value;
-        if (value &&
-            typeof value === "object" &&
-            hasOwn.call(value, "__await")) {
-          return PromiseImpl.resolve(value.__await).then(function(value) {
-            invoke("next", value, resolve, reject);
-          }, function(err) {
-            invoke("throw", err, resolve, reject);
-          });
-        }
-
-        return PromiseImpl.resolve(value).then(function(unwrapped) {
-          // When a yielded Promise is resolved, its final value becomes
-          // the .value of the Promise<{value,done}> result for the
-          // current iteration.
-          result.value = unwrapped;
-          resolve(result);
-        }, function(error) {
-          // If a rejected Promise was yielded, throw the rejection back
-          // into the async generator function so it can be handled there.
-          return invoke("throw", error, resolve, reject);
-        });
-      }
-    }
-
-    var previousPromise;
-
-    function enqueue(method, arg) {
-      function callInvokeWithMethodAndArg() {
-        return new PromiseImpl(function(resolve, reject) {
-          invoke(method, arg, resolve, reject);
-        });
-      }
-
-      return previousPromise =
-        // If enqueue has been called before, then we want to wait until
-        // all previous Promises have been resolved before calling invoke,
-        // so that results are always delivered in the correct order. If
-        // enqueue has not been called before, then it is important to
-        // call invoke immediately, without waiting on a callback to fire,
-        // so that the async generator function has the opportunity to do
-        // any necessary setup in a predictable way. This predictability
-        // is why the Promise constructor synchronously invokes its
-        // executor callback, and why async functions synchronously
-        // execute code before the first await. Since we implement simple
-        // async functions in terms of async generators, it is especially
-        // important to get this right, even though it requires care.
-        previousPromise ? previousPromise.then(
-          callInvokeWithMethodAndArg,
-          // Avoid propagating failures to Promises returned by later
-          // invocations of the iterator.
-          callInvokeWithMethodAndArg
-        ) : callInvokeWithMethodAndArg();
-    }
-
-    // Define the unified helper method that is used to implement .next,
-    // .throw, and .return (see defineIteratorMethods).
-    this._invoke = enqueue;
-  }
-
-  defineIteratorMethods(AsyncIterator.prototype);
-  AsyncIterator.prototype[asyncIteratorSymbol] = function () {
-    return this;
-  };
-  exports.AsyncIterator = AsyncIterator;
-
-  // Note that simple async functions are implemented on top of
-  // AsyncIterator objects; they just return a Promise for the value of
-  // the final result produced by the iterator.
-  exports.async = function(innerFn, outerFn, self, tryLocsList, PromiseImpl) {
-    if (PromiseImpl === void 0) PromiseImpl = Promise;
-
-    var iter = new AsyncIterator(
-      wrap(innerFn, outerFn, self, tryLocsList),
-      PromiseImpl
-    );
-
-    return exports.isGeneratorFunction(outerFn)
-      ? iter // If outerFn is a generator, return the full iterator.
-      : iter.next().then(function(result) {
-          return result.done ? result.value : iter.next();
-        });
-  };
-
-  function makeInvokeMethod(innerFn, self, context) {
-    var state = GenStateSuspendedStart;
-
-    return function invoke(method, arg) {
-      if (state === GenStateExecuting) {
-        throw new Error("Generator is already running");
-      }
-
-      if (state === GenStateCompleted) {
-        if (method === "throw") {
-          throw arg;
-        }
-
-        // Be forgiving, per 25.3.3.3.3 of the spec:
-        // https://people.mozilla.org/~jorendorff/es6-draft.html#sec-generatorresume
-        return doneResult();
-      }
-
-      context.method = method;
-      context.arg = arg;
-
-      while (true) {
-        var delegate = context.delegate;
-        if (delegate) {
-          var delegateResult = maybeInvokeDelegate(delegate, context);
-          if (delegateResult) {
-            if (delegateResult === ContinueSentinel) continue;
-            return delegateResult;
-          }
-        }
-
-        if (context.method === "next") {
-          // Setting context._sent for legacy support of Babel's
-          // function.sent implementation.
-          context.sent = context._sent = context.arg;
-
-        } else if (context.method === "throw") {
-          if (state === GenStateSuspendedStart) {
-            state = GenStateCompleted;
-            throw context.arg;
-          }
-
-          context.dispatchException(context.arg);
-
-        } else if (context.method === "return") {
-          context.abrupt("return", context.arg);
-        }
-
-        state = GenStateExecuting;
-
-        var record = tryCatch(innerFn, self, context);
-        if (record.type === "normal") {
-          // If an exception is thrown from innerFn, we leave state ===
-          // GenStateExecuting and loop back for another invocation.
-          state = context.done
-            ? GenStateCompleted
-            : GenStateSuspendedYield;
-
-          if (record.arg === ContinueSentinel) {
-            continue;
-          }
-
-          return {
-            value: record.arg,
-            done: context.done
-          };
-
-        } else if (record.type === "throw") {
-          state = GenStateCompleted;
-          // Dispatch the exception by looping back around to the
-          // context.dispatchException(context.arg) call above.
-          context.method = "throw";
-          context.arg = record.arg;
-        }
-      }
-    };
-  }
-
-  // Call delegate.iterator[context.method](context.arg) and handle the
-  // result, either by returning a { value, done } result from the
-  // delegate iterator, or by modifying context.method and context.arg,
-  // setting context.delegate to null, and returning the ContinueSentinel.
-  function maybeInvokeDelegate(delegate, context) {
-    var method = delegate.iterator[context.method];
-    if (method === undefined) {
-      // A .throw or .return when the delegate iterator has no .throw
-      // method always terminates the yield* loop.
-      context.delegate = null;
-
-      if (context.method === "throw") {
-        // Note: ["return"] must be used for ES3 parsing compatibility.
-        if (delegate.iterator["return"]) {
-          // If the delegate iterator has a return method, give it a
-          // chance to clean up.
-          context.method = "return";
-          context.arg = undefined;
-          maybeInvokeDelegate(delegate, context);
-
-          if (context.method === "throw") {
-            // If maybeInvokeDelegate(context) changed context.method from
-            // "return" to "throw", let that override the TypeError below.
-            return ContinueSentinel;
-          }
-        }
-
-        context.method = "throw";
-        context.arg = new TypeError(
-          "The iterator does not provide a 'throw' method");
-      }
-
-      return ContinueSentinel;
-    }
-
-    var record = tryCatch(method, delegate.iterator, context.arg);
-
-    if (record.type === "throw") {
-      context.method = "throw";
-      context.arg = record.arg;
-      context.delegate = null;
-      return ContinueSentinel;
-    }
-
-    var info = record.arg;
-
-    if (! info) {
-      context.method = "throw";
-      context.arg = new TypeError("iterator result is not an object");
-      context.delegate = null;
-      return ContinueSentinel;
-    }
-
-    if (info.done) {
-      // Assign the result of the finished delegate to the temporary
-      // variable specified by delegate.resultName (see delegateYield).
-      context[delegate.resultName] = info.value;
-
-      // Resume execution at the desired location (see delegateYield).
-      context.next = delegate.nextLoc;
-
-      // If context.method was "throw" but the delegate handled the
-      // exception, let the outer generator proceed normally. If
-      // context.method was "next", forget context.arg since it has been
-      // "consumed" by the delegate iterator. If context.method was
-      // "return", allow the original .return call to continue in the
-      // outer generator.
-      if (context.method !== "return") {
-        context.method = "next";
-        context.arg = undefined;
-      }
-
-    } else {
-      // Re-yield the result returned by the delegate method.
-      return info;
-    }
-
-    // The delegate iterator is finished, so forget it and continue with
-    // the outer generator.
-    context.delegate = null;
-    return ContinueSentinel;
-  }
-
-  // Define Generator.prototype.{next,throw,return} in terms of the
-  // unified ._invoke helper method.
-  defineIteratorMethods(Gp);
-
-  Gp[toStringTagSymbol] = "Generator";
-
-  // A Generator should always return itself as the iterator object when the
-  // @@iterator function is called on it. Some browsers' implementations of the
-  // iterator prototype chain incorrectly implement this, causing the Generator
-  // object to not be returned from this call. This ensures that doesn't happen.
-  // See https://github.com/facebook/regenerator/issues/274 for more details.
-  Gp[iteratorSymbol] = function() {
-    return this;
-  };
-
-  Gp.toString = function() {
-    return "[object Generator]";
-  };
-
-  function pushTryEntry(locs) {
-    var entry = { tryLoc: locs[0] };
-
-    if (1 in locs) {
-      entry.catchLoc = locs[1];
-    }
-
-    if (2 in locs) {
-      entry.finallyLoc = locs[2];
-      entry.afterLoc = locs[3];
-    }
-
-    this.tryEntries.push(entry);
-  }
-
-  function resetTryEntry(entry) {
-    var record = entry.completion || {};
-    record.type = "normal";
-    delete record.arg;
-    entry.completion = record;
-  }
-
-  function Context(tryLocsList) {
-    // The root entry object (effectively a try statement without a catch
-    // or a finally block) gives us a place to store values thrown from
-    // locations where there is no enclosing try statement.
-    this.tryEntries = [{ tryLoc: "root" }];
-    tryLocsList.forEach(pushTryEntry, this);
-    this.reset(true);
-  }
-
-  exports.keys = function(object) {
-    var keys = [];
-    for (var key in object) {
-      keys.push(key);
-    }
-    keys.reverse();
-
-    // Rather than returning an object with a next method, we keep
-    // things simple and return the next function itself.
-    return function next() {
-      while (keys.length) {
-        var key = keys.pop();
-        if (key in object) {
-          next.value = key;
-          next.done = false;
-          return next;
-        }
-      }
-
-      // To avoid creating an additional object, we just hang the .value
-      // and .done properties off the next function object itself. This
-      // also ensures that the minifier will not anonymize the function.
-      next.done = true;
-      return next;
-    };
-  };
-
-  function values(iterable) {
-    if (iterable) {
-      var iteratorMethod = iterable[iteratorSymbol];
-      if (iteratorMethod) {
-        return iteratorMethod.call(iterable);
-      }
-
-      if (typeof iterable.next === "function") {
-        return iterable;
-      }
-
-      if (!isNaN(iterable.length)) {
-        var i = -1, next = function next() {
-          while (++i < iterable.length) {
-            if (hasOwn.call(iterable, i)) {
-              next.value = iterable[i];
-              next.done = false;
-              return next;
-            }
-          }
-
-          next.value = undefined;
-          next.done = true;
-
-          return next;
-        };
-
-        return next.next = next;
-      }
-    }
-
-    // Return an iterator with no values.
-    return { next: doneResult };
-  }
-  exports.values = values;
-
-  function doneResult() {
-    return { value: undefined, done: true };
-  }
-
-  Context.prototype = {
-    constructor: Context,
-
-    reset: function(skipTempReset) {
-      this.prev = 0;
-      this.next = 0;
-      // Resetting context._sent for legacy support of Babel's
-      // function.sent implementation.
-      this.sent = this._sent = undefined;
-      this.done = false;
-      this.delegate = null;
-
-      this.method = "next";
-      this.arg = undefined;
-
-      this.tryEntries.forEach(resetTryEntry);
-
-      if (!skipTempReset) {
-        for (var name in this) {
-          // Not sure about the optimal order of these conditions:
-          if (name.charAt(0) === "t" &&
-              hasOwn.call(this, name) &&
-              !isNaN(+name.slice(1))) {
-            this[name] = undefined;
-          }
-        }
-      }
-    },
-
-    stop: function() {
-      this.done = true;
-
-      var rootEntry = this.tryEntries[0];
-      var rootRecord = rootEntry.completion;
-      if (rootRecord.type === "throw") {
-        throw rootRecord.arg;
-      }
-
-      return this.rval;
-    },
-
-    dispatchException: function(exception) {
-      if (this.done) {
-        throw exception;
-      }
-
-      var context = this;
-      function handle(loc, caught) {
-        record.type = "throw";
-        record.arg = exception;
-        context.next = loc;
-
-        if (caught) {
-          // If the dispatched exception was caught by a catch block,
-          // then let that catch block handle the exception normally.
-          context.method = "next";
-          context.arg = undefined;
-        }
-
-        return !! caught;
-      }
-
-      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
-        var entry = this.tryEntries[i];
-        var record = entry.completion;
-
-        if (entry.tryLoc === "root") {
-          // Exception thrown outside of any try block that could handle
-          // it, so set the completion value of the entire function to
-          // throw the exception.
-          return handle("end");
-        }
-
-        if (entry.tryLoc <= this.prev) {
-          var hasCatch = hasOwn.call(entry, "catchLoc");
-          var hasFinally = hasOwn.call(entry, "finallyLoc");
-
-          if (hasCatch && hasFinally) {
-            if (this.prev < entry.catchLoc) {
-              return handle(entry.catchLoc, true);
-            } else if (this.prev < entry.finallyLoc) {
-              return handle(entry.finallyLoc);
-            }
-
-          } else if (hasCatch) {
-            if (this.prev < entry.catchLoc) {
-              return handle(entry.catchLoc, true);
-            }
-
-          } else if (hasFinally) {
-            if (this.prev < entry.finallyLoc) {
-              return handle(entry.finallyLoc);
-            }
-
-          } else {
-            throw new Error("try statement without catch or finally");
-          }
-        }
-      }
-    },
-
-    abrupt: function(type, arg) {
-      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
-        var entry = this.tryEntries[i];
-        if (entry.tryLoc <= this.prev &&
-            hasOwn.call(entry, "finallyLoc") &&
-            this.prev < entry.finallyLoc) {
-          var finallyEntry = entry;
-          break;
-        }
-      }
-
-      if (finallyEntry &&
-          (type === "break" ||
-           type === "continue") &&
-          finallyEntry.tryLoc <= arg &&
-          arg <= finallyEntry.finallyLoc) {
-        // Ignore the finally entry if control is not jumping to a
-        // location outside the try/catch block.
-        finallyEntry = null;
-      }
-
-      var record = finallyEntry ? finallyEntry.completion : {};
-      record.type = type;
-      record.arg = arg;
-
-      if (finallyEntry) {
-        this.method = "next";
-        this.next = finallyEntry.finallyLoc;
-        return ContinueSentinel;
-      }
-
-      return this.complete(record);
-    },
-
-    complete: function(record, afterLoc) {
-      if (record.type === "throw") {
-        throw record.arg;
-      }
-
-      if (record.type === "break" ||
-          record.type === "continue") {
-        this.next = record.arg;
-      } else if (record.type === "return") {
-        this.rval = this.arg = record.arg;
-        this.method = "return";
-        this.next = "end";
-      } else if (record.type === "normal" && afterLoc) {
-        this.next = afterLoc;
-      }
-
-      return ContinueSentinel;
-    },
-
-    finish: function(finallyLoc) {
-      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
-        var entry = this.tryEntries[i];
-        if (entry.finallyLoc === finallyLoc) {
-          this.complete(entry.completion, entry.afterLoc);
-          resetTryEntry(entry);
-          return ContinueSentinel;
-        }
-      }
-    },
-
-    "catch": function(tryLoc) {
-      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
-        var entry = this.tryEntries[i];
-        if (entry.tryLoc === tryLoc) {
-          var record = entry.completion;
-          if (record.type === "throw") {
-            var thrown = record.arg;
-            resetTryEntry(entry);
-          }
-          return thrown;
-        }
-      }
-
-      // The context.catch method must only be called with a location
-      // argument that corresponds to a known catch block.
-      throw new Error("illegal catch attempt");
-    },
-
-    delegateYield: function(iterable, resultName, nextLoc) {
-      this.delegate = {
-        iterator: values(iterable),
-        resultName: resultName,
-        nextLoc: nextLoc
-      };
-
-      if (this.method === "next") {
-        // Deliberately forget the last sent value so that we don't
-        // accidentally pass it on to the delegate.
-        this.arg = undefined;
-      }
-
-      return ContinueSentinel;
-    }
-  };
-
-  // Regardless of whether this script is executing as a CommonJS module
-  // or not, return the runtime object so that we can declare the variable
-  // regeneratorRuntime in the outer scope, which allows this module to be
-  // injected easily by `bin/regenerator --include-runtime script.js`.
-  return exports;
-
-}(
-  // If this script is executing as a CommonJS module, use module.exports
-  // as the regeneratorRuntime namespace. Otherwise create a new empty
-  // object. Either way, the resulting object will be used to initialize
-  // the regeneratorRuntime variable at the top of this file.
-   true ? module.exports : undefined
-));
-
-try {
-  regeneratorRuntime = runtime;
-} catch (accidentalStrictMode) {
-  // This module should not be running in strict mode, so the above
-  // assignment should always work unless something is misconfigured. Just
-  // in case runtime.js accidentally runs in strict mode, we can escape
-  // strict mode using a global Function call. This could conceivably fail
-  // if a Content Security Policy forbids using Function, but in that case
-  // the proper solution is to fix the accidental strict mode problem. If
-  // you've misconfigured your bundler to force strict mode and applied a
-  // CSP to forbid Function, and you're not willing to fix either of those
-  // problems, please detail your unique predicament in a GitHub issue.
-  Function("r", "regeneratorRuntime = r")(runtime);
+for (var i = 0; i < 256; ++i) {
+  byteToHex[i] = (i + 0x100).toString(16).substr(1);
 }
 
+function bytesToUuid(buf, offset) {
+  var i = offset || 0;
+  var bth = byteToHex; // join used to fix memory issue caused by concatenation: https://bugs.chromium.org/p/v8/issues/detail?id=3175#c4
+
+  return [bth[buf[i++]], bth[buf[i++]], bth[buf[i++]], bth[buf[i++]], '-', bth[buf[i++]], bth[buf[i++]], '-', bth[buf[i++]], bth[buf[i++]], '-', bth[buf[i++]], bth[buf[i++]], '-', bth[buf[i++]], bth[buf[i++]], bth[buf[i++]], bth[buf[i++]], bth[buf[i++]], bth[buf[i++]]].join('');
+}
+
+/* harmony default export */ __webpack_exports__["default"] = (bytesToUuid);
 
 /***/ }),
 
-/***/ "./node_modules/shallowequal/index.js":
-/*!********************************************!*\
-  !*** ./node_modules/shallowequal/index.js ***!
-  \********************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
+/***/ "./node_modules/uuid/dist/esm-browser/index.js":
+/*!*****************************************************!*\
+  !*** ./node_modules/uuid/dist/esm-browser/index.js ***!
+  \*****************************************************/
+/*! exports provided: v1, v3, v4, v5 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _v1_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./v1.js */ "./node_modules/uuid/dist/esm-browser/v1.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "v1", function() { return _v1_js__WEBPACK_IMPORTED_MODULE_0__["default"]; });
+
+/* harmony import */ var _v3_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./v3.js */ "./node_modules/uuid/dist/esm-browser/v3.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "v3", function() { return _v3_js__WEBPACK_IMPORTED_MODULE_1__["default"]; });
+
+/* harmony import */ var _v4_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./v4.js */ "./node_modules/uuid/dist/esm-browser/v4.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "v4", function() { return _v4_js__WEBPACK_IMPORTED_MODULE_2__["default"]; });
+
+/* harmony import */ var _v5_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./v5.js */ "./node_modules/uuid/dist/esm-browser/v5.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "v5", function() { return _v5_js__WEBPACK_IMPORTED_MODULE_3__["default"]; });
+
+
+
+
+
+
+/***/ }),
+
+/***/ "./node_modules/uuid/dist/esm-browser/md5.js":
+/*!***************************************************!*\
+  !*** ./node_modules/uuid/dist/esm-browser/md5.js ***!
+  \***************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/*
+ * Browser-compatible JavaScript MD5
+ *
+ * Modification of JavaScript MD5
+ * https://github.com/blueimp/JavaScript-MD5
+ *
+ * Copyright 2011, Sebastian Tschan
+ * https://blueimp.net
+ *
+ * Licensed under the MIT license:
+ * https://opensource.org/licenses/MIT
+ *
+ * Based on
+ * A JavaScript implementation of the RSA Data Security, Inc. MD5 Message
+ * Digest Algorithm, as defined in RFC 1321.
+ * Version 2.2 Copyright (C) Paul Johnston 1999 - 2009
+ * Other contributors: Greg Holt, Andrew Kepert, Ydnar, Lostinet
+ * Distributed under the BSD License
+ * See http://pajhome.org.uk/crypt/md5 for more info.
+ */
+function md5(bytes) {
+  if (typeof bytes == 'string') {
+    var msg = unescape(encodeURIComponent(bytes)); // UTF8 escape
+
+    bytes = new Array(msg.length);
+
+    for (var i = 0; i < msg.length; i++) {
+      bytes[i] = msg.charCodeAt(i);
+    }
+  }
+
+  return md5ToHexEncodedArray(wordsToMd5(bytesToWords(bytes), bytes.length * 8));
+}
+/*
+ * Convert an array of little-endian words to an array of bytes
+ */
+
+
+function md5ToHexEncodedArray(input) {
+  var i;
+  var x;
+  var output = [];
+  var length32 = input.length * 32;
+  var hexTab = '0123456789abcdef';
+  var hex;
+
+  for (i = 0; i < length32; i += 8) {
+    x = input[i >> 5] >>> i % 32 & 0xff;
+    hex = parseInt(hexTab.charAt(x >>> 4 & 0x0f) + hexTab.charAt(x & 0x0f), 16);
+    output.push(hex);
+  }
+
+  return output;
+}
+/*
+ * Calculate the MD5 of an array of little-endian words, and a bit length.
+ */
+
+
+function wordsToMd5(x, len) {
+  /* append padding */
+  x[len >> 5] |= 0x80 << len % 32;
+  x[(len + 64 >>> 9 << 4) + 14] = len;
+  var i;
+  var olda;
+  var oldb;
+  var oldc;
+  var oldd;
+  var a = 1732584193;
+  var b = -271733879;
+  var c = -1732584194;
+  var d = 271733878;
+
+  for (i = 0; i < x.length; i += 16) {
+    olda = a;
+    oldb = b;
+    oldc = c;
+    oldd = d;
+    a = md5ff(a, b, c, d, x[i], 7, -680876936);
+    d = md5ff(d, a, b, c, x[i + 1], 12, -389564586);
+    c = md5ff(c, d, a, b, x[i + 2], 17, 606105819);
+    b = md5ff(b, c, d, a, x[i + 3], 22, -1044525330);
+    a = md5ff(a, b, c, d, x[i + 4], 7, -176418897);
+    d = md5ff(d, a, b, c, x[i + 5], 12, 1200080426);
+    c = md5ff(c, d, a, b, x[i + 6], 17, -1473231341);
+    b = md5ff(b, c, d, a, x[i + 7], 22, -45705983);
+    a = md5ff(a, b, c, d, x[i + 8], 7, 1770035416);
+    d = md5ff(d, a, b, c, x[i + 9], 12, -1958414417);
+    c = md5ff(c, d, a, b, x[i + 10], 17, -42063);
+    b = md5ff(b, c, d, a, x[i + 11], 22, -1990404162);
+    a = md5ff(a, b, c, d, x[i + 12], 7, 1804603682);
+    d = md5ff(d, a, b, c, x[i + 13], 12, -40341101);
+    c = md5ff(c, d, a, b, x[i + 14], 17, -1502002290);
+    b = md5ff(b, c, d, a, x[i + 15], 22, 1236535329);
+    a = md5gg(a, b, c, d, x[i + 1], 5, -165796510);
+    d = md5gg(d, a, b, c, x[i + 6], 9, -1069501632);
+    c = md5gg(c, d, a, b, x[i + 11], 14, 643717713);
+    b = md5gg(b, c, d, a, x[i], 20, -373897302);
+    a = md5gg(a, b, c, d, x[i + 5], 5, -701558691);
+    d = md5gg(d, a, b, c, x[i + 10], 9, 38016083);
+    c = md5gg(c, d, a, b, x[i + 15], 14, -660478335);
+    b = md5gg(b, c, d, a, x[i + 4], 20, -405537848);
+    a = md5gg(a, b, c, d, x[i + 9], 5, 568446438);
+    d = md5gg(d, a, b, c, x[i + 14], 9, -1019803690);
+    c = md5gg(c, d, a, b, x[i + 3], 14, -187363961);
+    b = md5gg(b, c, d, a, x[i + 8], 20, 1163531501);
+    a = md5gg(a, b, c, d, x[i + 13], 5, -1444681467);
+    d = md5gg(d, a, b, c, x[i + 2], 9, -51403784);
+    c = md5gg(c, d, a, b, x[i + 7], 14, 1735328473);
+    b = md5gg(b, c, d, a, x[i + 12], 20, -1926607734);
+    a = md5hh(a, b, c, d, x[i + 5], 4, -378558);
+    d = md5hh(d, a, b, c, x[i + 8], 11, -2022574463);
+    c = md5hh(c, d, a, b, x[i + 11], 16, 1839030562);
+    b = md5hh(b, c, d, a, x[i + 14], 23, -35309556);
+    a = md5hh(a, b, c, d, x[i + 1], 4, -1530992060);
+    d = md5hh(d, a, b, c, x[i + 4], 11, 1272893353);
+    c = md5hh(c, d, a, b, x[i + 7], 16, -155497632);
+    b = md5hh(b, c, d, a, x[i + 10], 23, -1094730640);
+    a = md5hh(a, b, c, d, x[i + 13], 4, 681279174);
+    d = md5hh(d, a, b, c, x[i], 11, -358537222);
+    c = md5hh(c, d, a, b, x[i + 3], 16, -722521979);
+    b = md5hh(b, c, d, a, x[i + 6], 23, 76029189);
+    a = md5hh(a, b, c, d, x[i + 9], 4, -640364487);
+    d = md5hh(d, a, b, c, x[i + 12], 11, -421815835);
+    c = md5hh(c, d, a, b, x[i + 15], 16, 530742520);
+    b = md5hh(b, c, d, a, x[i + 2], 23, -995338651);
+    a = md5ii(a, b, c, d, x[i], 6, -198630844);
+    d = md5ii(d, a, b, c, x[i + 7], 10, 1126891415);
+    c = md5ii(c, d, a, b, x[i + 14], 15, -1416354905);
+    b = md5ii(b, c, d, a, x[i + 5], 21, -57434055);
+    a = md5ii(a, b, c, d, x[i + 12], 6, 1700485571);
+    d = md5ii(d, a, b, c, x[i + 3], 10, -1894986606);
+    c = md5ii(c, d, a, b, x[i + 10], 15, -1051523);
+    b = md5ii(b, c, d, a, x[i + 1], 21, -2054922799);
+    a = md5ii(a, b, c, d, x[i + 8], 6, 1873313359);
+    d = md5ii(d, a, b, c, x[i + 15], 10, -30611744);
+    c = md5ii(c, d, a, b, x[i + 6], 15, -1560198380);
+    b = md5ii(b, c, d, a, x[i + 13], 21, 1309151649);
+    a = md5ii(a, b, c, d, x[i + 4], 6, -145523070);
+    d = md5ii(d, a, b, c, x[i + 11], 10, -1120210379);
+    c = md5ii(c, d, a, b, x[i + 2], 15, 718787259);
+    b = md5ii(b, c, d, a, x[i + 9], 21, -343485551);
+    a = safeAdd(a, olda);
+    b = safeAdd(b, oldb);
+    c = safeAdd(c, oldc);
+    d = safeAdd(d, oldd);
+  }
+
+  return [a, b, c, d];
+}
+/*
+ * Convert an array bytes to an array of little-endian words
+ * Characters >255 have their high-byte silently ignored.
+ */
+
+
+function bytesToWords(input) {
+  var i;
+  var output = [];
+  output[(input.length >> 2) - 1] = undefined;
+
+  for (i = 0; i < output.length; i += 1) {
+    output[i] = 0;
+  }
+
+  var length8 = input.length * 8;
+
+  for (i = 0; i < length8; i += 8) {
+    output[i >> 5] |= (input[i / 8] & 0xff) << i % 32;
+  }
+
+  return output;
+}
+/*
+ * Add integers, wrapping at 2^32. This uses 16-bit operations internally
+ * to work around bugs in some JS interpreters.
+ */
+
+
+function safeAdd(x, y) {
+  var lsw = (x & 0xffff) + (y & 0xffff);
+  var msw = (x >> 16) + (y >> 16) + (lsw >> 16);
+  return msw << 16 | lsw & 0xffff;
+}
+/*
+ * Bitwise rotate a 32-bit number to the left.
+ */
+
+
+function bitRotateLeft(num, cnt) {
+  return num << cnt | num >>> 32 - cnt;
+}
+/*
+ * These functions implement the four basic operations the algorithm uses.
+ */
+
+
+function md5cmn(q, a, b, x, s, t) {
+  return safeAdd(bitRotateLeft(safeAdd(safeAdd(a, q), safeAdd(x, t)), s), b);
+}
+
+function md5ff(a, b, c, d, x, s, t) {
+  return md5cmn(b & c | ~b & d, a, b, x, s, t);
+}
+
+function md5gg(a, b, c, d, x, s, t) {
+  return md5cmn(b & d | c & ~d, a, b, x, s, t);
+}
+
+function md5hh(a, b, c, d, x, s, t) {
+  return md5cmn(b ^ c ^ d, a, b, x, s, t);
+}
+
+function md5ii(a, b, c, d, x, s, t) {
+  return md5cmn(c ^ (b | ~d), a, b, x, s, t);
+}
+
+/* harmony default export */ __webpack_exports__["default"] = (md5);
+
+/***/ }),
+
+/***/ "./node_modules/uuid/dist/esm-browser/rng.js":
+/*!***************************************************!*\
+  !*** ./node_modules/uuid/dist/esm-browser/rng.js ***!
+  \***************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return rng; });
+// Unique ID creation requires a high quality random # generator. In the browser we therefore
+// require the crypto API and do not support built-in fallback to lower quality random number
+// generators (like Math.random()).
+// getRandomValues needs to be invoked in a context where "this" is a Crypto implementation. Also,
+// find the complete implementation of crypto (msCrypto) on IE11.
+var getRandomValues = typeof crypto != 'undefined' && crypto.getRandomValues && crypto.getRandomValues.bind(crypto) || typeof msCrypto != 'undefined' && typeof msCrypto.getRandomValues == 'function' && msCrypto.getRandomValues.bind(msCrypto);
+var rnds8 = new Uint8Array(16); // eslint-disable-line no-undef
+
+function rng() {
+  if (!getRandomValues) {
+    throw new Error('crypto.getRandomValues() not supported. See https://github.com/uuidjs/uuid#getrandomvalues-not-supported');
+  }
+
+  return getRandomValues(rnds8);
+}
+
+/***/ }),
+
+/***/ "./node_modules/uuid/dist/esm-browser/sha1.js":
+/*!****************************************************!*\
+  !*** ./node_modules/uuid/dist/esm-browser/sha1.js ***!
+  \****************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+// Adapted from Chris Veness' SHA1 code at
+// http://www.movable-type.co.uk/scripts/sha1.html
+function f(s, x, y, z) {
+  switch (s) {
+    case 0:
+      return x & y ^ ~x & z;
+
+    case 1:
+      return x ^ y ^ z;
+
+    case 2:
+      return x & y ^ x & z ^ y & z;
+
+    case 3:
+      return x ^ y ^ z;
+  }
+}
+
+function ROTL(x, n) {
+  return x << n | x >>> 32 - n;
+}
+
+function sha1(bytes) {
+  var K = [0x5a827999, 0x6ed9eba1, 0x8f1bbcdc, 0xca62c1d6];
+  var H = [0x67452301, 0xefcdab89, 0x98badcfe, 0x10325476, 0xc3d2e1f0];
+
+  if (typeof bytes == 'string') {
+    var msg = unescape(encodeURIComponent(bytes)); // UTF8 escape
+
+    bytes = new Array(msg.length);
+
+    for (var i = 0; i < msg.length; i++) {
+      bytes[i] = msg.charCodeAt(i);
+    }
+  }
+
+  bytes.push(0x80);
+  var l = bytes.length / 4 + 2;
+  var N = Math.ceil(l / 16);
+  var M = new Array(N);
+
+  for (var i = 0; i < N; i++) {
+    M[i] = new Array(16);
+
+    for (var j = 0; j < 16; j++) {
+      M[i][j] = bytes[i * 64 + j * 4] << 24 | bytes[i * 64 + j * 4 + 1] << 16 | bytes[i * 64 + j * 4 + 2] << 8 | bytes[i * 64 + j * 4 + 3];
+    }
+  }
+
+  M[N - 1][14] = (bytes.length - 1) * 8 / Math.pow(2, 32);
+  M[N - 1][14] = Math.floor(M[N - 1][14]);
+  M[N - 1][15] = (bytes.length - 1) * 8 & 0xffffffff;
+
+  for (var i = 0; i < N; i++) {
+    var W = new Array(80);
+
+    for (var t = 0; t < 16; t++) {
+      W[t] = M[i][t];
+    }
+
+    for (var t = 16; t < 80; t++) {
+      W[t] = ROTL(W[t - 3] ^ W[t - 8] ^ W[t - 14] ^ W[t - 16], 1);
+    }
+
+    var a = H[0];
+    var b = H[1];
+    var c = H[2];
+    var d = H[3];
+    var e = H[4];
+
+    for (var t = 0; t < 80; t++) {
+      var s = Math.floor(t / 20);
+      var T = ROTL(a, 5) + f(s, b, c, d) + e + K[s] + W[t] >>> 0;
+      e = d;
+      d = c;
+      c = ROTL(b, 30) >>> 0;
+      b = a;
+      a = T;
+    }
+
+    H[0] = H[0] + a >>> 0;
+    H[1] = H[1] + b >>> 0;
+    H[2] = H[2] + c >>> 0;
+    H[3] = H[3] + d >>> 0;
+    H[4] = H[4] + e >>> 0;
+  }
+
+  return [H[0] >> 24 & 0xff, H[0] >> 16 & 0xff, H[0] >> 8 & 0xff, H[0] & 0xff, H[1] >> 24 & 0xff, H[1] >> 16 & 0xff, H[1] >> 8 & 0xff, H[1] & 0xff, H[2] >> 24 & 0xff, H[2] >> 16 & 0xff, H[2] >> 8 & 0xff, H[2] & 0xff, H[3] >> 24 & 0xff, H[3] >> 16 & 0xff, H[3] >> 8 & 0xff, H[3] & 0xff, H[4] >> 24 & 0xff, H[4] >> 16 & 0xff, H[4] >> 8 & 0xff, H[4] & 0xff];
+}
+
+/* harmony default export */ __webpack_exports__["default"] = (sha1);
+
+/***/ }),
+
+/***/ "./node_modules/uuid/dist/esm-browser/v1.js":
+/*!**************************************************!*\
+  !*** ./node_modules/uuid/dist/esm-browser/v1.js ***!
+  \**************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _rng_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./rng.js */ "./node_modules/uuid/dist/esm-browser/rng.js");
+/* harmony import */ var _bytesToUuid_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./bytesToUuid.js */ "./node_modules/uuid/dist/esm-browser/bytesToUuid.js");
+
+ // **`v1()` - Generate time-based UUID**
 //
+// Inspired by https://github.com/LiosK/UUID.js
+// and http://docs.python.org/library/uuid.html
 
-module.exports = function shallowEqual(objA, objB, compare, compareContext) {
-  var ret = compare ? compare.call(compareContext, objA, objB) : void 0;
+var _nodeId;
 
-  if (ret !== void 0) {
-    return !!ret;
-  }
+var _clockseq; // Previous uuid creation time
 
-  if (objA === objB) {
-    return true;
-  }
 
-  if (typeof objA !== "object" || !objA || typeof objB !== "object" || !objB) {
-    return false;
-  }
+var _lastMSecs = 0;
+var _lastNSecs = 0; // See https://github.com/uuidjs/uuid for API details
 
-  var keysA = Object.keys(objA);
-  var keysB = Object.keys(objB);
+function v1(options, buf, offset) {
+  var i = buf && offset || 0;
+  var b = buf || [];
+  options = options || {};
+  var node = options.node || _nodeId;
+  var clockseq = options.clockseq !== undefined ? options.clockseq : _clockseq; // node and clockseq need to be initialized to random values if they're not
+  // specified.  We do this lazily to minimize issues related to insufficient
+  // system entropy.  See #189
 
-  if (keysA.length !== keysB.length) {
-    return false;
-  }
+  if (node == null || clockseq == null) {
+    var seedBytes = options.random || (options.rng || _rng_js__WEBPACK_IMPORTED_MODULE_0__["default"])();
 
-  var bHasOwnProperty = Object.prototype.hasOwnProperty.bind(objB);
-
-  // Test for A's keys different from B.
-  for (var idx = 0; idx < keysA.length; idx++) {
-    var key = keysA[idx];
-
-    if (!bHasOwnProperty(key)) {
-      return false;
+    if (node == null) {
+      // Per 4.5, create and 48-bit node id, (47 random bits + multicast bit = 1)
+      node = _nodeId = [seedBytes[0] | 0x01, seedBytes[1], seedBytes[2], seedBytes[3], seedBytes[4], seedBytes[5]];
     }
 
-    var valueA = objA[key];
-    var valueB = objB[key];
+    if (clockseq == null) {
+      // Per 4.2.2, randomize (14 bit) clockseq
+      clockseq = _clockseq = (seedBytes[6] << 8 | seedBytes[7]) & 0x3fff;
+    }
+  } // UUID timestamps are 100 nano-second units since the Gregorian epoch,
+  // (1582-10-15 00:00).  JSNumbers aren't precise enough for this, so
+  // time is handled internally as 'msecs' (integer milliseconds) and 'nsecs'
+  // (100-nanoseconds offset from msecs) since unix epoch, 1970-01-01 00:00.
 
-    ret = compare ? compare.call(compareContext, valueA, valueB, key) : void 0;
 
-    if (ret === false || (ret === void 0 && valueA !== valueB)) {
-      return false;
+  var msecs = options.msecs !== undefined ? options.msecs : new Date().getTime(); // Per 4.2.1.2, use count of uuid's generated during the current clock
+  // cycle to simulate higher resolution clock
+
+  var nsecs = options.nsecs !== undefined ? options.nsecs : _lastNSecs + 1; // Time since last uuid creation (in msecs)
+
+  var dt = msecs - _lastMSecs + (nsecs - _lastNSecs) / 10000; // Per 4.2.1.2, Bump clockseq on clock regression
+
+  if (dt < 0 && options.clockseq === undefined) {
+    clockseq = clockseq + 1 & 0x3fff;
+  } // Reset nsecs if clock regresses (new clockseq) or we've moved onto a new
+  // time interval
+
+
+  if ((dt < 0 || msecs > _lastMSecs) && options.nsecs === undefined) {
+    nsecs = 0;
+  } // Per 4.2.1.2 Throw error if too many uuids are requested
+
+
+  if (nsecs >= 10000) {
+    throw new Error("uuid.v1(): Can't create more than 10M uuids/sec");
+  }
+
+  _lastMSecs = msecs;
+  _lastNSecs = nsecs;
+  _clockseq = clockseq; // Per 4.1.4 - Convert from unix epoch to Gregorian epoch
+
+  msecs += 12219292800000; // `time_low`
+
+  var tl = ((msecs & 0xfffffff) * 10000 + nsecs) % 0x100000000;
+  b[i++] = tl >>> 24 & 0xff;
+  b[i++] = tl >>> 16 & 0xff;
+  b[i++] = tl >>> 8 & 0xff;
+  b[i++] = tl & 0xff; // `time_mid`
+
+  var tmh = msecs / 0x100000000 * 10000 & 0xfffffff;
+  b[i++] = tmh >>> 8 & 0xff;
+  b[i++] = tmh & 0xff; // `time_high_and_version`
+
+  b[i++] = tmh >>> 24 & 0xf | 0x10; // include version
+
+  b[i++] = tmh >>> 16 & 0xff; // `clock_seq_hi_and_reserved` (Per 4.2.2 - include variant)
+
+  b[i++] = clockseq >>> 8 | 0x80; // `clock_seq_low`
+
+  b[i++] = clockseq & 0xff; // `node`
+
+  for (var n = 0; n < 6; ++n) {
+    b[i + n] = node[n];
+  }
+
+  return buf ? buf : Object(_bytesToUuid_js__WEBPACK_IMPORTED_MODULE_1__["default"])(b);
+}
+
+/* harmony default export */ __webpack_exports__["default"] = (v1);
+
+/***/ }),
+
+/***/ "./node_modules/uuid/dist/esm-browser/v3.js":
+/*!**************************************************!*\
+  !*** ./node_modules/uuid/dist/esm-browser/v3.js ***!
+  \**************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _v35_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./v35.js */ "./node_modules/uuid/dist/esm-browser/v35.js");
+/* harmony import */ var _md5_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./md5.js */ "./node_modules/uuid/dist/esm-browser/md5.js");
+
+
+var v3 = Object(_v35_js__WEBPACK_IMPORTED_MODULE_0__["default"])('v3', 0x30, _md5_js__WEBPACK_IMPORTED_MODULE_1__["default"]);
+/* harmony default export */ __webpack_exports__["default"] = (v3);
+
+/***/ }),
+
+/***/ "./node_modules/uuid/dist/esm-browser/v35.js":
+/*!***************************************************!*\
+  !*** ./node_modules/uuid/dist/esm-browser/v35.js ***!
+  \***************************************************/
+/*! exports provided: DNS, URL, default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DNS", function() { return DNS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "URL", function() { return URL; });
+/* harmony import */ var _bytesToUuid_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./bytesToUuid.js */ "./node_modules/uuid/dist/esm-browser/bytesToUuid.js");
+
+
+function uuidToBytes(uuid) {
+  // Note: We assume we're being passed a valid uuid string
+  var bytes = [];
+  uuid.replace(/[a-fA-F0-9]{2}/g, function (hex) {
+    bytes.push(parseInt(hex, 16));
+  });
+  return bytes;
+}
+
+function stringToBytes(str) {
+  str = unescape(encodeURIComponent(str)); // UTF8 escape
+
+  var bytes = new Array(str.length);
+
+  for (var i = 0; i < str.length; i++) {
+    bytes[i] = str.charCodeAt(i);
+  }
+
+  return bytes;
+}
+
+var DNS = '6ba7b810-9dad-11d1-80b4-00c04fd430c8';
+var URL = '6ba7b811-9dad-11d1-80b4-00c04fd430c8';
+/* harmony default export */ __webpack_exports__["default"] = (function (name, version, hashfunc) {
+  var generateUUID = function generateUUID(value, namespace, buf, offset) {
+    var off = buf && offset || 0;
+    if (typeof value == 'string') value = stringToBytes(value);
+    if (typeof namespace == 'string') namespace = uuidToBytes(namespace);
+    if (!Array.isArray(value)) throw TypeError('value must be an array of bytes');
+    if (!Array.isArray(namespace) || namespace.length !== 16) throw TypeError('namespace must be uuid string or an Array of 16 byte values'); // Per 4.3
+
+    var bytes = hashfunc(namespace.concat(value));
+    bytes[6] = bytes[6] & 0x0f | version;
+    bytes[8] = bytes[8] & 0x3f | 0x80;
+
+    if (buf) {
+      for (var idx = 0; idx < 16; ++idx) {
+        buf[off + idx] = bytes[idx];
+      }
+    }
+
+    return buf || Object(_bytesToUuid_js__WEBPACK_IMPORTED_MODULE_0__["default"])(bytes);
+  }; // Function#name is not settable on some platforms (#270)
+
+
+  try {
+    generateUUID.name = name;
+  } catch (err) {} // For CommonJS default export support
+
+
+  generateUUID.DNS = DNS;
+  generateUUID.URL = URL;
+  return generateUUID;
+});
+
+/***/ }),
+
+/***/ "./node_modules/uuid/dist/esm-browser/v4.js":
+/*!**************************************************!*\
+  !*** ./node_modules/uuid/dist/esm-browser/v4.js ***!
+  \**************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _rng_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./rng.js */ "./node_modules/uuid/dist/esm-browser/rng.js");
+/* harmony import */ var _bytesToUuid_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./bytesToUuid.js */ "./node_modules/uuid/dist/esm-browser/bytesToUuid.js");
+
+
+
+function v4(options, buf, offset) {
+  var i = buf && offset || 0;
+
+  if (typeof options == 'string') {
+    buf = options === 'binary' ? new Array(16) : null;
+    options = null;
+  }
+
+  options = options || {};
+  var rnds = options.random || (options.rng || _rng_js__WEBPACK_IMPORTED_MODULE_0__["default"])(); // Per 4.4, set bits for version and `clock_seq_hi_and_reserved`
+
+  rnds[6] = rnds[6] & 0x0f | 0x40;
+  rnds[8] = rnds[8] & 0x3f | 0x80; // Copy bytes to buffer, if provided
+
+  if (buf) {
+    for (var ii = 0; ii < 16; ++ii) {
+      buf[i + ii] = rnds[ii];
     }
   }
 
-  return true;
-};
+  return buf || Object(_bytesToUuid_js__WEBPACK_IMPORTED_MODULE_1__["default"])(rnds);
+}
 
-
-/***/ }),
-
-/***/ "./node_modules/webpack/buildin/amd-define.js":
-/*!***************************************!*\
-  !*** (webpack)/buildin/amd-define.js ***!
-  \***************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = function() {
-	throw new Error("define cannot be used indirect");
-};
-
+/* harmony default export */ __webpack_exports__["default"] = (v4);
 
 /***/ }),
 
-/***/ "./node_modules/webpack/buildin/amd-options.js":
-/*!****************************************!*\
-  !*** (webpack)/buildin/amd-options.js ***!
-  \****************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
+/***/ "./node_modules/uuid/dist/esm-browser/v5.js":
+/*!**************************************************!*\
+  !*** ./node_modules/uuid/dist/esm-browser/v5.js ***!
+  \**************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(__webpack_amd_options__) {/* globals __webpack_amd_options__ */
-module.exports = __webpack_amd_options__;
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _v35_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./v35.js */ "./node_modules/uuid/dist/esm-browser/v35.js");
+/* harmony import */ var _sha1_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./sha1.js */ "./node_modules/uuid/dist/esm-browser/sha1.js");
 
-/* WEBPACK VAR INJECTION */}.call(this, {}))
+
+var v5 = Object(_v35_js__WEBPACK_IMPORTED_MODULE_0__["default"])('v5', 0x50, _sha1_js__WEBPACK_IMPORTED_MODULE_1__["default"]);
+/* harmony default export */ __webpack_exports__["default"] = (v5);
 
 /***/ }),
 
-/***/ "./node_modules/webpack/buildin/module.js":
+/***/ "./node_modules/webpack/buildin/global.js":
 /*!***********************************!*\
-  !*** (webpack)/buildin/module.js ***!
+  !*** (webpack)/buildin/global.js ***!
   \***********************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = function(module) {
-	if (!module.webpackPolyfill) {
-		module.deprecate = function() {};
-		module.paths = [];
-		// module.parent = undefined by default
-		if (!module.children) module.children = [];
-		Object.defineProperty(module, "loaded", {
-			enumerable: true,
-			get: function() {
-				return module.l;
-			}
-		});
-		Object.defineProperty(module, "id", {
-			enumerable: true,
-			get: function() {
-				return module.i;
-			}
-		});
-		module.webpackPolyfill = 1;
-	}
-	return module;
-};
+var g;
+
+// This works in non-strict mode
+g = (function() {
+	return this;
+})();
+
+try {
+	// This works if eval is allowed (see CSP)
+	g = g || new Function("return this")();
+} catch (e) {
+	// This works if the window reference is available
+	if (typeof window === "object") g = window;
+}
+
+// g can still be undefined, but nothing to do about it...
+// We return undefined, instead of nothing here, so it's
+// easier to handle this case. if(!global) { ...}
+
+module.exports = g;
 
 
 /***/ }),
@@ -6682,250 +8331,497 @@ module.exports = function(module) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
-/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var react_audio_player__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-audio-player */ "./node_modules/react-audio-player/dist/bundle.js");
-/* harmony import */ var react_audio_player__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react_audio_player__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var react_slider__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-slider */ "./node_modules/react-slider/es/components/ReactSlider/ReactSlider.js");
-/* harmony import */ var isomorphic_unfetch__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! isomorphic-unfetch */ "./node_modules/next/dist/build/polyfills/fetch/index.js");
-/* harmony import */ var isomorphic_unfetch__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(isomorphic_unfetch__WEBPACK_IMPORTED_MODULE_4__);
-
-
-var _this = undefined,
-    _jsxFileName = "C:\\www\\habbobr-manutencao\\pages\\index.js";
-
-
-var __jsx = react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement;
+/* harmony import */ var _babel_runtime_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/esm/classCallCheck */ "./node_modules/@babel/runtime/helpers/esm/classCallCheck.js");
+/* harmony import */ var _babel_runtime_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime/helpers/esm/createClass */ "./node_modules/@babel/runtime/helpers/esm/createClass.js");
+/* harmony import */ var _babel_runtime_helpers_esm_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @babel/runtime/helpers/esm/possibleConstructorReturn */ "./node_modules/@babel/runtime/helpers/esm/possibleConstructorReturn.js");
+/* harmony import */ var _babel_runtime_helpers_esm_getPrototypeOf__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @babel/runtime/helpers/esm/getPrototypeOf */ "./node_modules/@babel/runtime/helpers/esm/getPrototypeOf.js");
+/* harmony import */ var _babel_runtime_helpers_esm_inherits__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @babel/runtime/helpers/esm/inherits */ "./node_modules/@babel/runtime/helpers/esm/inherits.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var react_howler__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! react-howler */ "./node_modules/react-howler/lib/index.js");
+/* harmony import */ var react_howler__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(react_howler__WEBPACK_IMPORTED_MODULE_6__);
+/* harmony import */ var react_tooltip__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! react-tooltip */ "./node_modules/react-tooltip/dist/index.es.js");
+/* harmony import */ var react_slider__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! react-slider */ "./node_modules/react-slider/es/components/ReactSlider/ReactSlider.js");
+/* harmony import */ var _helpers_xmlToJson__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../helpers/xmlToJson */ "./helpers/xmlToJson.js");
 
 
 
 
 
-var Index = function Index(props) {
-  var _useState = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])('stop'),
-      status = _useState[0],
-      setStatus = _useState[1];
+var _jsxFileName = "/Users/lucas/Desktop/habbobr-manutencao/pages/index.js";
 
-  function setSlider(value) {
-    if (value > 0) {
-      setStatus('stop');
-    } else {
-      setStatus('play');
-    }
+var __jsx = react__WEBPACK_IMPORTED_MODULE_5___default.a.createElement;
 
-    if (value > 0) {
-      document.querySelector('.react-audio-player').volume = parseFloat(value);
-    }
+function _createSuper(Derived) { return function () { var Super = Object(_babel_runtime_helpers_esm_getPrototypeOf__WEBPACK_IMPORTED_MODULE_3__["default"])(Derived), result; if (_isNativeReflectConstruct()) { var NewTarget = Object(_babel_runtime_helpers_esm_getPrototypeOf__WEBPACK_IMPORTED_MODULE_3__["default"])(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return Object(_babel_runtime_helpers_esm_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_2__["default"])(this, result); }; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+
+
+
+
+
+
+var Index = /*#__PURE__*/function (_Component) {
+  Object(_babel_runtime_helpers_esm_inherits__WEBPACK_IMPORTED_MODULE_4__["default"])(Index, _Component);
+
+  var _super = _createSuper(Index);
+
+  function Index(props) {
+    var _this;
+
+    Object(_babel_runtime_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_0__["default"])(this, Index);
+
+    _this = _super.call(this, props);
+    _this.state = {
+      stream: "https://player.audiovox.pw/proxy/6768/;",
+      status: 'stop',
+      format: ['mp3', 'acc'],
+      volume: 100,
+      locutor: null,
+      programa: null,
+      ouvintes: 0,
+      equipe: [{
+        habbo: 'Colecction',
+        cargo: 'Web Master'
+      }, {
+        habbo: ',Abobado',
+        cargo: 'Web Master'
+      }, {
+        habbo: 'Sven',
+        cargo: 'Web Master'
+      }, {
+        habbo: 'Renato_Moura',
+        cargo: 'Administrador de Conteúdo'
+      }, {
+        habbo: '.:Root:.',
+        cargo: 'Jornalista'
+      }, {
+        habbo: 'CaioXzZ',
+        cargo: 'Locutor'
+      }, {
+        habbo: 'Frats',
+        cargo: 'Locutor'
+      }]
+    };
+    return _this;
   }
 
-  function toggle() {
-    var audio = document.querySelector('.react-audio-player');
-
-    if (audio.volume <= 0) {
-      audio.volume = 1;
-      audio.muted = false;
-      setStatus('stop');
-    } else {
-      audio.volume = 0.0;
-      audio.muted = true;
-      setStatus('play');
-    }
-  }
-
-  return __jsx(react__WEBPACK_IMPORTED_MODULE_1___default.a.Fragment, null, __jsx(react_audio_player__WEBPACK_IMPORTED_MODULE_2___default.a, {
-    src: "https://player.audiovox.pw/proxy/6768/;type=mp3",
-    autoPlay: true,
-    controls: true,
-    listenInterval: "1000",
-    __self: _this,
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 37,
-      columnNumber: 13
-    }
-  }), __jsx("div", {
-    className: "background",
-    __self: _this,
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 44,
-      columnNumber: 13
-    }
-  }), __jsx("div", {
-    className: "radial",
-    __self: _this,
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 45,
-      columnNumber: 13
-    }
-  }), __jsx("div", {
-    className: "player",
-    __self: _this,
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 47,
-      columnNumber: 13
-    }
-  }, __jsx("div", {
-    className: "radio-status",
-    __self: _this,
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 48,
-      columnNumber: 17
-    }
-  }, __jsx("div", {
-    className: "radio-status-avatar",
-    style: {
-      backgroundImage: "url(https://www.habbo.com.br/habbo-imaging/avatarimage?img_format=gif&user=".concat(props.radio.servertitle, "&direction=2&head_direction=2&gesture=sml&size=b)")
-    },
-    __self: _this,
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 49,
-      columnNumber: 21
-    }
-  }), __jsx("div", {
-    className: "radio-status-data",
-    __self: _this,
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 50,
-      columnNumber: 21
-    }
-  }, props.radio.servertitle), __jsx("div", {
-    className: "radio-status-data",
-    __self: _this,
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 51,
-      columnNumber: 21
-    }
-  }, props.radio.servergenre)), __jsx(react_slider__WEBPACK_IMPORTED_MODULE_3__["default"], {
-    className: "radio-slider",
-    trackClassName: "radio-slider-control",
-    onChange: function onChange(value) {
-      return setSlider(value / 100);
-    },
-    min: 0,
-    defaultValue: 100,
-    __self: _this,
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 55,
-      columnNumber: 17
-    }
-  }), __jsx("div", {
-    className: "radio-status-data-listeners",
-    __self: _this,
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 63,
-      columnNumber: 17
-    }
-  }, props.radio.currentlisteners == 0 ? 1 : props.radio.currentlisteners, __jsx("div", {
-    className: "radio-status-data-listeners-text",
-    __self: _this,
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 65,
-      columnNumber: 21
-    }
-  }, "ouvintes"))), __jsx("div", {
-    className: "center",
-    __self: _this,
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 69,
-      columnNumber: 13
-    }
-  }, __jsx("div", {
-    className: "logo",
-    __self: _this,
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 70,
-      columnNumber: 17
-    }
-  }, __jsx("div", {
-    className: "vacancies",
-    onClick: function onClick() {
-      return alert('Not now!');
-    },
-    __self: _this,
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 71,
-      columnNumber: 21
-    }
-  }, "Vagas"), __jsx("div", {
-    className: "control ".concat(status),
-    onClick: function onClick() {
-      return toggle();
-    },
-    __self: _this,
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 72,
-      columnNumber: 21
-    }
-  }), __jsx("div", {
-    className: "team",
-    onClick: function onClick() {
-      return alert('Not now!');
-    },
-    __self: _this,
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 73,
-      columnNumber: 21
-    }
-  }, "Equipe"))));
-};
-
-Index.getInitialProps = function _callee() {
-  var res, data;
-  return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.async(function _callee$(_context) {
-    while (1) {
-      switch (_context.prev = _context.next) {
-        case 0:
-          _context.next = 2;
-          return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.awrap(isomorphic_unfetch__WEBPACK_IMPORTED_MODULE_4___default()('http://serv3.audiovox.pw:6768/stats?sid=1&json=1'));
-
-        case 2:
-          res = _context.sent;
-          _context.next = 5;
-          return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.awrap(res.json());
-
-        case 5:
-          data = _context.sent;
-          return _context.abrupt("return", {
-            radio: data
+  Object(_babel_runtime_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_1__["default"])(Index, [{
+    key: "radioNewStatus",
+    value: function radioNewStatus(type, newText) {
+      switch (type) {
+        case 'locutor':
+          this.setState({
+            locutor: newText
           });
+          break;
 
-        case 7:
-        case "end":
-          return _context.stop();
+        case 'programa':
+          this.setState({
+            programa: newText
+          });
+          break;
+
+        case 'ouvintes':
+          this.setState({
+            ouvintes: newText
+          });
+          break;
       }
     }
-  }, null, null, null, Promise);
-};
+  }, {
+    key: "radioUpdate",
+    value: function radioUpdate(action) {
+      var _this2 = this;
+
+      this.radioNewStatus(action, null);
+      fetch('https://painel.audiovox.pw/api/Njc2OCsw').then(function (response) {
+        return response.text();
+      }).then(function (str) {
+        return new window.DOMParser().parseFromString(str, "text/xml");
+      }).then(function (data) {
+        var status = Object(_helpers_xmlToJson__WEBPACK_IMPORTED_MODULE_9__["default"])(data).info;
+
+        switch (action) {
+          case 'all':
+            _this2.radioNewStatus('locutor', status.titulo['#text']);
+
+            _this2.radioNewStatus('programa', status.genero['#text']);
+
+            _this2.radioNewStatus('ouvintes', status.ouvintes_conectados['#text']);
+
+            break;
+
+          case 'locutor':
+            _this2.radioNewStatus('locutor', status.titulo['#text']);
+
+            break;
+
+          case 'programa':
+            _this2.radioNewStatus('programa', status.genero['#text']);
+
+            break;
+
+          case 'ouvintes':
+            _this2.radioNewStatus('ouvintes', status.ouvintes_conectados['#text']);
+
+            break;
+        }
+      });
+    }
+  }, {
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      this.radioUpdate('all');
+    }
+  }, {
+    key: "setSlider",
+    value: function setSlider(value) {
+      if (value > 0) {
+        this.sound.volume(parseFloat(value));
+      }
+    }
+  }, {
+    key: "toggle",
+    value: function toggle() {
+      if (window.Howler._muted == true) {
+        window.Howler.mute(false);
+        this.setState({
+          status: 'stop'
+        });
+      } else {
+        window.Howler.mute(true);
+        this.setState({
+          status: 'play'
+        });
+      }
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var _this3 = this;
+
+      var _this$state = this.state,
+          stream = _this$state.stream,
+          format = _this$state.format,
+          status = _this$state.status,
+          volume = _this$state.volume;
+      return __jsx(react__WEBPACK_IMPORTED_MODULE_5___default.a.Fragment, null, __jsx(react_tooltip__WEBPACK_IMPORTED_MODULE_7__["default"], {
+        backgroundColor: "#000",
+        __self: this,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 115,
+          columnNumber: 17
+        }
+      }), __jsx(react_howler__WEBPACK_IMPORTED_MODULE_6___default.a, {
+        src: stream,
+        autoplay: true,
+        volume: 1.0,
+        html5: true,
+        format: format,
+        ref: function ref(_ref) {
+          return _this3.sound = _ref;
+        },
+        __self: this,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 118,
+          columnNumber: 17
+        }
+      }), __jsx("input", {
+        type: "checkbox",
+        id: "close",
+        __self: this,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 127,
+          columnNumber: 17
+        }
+      }), __jsx("div", {
+        className: "backdrop",
+        __self: this,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 128,
+          columnNumber: 17
+        }
+      }, __jsx("div", {
+        className: "content",
+        __self: this,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 129,
+          columnNumber: 21
+        }
+      }, __jsx("div", {
+        className: "panel",
+        __self: this,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 130,
+          columnNumber: 25
+        }
+      }, __jsx("div", {
+        className: "header",
+        __self: this,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 131,
+          columnNumber: 29
+        }
+      }, __jsx("h1", {
+        __self: this,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 132,
+          columnNumber: 33
+        }
+      }, "Equipe"), __jsx("label", {
+        htmlFor: "close",
+        __self: this,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 134,
+          columnNumber: 33
+        }
+      }, "\u274C")), __jsx("div", {
+        className: "equipe",
+        __self: this,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 136,
+          columnNumber: 29
+        }
+      }, this.state.equipe.map(function (membro) {
+        return __jsx("div", {
+          className: "membro",
+          __self: _this3,
+          __source: {
+            fileName: _jsxFileName,
+            lineNumber: 138,
+            columnNumber: 33
+          }
+        }, __jsx("img", {
+          "data-tip": "".concat(membro.habbo, " - ").concat(membro.cargo),
+          width: 33,
+          height: 56,
+          src: "https://www.habbo.com.br/habbo-imaging/avatarimage?hb=image&user=".concat(membro.habbo, "&headonly=0&direction=2&head_direction=2&action=&gesture=&size=s"),
+          alt: "Habbo ".concat(membro.habbo),
+          __self: _this3,
+          __source: {
+            fileName: _jsxFileName,
+            lineNumber: 139,
+            columnNumber: 37
+          }
+        }), __jsx("div", {
+          className: "habbo",
+          __self: _this3,
+          __source: {
+            fileName: _jsxFileName,
+            lineNumber: 146,
+            columnNumber: 37
+          }
+        }, membro.habbo));
+      }))))), __jsx("div", {
+        className: "background",
+        __self: this,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 153,
+          columnNumber: 17
+        }
+      }), __jsx("div", {
+        className: "radial",
+        __self: this,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 154,
+          columnNumber: 17
+        }
+      }), __jsx("div", {
+        className: "player",
+        __self: this,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 156,
+          columnNumber: 17
+        }
+      }, __jsx("div", {
+        className: "radio-status",
+        __self: this,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 157,
+          columnNumber: 21
+        }
+      }, __jsx("div", {
+        className: "radio-status-avatar",
+        style: {
+          backgroundImage: "url(https://www.habbo.com.br/habbo-imaging/avatarimage?img_format=gif&user=".concat(this.state.locutor == null ? 'Colecction' : this.state.locutor, "&direction=2&head_direction=2&gesture=sml&size=b)")
+        },
+        __self: this,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 158,
+          columnNumber: 25
+        }
+      }), __jsx("div", {
+        className: "radio-status-data",
+        onClick: function onClick() {
+          return _this3.radioUpdate('locutor');
+        },
+        __self: this,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 164,
+          columnNumber: 25
+        }
+      }, this.state.locutor == null ? __jsx("img", {
+        src: "img/loading.gif",
+        alt: "",
+        __self: this,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 165,
+          columnNumber: 60
+        }
+      }) : this.state.locutor), __jsx("div", {
+        className: "radio-status-data",
+        onClick: function onClick() {
+          return _this3.radioUpdate('programa');
+        },
+        __self: this,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 167,
+          columnNumber: 25
+        }
+      }, this.state.programa == null ? __jsx("img", {
+        src: "img/loading.gif",
+        alt: "",
+        __self: this,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 168,
+          columnNumber: 61
+        }
+      }) : this.state.programa)), __jsx(react_slider__WEBPACK_IMPORTED_MODULE_8__["default"], {
+        className: "radio-slider",
+        trackClassName: "radio-slider-control",
+        onChange: function onChange(value) {
+          return _this3.setSlider(value / 100);
+        },
+        min: 0,
+        defaultValue: volume,
+        __self: this,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 172,
+          columnNumber: 21
+        }
+      }), __jsx("div", {
+        className: "radio-status-data-listeners",
+        onClick: function onClick() {
+          return _this3.radioUpdate('ouvintes');
+        },
+        __self: this,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 180,
+          columnNumber: 21
+        }
+      }, !this.state.ouvintes ? __jsx("img", {
+        src: "img/loading.gif",
+        alt: "",
+        __self: this,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 181,
+          columnNumber: 50
+        }
+      }) : this.state.ouvintes, __jsx("div", {
+        className: "radio-status-data-listeners-text",
+        __self: this,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 182,
+          columnNumber: 25
+        }
+      }, "ouvintes"))), __jsx("div", {
+        className: "center",
+        __self: this,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 186,
+          columnNumber: 17
+        }
+      }, __jsx("div", {
+        className: "logo",
+        __self: this,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 187,
+          columnNumber: 21
+        }
+      }, __jsx("div", {
+        className: "vacancies",
+        onClick: function onClick() {
+          return alert('vagas@habbobr.org');
+        },
+        __self: this,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 188,
+          columnNumber: 25
+        }
+      }, "Vagas"), __jsx("div", {
+        className: "control ".concat(status),
+        onClick: function onClick() {
+          return _this3.toggle();
+        },
+        __self: this,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 189,
+          columnNumber: 25
+        }
+      }), __jsx("label", {
+        htmlFor: "close",
+        className: "team",
+        __self: this,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 190,
+          columnNumber: 25
+        }
+      }, "Equipe"))));
+    }
+  }]);
+
+  return Index;
+}(react__WEBPACK_IMPORTED_MODULE_5__["Component"]); // Index.getInitialProps = async function() {
+//     const res  = await fetch('http://serv3.audiovox.pw:6768/stats?sid=1&json=1');
+//     const data = await res.json();
+//     return {
+//         radio: data
+//     };
+// };
+
 
 /* harmony default export */ __webpack_exports__["default"] = (Index);
 
 /***/ }),
 
 /***/ 1:
-/*!*******************************************************************************************************************!*\
-  !*** multi next-client-pages-loader?page=%2F&absolutePagePath=C%3A%5Cwww%5Chabbobr-manutencao%5Cpages%5Cindex.js ***!
-  \*******************************************************************************************************************/
+/*!***********************************************************************************************************************************!*\
+  !*** multi next-client-pages-loader?page=%2F&absolutePagePath=%2FUsers%2Flucas%2FDesktop%2Fhabbobr-manutencao%2Fpages%2Findex.js ***!
+  \***********************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! next-client-pages-loader?page=%2F&absolutePagePath=C%3A%5Cwww%5Chabbobr-manutencao%5Cpages%5Cindex.js! */"./node_modules/next/dist/build/webpack/loaders/next-client-pages-loader.js?page=%2F&absolutePagePath=C%3A%5Cwww%5Chabbobr-manutencao%5Cpages%5Cindex.js!./");
+module.exports = __webpack_require__(/*! next-client-pages-loader?page=%2F&absolutePagePath=%2FUsers%2Flucas%2FDesktop%2Fhabbobr-manutencao%2Fpages%2Findex.js! */"./node_modules/next/dist/build/webpack/loaders/next-client-pages-loader.js?page=%2F&absolutePagePath=%2FUsers%2Flucas%2FDesktop%2Fhabbobr-manutencao%2Fpages%2Findex.js!./");
 
 
 /***/ }),
